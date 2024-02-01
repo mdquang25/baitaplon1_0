@@ -1,0 +1,21 @@
+<div class="row justify-content-center mt-4">
+    <div class="d-flex justify-content-end col-md-9 col-lg-6 px-0">
+        <a href="/admin/kho/chude-phanloai" class=""><button class="btn btn-success">Trở về</button></a>
+    </div>
+</div>
+<div class="row justify-content-center mt-4">
+
+    <form action="/admin/kho/chude/{{category.slug}}/sua" method="post" class="card col-md-9 col-lg-6" style="background-color: rgb(109, 103, 193)">
+        <input class="d-none" name="_method" value="PATCH">
+        <h1 class="text-center">Sửa chủ đề phân loại</h1>
+        <div class="mb-3">
+            <label for="inputTypeName" class="form-label mx-2">Tên chủ đề</label>
+            <input type="text" name="name" id="inputTypeName" class="form-control" value="{{category.name}}" required>
+        </div>
+        <div class="mb-3">
+            <label for="inputTypeDescription" class="form-label mx-2">Mô tả</label>
+            <input type="text" name="description" id="inputTypeDescription" class="form-control" value="{{category.description}}">
+        </div>
+        <button type="submit" class="btn btn-success mb-3"><i class="fa-regular fa-floppy-disk me-1"></i>Lưu thay đổi</button>
+    </form>
+</div>

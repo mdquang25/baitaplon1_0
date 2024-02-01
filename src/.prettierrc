@@ -1,0 +1,10 @@
+{
+    "overrides": [
+        {
+            "files": "*.hdb",
+            "options": {
+                "parser": "html"
+            }
+        }
+    ]
+}

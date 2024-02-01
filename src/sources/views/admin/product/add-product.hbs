@@ -1,0 +1,61 @@
+<div class="row justify-content-center mt-4">
+    <div class="d-flex justify-content-end col-md-9 col-lg-6 px-0">
+        <a href="/admin/kho/sanpham" class=""><button class="btn btn-success">Danh sách sản phẩm</button></a>
+    </div>
+</div>
+<div class="row justify-content-center mt-4 mb-4">
+
+    <form action="/admin/kho/sanpham/them" method="post" enctype="multipart/form-data" class="card col-md-9 col-lg-6"
+        style="background-color: rgb(103, 193, 185)">
+        <h1 class="text-center">Thêm sản phẩm</h1>
+        <div class="mb-3">
+            <label for="name" class="form-label mx-2">Tên sản phẩm</label>
+            <input type="text" name="name" id="name" autocomplete="cc-name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="stock" class="form-label mx-2">Số lượng</label>
+            <input type="number" name="stock" id="stock" class="form-control">
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" name="onSale" id="onSale" value="true">
+            <label for="onSale" class="outline-label sale-tag">Đang giảm giá</label>
+        </div>
+        <div class="mb-3">
+            <label for="oldPrice" class="form-label mx-2">Giá cũ</label>
+            <div class="input-group">
+                <input type="number" name="oldPrice" id="oldPrice" autocomplete="transaction-amount" class="form-control">
+                <span class="input-group-text">đ</span>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label mx-2">Giá hiện tại</label>
+            <div class="input-group">
+                <input type="number" name="price" id="price" autocomplete="transaction-amount" class="form-control">
+                <span class="input-group-text">đ</span>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label mx-2">Mô tả</label>
+            <textarea type="text" name="description" id="description" class="form-control" cols="30"
+                rows="8"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="formMultipleFile" class="form-label mx-2">Chọn các file ảnh</label>
+            <input class="form-control" name="images" type="file" id="formMultipleFile" multiple>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label mx-2">Chọn các phân loại</label>
+            {{#each categories}}
+            <select class="form-select mb-3" name="typesIds[]" required>
+                <option value="null">--{{this.name}}--</option>
+                {{#each this.types}}
+                <option value="{{this._id}}">{{this.name}}</option>
+                {{/each}}
+            </select>
+            {{/each}}
+        </div>
+        <button type="submit" class="btn btn-success mb-3"><i class="fa-regular fa-floppy-disk me-1"></i>Lưu sản
+            phẩm</button>
+        </from>
+</div>

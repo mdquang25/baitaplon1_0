@@ -1,0 +1,111 @@
+<div class="row justify-content-center mt-4">
+    <div class="d-flex justify-content-end col-md-9 col-lg-7 px-0">
+        <a href="/admin/kho/sanpham" class=""><button class="btn btn-success">Quay lại</button></a>
+    </div>
+</div>
+<div class="row justify-content-center mt-4 mb-4">
+
+    <form action="/admin/kho/sanpham/sua/{{product.slug}}" method="post" enctype="multipart/form-data"
+        class="card col-md-9 col-lg-7" style="background-color: rgb(103, 193, 185)">
+        {{!-- <input name="_method" value="PUT" type="hidden"> --}}
+        <h1 class="text-center mt-4">Sửa sản phẩm</h1>
+        <div class="mb-3">
+            <label for="name" class="form-label mx-2">Tên sản phẩm</label>
+            <input type="text" name="name" id="name" autocomplete="cc-name" class="form-control"
+                value="{{product.name}}" required>
+        </div>
+        <div class="mb-3">
+            <label for="import" class="form-label mx-2">Số lượng: <b class="outline-label">{{product.stock}}</b>,
+                nhập thêm</label>
+            <input type="number" name="import" id="stock" autocomplete="cc-name" class="form-control"
+                placeholder="số lượng nhập thêm.." value="0" required>
+        </div>
+        <div class="form-check form-switch">
+            <input id="isOnSale" type="hidden" value="{{product.onSale}}">
+            <input class="form-check-input" type="checkbox" role="switch" name="onSale" id="onSale" value="true">
+            <label for="onSale" class="outline-label sale-tag">Đang giảm giá</label>
+        </div>
+        <div class="mb-3">
+            <label for="oldPrice" class="form-label mx-2">Giá cũ</label>
+            <div class="input-group">
+                <input type="number" name="oldPrice" id="oldPrice" autocomplete="cc-name" class="form-control"
+                    value="{{product.oldPrice}}">
+                <span class="input-group-text">đ</span>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label mx-2">Giá hiện tại</label>
+            <div class="input-group">
+                <input type="number" name="price" id="price" autocomplete="cc-name" class="form-control"
+                    value="{{product.price}}" required><span class="input-group-text">đ</span>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label mx-2">Mô tả</label>
+            <textarea type="text" name="description" id="description" class="form-control" cols="30"
+                rows="8">{{product.description}}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="formMultipleFile" class="form-label mx-2">Chọn các file ảnh</label>
+            <input class="form-control" name="images" type="file" id="formMultipleFile" multiple>
+        </div>
+
+        <div id="mainImageIndex" class="d-none">{{product.mainImageIndex}}</div>
+        <div id="imageArea" class="d-flex flex-wrap">
+            {{#each product.imagesUrls}}
+            <div class="position-relative">
+                <div class="form-check-group position-absolute start-50 top-0"
+                    style="background-color: rgb(66, 171, 66); border-radius: 3px; border: 1px solid yellow;color: white;">
+                    <input class="form-check-input" id="image{{@index}}" type="radio" name="mainImageIndex"
+                        value="{{@index}}">
+                    <label for="image{{@index}}">ảnh chính</label>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" name="imagesUrls" id="{{this}}"
+                        value="{{this}}" checked>
+                    <label for="{{this}}"><img src="{{this}}" alt="Ảnh sản phẩm" style="width: 10rem;"></label>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <div id="types-select-area" class="mb-3 mt-3">
+            <label class="form-label mx-2">Chọn các phân loại</label>
+            {{#each categories}}
+            <select class="form-select mb-3" name="typesIds[]" required>
+                <option value="">--{{this.name}}--</option>
+                {{#each this.types}}
+                <option value="{{this._id}}">{{this.name}}</option>
+                {{/each}}
+            </select>
+            {{/each}}
+        </div>
+        <button type="submit" class="btn btn-success mb-3"><i class="fa-regular fa-floppy-disk me-1"></i>Lưu thay
+            đổi</button>
+    </form>
+
+    <div id="preTypes" class="d-none">
+        {{#each product.typesIds}}
+        <input type="text" value="{{this}}">
+        {{/each}}
+    </div>
+</div>
+
+<script>
+    const typesArea = document.getElementById('types-select-area');
+    const preTypes = document.getElementById('preTypes');
+    const types = preTypes.querySelectorAll('input');
+    const isOnSale = document.getElementById('isOnSale');
+    const onSale = document.getElementById('onSale');
+
+    if (isOnSale.value === 'true') {
+        onSale.setAttribute('checked', 'true');
+    }
+
+    const mainImageIndex = document.getElementById('mainImageIndex').innerHTML;
+    document.getElementById('image' + mainImageIndex).setAttribute('checked', 'true');
+
+    types.forEach(function (typeInput) {
+        typesArea.querySelector('option[value="' + typeInput.value + '"]').setAttribute('selected', 'true');
+    });
+</script>

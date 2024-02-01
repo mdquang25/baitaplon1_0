@@ -1,0 +1,137 @@
+<nav class="top-nav navbar bg-body-tertiary py-0" data-bs-theme="dark">
+    <div class=" container-fluid d-flex mx-4">
+        <div class="phone navbar-text">
+            <i class="fa-solid fa-phone"></i>
+            Gọi ngay: 0382740405
+        </div>
+        <div class="fa fa-2x">
+            <a href="https://www.facebook.com/profile.php?id=100009440423560"><i
+                    class="m-2 fa-brands fa-facebook"></i></a>
+            <a href="https://www.youtube.com/@mdquang25mq35"><i class="m-2 fa-brands fa-youtube"></i></a>
+            <a href="https://maps.app.goo.gl/fPN8XiYCucfBgA2F6"><i class="m-2 fa-solid fa-map-location-dot"></i></a>
+        </div>
+    </div>
+</nav>
+
+<div id="isLoggedin" class="d-none">{{isLoggedin}}</div>
+<!--MAIN NAVBAR====================================-->
+<nav class="second-nav sticky-top navbar navbar-expand-md navbar-dark bg-dark py-0" data-bs-theme="dark">
+    <div class="second-nav-content container-fluid d-flex mx-4 justify-content-start">
+        <a class="navbar-brand" href="#">
+            <img src="https://png.pngtree.com/png-clipart/20230207/original/pngtree-beauty-logo-design-png-image_8947095.png"
+                alt="Logo" width="64" height="64" class="d-inline-block align-text-top">
+        </a>
+        <div id="my-account-dropdown" class="nav-item dropdown">
+            <div class="outline-label1 dropdown-toggle font1" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">{{user.name}}</div>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Tài khoản của tôi</a></li>
+                <li><a class="dropdown-item" href="#">Sửa tài khoản</a></li>
+                <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li id="logout-btn" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#logout-alert">Đăng
+                    xuất</li>
+            </ul>
+        </div>
+
+        <div class="offcanvas offcanvas-end text-bg-dark offcanvas-custom" tabindex="-1" id="offcanvasResponsive">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" style="align-self:flex-start">VIỆT TUẤN TRUNG</h5>
+                <button type="button" class="btn-close btn-close-white " data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body offcanvas-body-responsive">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Danh mục
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Bàn ghế phòng khách</a></li>
+                            <li><a class="dropdown-item" href="#">Tượng thần tài</a></li>
+                            <li><a class="dropdown-item" href="#">Tượng phật</a></li>
+                            <li><a class="dropdown-item" href="#">Bàn thờ</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Điêu khắc nghệ thuật</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Bài viết</a>
+                    </li>
+                </ul>
+                <form class="d-flex mx-1">
+                    <input class="form-control me-2" type="search" placeholder="Nhập tên sản phẩm.."
+                        aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Tìm kiếm</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="navbar-toggler1 nav-end d-flex align-items-center">
+            <div id="cart" class=" position-relative opacity-100">
+                <a href="/giohang">
+                    <i class="fa-2x fa-duotone fa-cart-shopping"></i>
+                </a>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    9
+                    <span class="visually-hidden">sản phẩm trong giỏ hàng</span>
+                </span>
+            </div>
+            <div id="sign-btn" class="nav-end d-flex">
+                <a href="/dangky"><button class="btn btn-success m-2 me-0" style="min-width: max-content;">Đăng ký</button></a>
+                <a href="/dangnhap"><button class="btn btn-primary m-2 me-0" style="min-width: max-content;">Đăng nhập</button></a>
+            </div>
+            <div class="navbar-toggler border-0 p-0 ms-2" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasResponsive" aria-controls="offcanvasResponsive">
+                <i class="fa-duotone fa-sliders fa-2x ms-2 m-2 me-0"></i>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="logout-alert" tabindex="-1" aria-labelledby="signoutModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Đăng xuất</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc muốn đăng xuất?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <form action="/dangxuat" method="post">
+                    <button type="submit" class="btn btn-primary">Đăng xuất ngay</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const isLoggedin = document.getElementById('isLoggedin').innerHTML;
+    const signBtn = document.getElementById('sign-btn');
+    const cart = document.getElementById('cart');
+    const myAccountDropdown = document.getElementById('my-account-dropdown');
+    const logoutAlert = document.getElementById('logout-alert')
+    const logoutBtn = document.getElementById('logout-btn')
+
+    logoutAlert.addEventListener('shown.bs.modal', () => {
+        logoutBtn.focus()
+    })
+    if (isLoggedin) {
+        signBtn.classList.add('d-none');
+    }
+    else {
+        cart.classList.add('d-none');
+        myAccountDropdown.classList.add('d-none');
+    }
+</script>

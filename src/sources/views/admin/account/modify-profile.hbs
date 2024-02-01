@@ -1,0 +1,40 @@
+<div class="row justify-content-center mt-4 mb-4">
+        <div class="col-md-9 col-lg-7 d-flex justify-content-end p-0">
+            <a href="/admin/taikhoancuatoi/xem" class="btn btn-success mt-4 mb-2">Tài khoản của tôi</a>
+        </div>
+    <form action="/admin/taikhoancuatoi/sua" method="post"
+        enctype="application/x-www-form-urlencoded/multipart/form-data" class="card col-md-9 col-lg-7"
+        style="background-color: rgb(103, 193, 185)">
+        <input name="_method" value="PATCH" class="d-none">
+        <h1 class="text-center">Sửa tài khoản của tôi</h1>
+        <div class="mb-3">
+            <label for="fullName" class="form-label mx-2">Tên hiển thị</label>
+            <input type="text" name="fullName" id="fullName" autocomplete="cc-name" class="form-control"
+                value="{{account.fullName}}" required>
+        </div>
+        <div class="mb-3">
+            <label for="phoneNumber" class="form-label mx-2">Số điện thoại</label>
+            <input type="tel" name="phoneNumber" id="phoneNumber" autocomplete="tel" class="form-control"
+                value="{{account.phoneNumber}}" placeholder="Nhập số điện thoại.." pattern="[0-9]{10}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="address" class="form-label mx-2">Địa chỉ</label>
+            <input type="text" name="address" id="address" autocomplete="address-level4" class="form-control"
+                value="{{account.address}}" placeholder="Nhập địa chỉ.." required>
+        </div>
+
+        <button type="submit" class="btn btn-success mb-3"><i class="fa-regular fa-floppy-disk me-1"></i>Lưu thay
+            đổi</button>
+    </form>
+
+</div>
+
+<script>
+    const phoneInput = document.getElementById('phoneNumber');
+
+    phoneInput.addEventListener('input', function (event) {
+        const isValid = /^\d{10}$/.test(event.target.value);
+        phoneInput.setCustomValidity(isValid ? '' : 'Hãy nhập đúng số điện thoại!');
+    });
+</script>

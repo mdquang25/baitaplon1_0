@@ -1,0 +1,100 @@
+<div class="mt-4 d-flex justify-content-end mgx-2">
+
+    <a href="/admin/kho/sanpham" class="btn btn-warning"><i class="fa-sharp fa-solid fa-house-person-return"></i><span
+            class="mobile-hidden"> Danh Sách</span> Sản phẩm</a>
+</div>
+<div class="d-flex mgx-2 mt-4">
+    <div class="col-2 d-flex flex-column">
+        <div><b>{{categories.length}} <i class="fa-brands fa-squarespace"></i><span class="mobile-hidden"> Chủ
+                    đề</span></b></div>
+        <div><b>{{typeCount}} <i class="fa-duotone fa-split"></i><span class="mobile-hidden"> Loại</span></b></div>
+    </div>
+    <h2 class="col-8 text-center"><span class="mobile-hidden">Danh sách</span> Chủ đề</h2>
+    <div class="col-2 d-flex justify-content-end align-middle">
+        <a href="/admin/kho/chude/them" class="btn btn-success d-flex align-items-center"><i
+                class="fa fa-regular fa-plus mobile-hidden"></i>Thêm</a>
+    </div>
+</div>
+<table class="table text-center">
+    <thead>
+        <tr>
+            <th scope="col" class="table-header to-be-hidden">STT</th>
+            <th scope="col" class="table-header">Tên chủ đề</th>
+            <th scope="col" class="table-header">Phân loại</th>
+            <th scope="col" class="table-header mobile-hidden">Sản phẩm</th>
+            <th scope="col" class="table-header to-be-hidden">Mô tả</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each categories}}
+        <tr>
+            <th onclick="navigateTo('/admin/kho/chude/{{this.slug}}')" scope="row" class="to-be-hidden">{{sum @index 1}}
+            </th>
+            <td onclick="navigateTo('/admin/kho/chude/{{this.slug}}')"> {{this.name}}</td>
+            <td onclick="navigateTo('/admin/kho/chude/{{this.slug}}')">
+                <div class="outline-label">{{this.typeCount}}</div>
+            </td>
+            <td onclick="navigateTo('/admin/kho/chude/{{this.slug}}')" class="mobile-hidden">
+                <div class="outline-label">{{this.productCount}}</div>
+            </td>
+            <td onclick="navigateTo('/admin/kho/chude/{{this.slug}}')" class="to-be-hidden">
+                <p class="product-management_description">{{this.description}}</p>
+            </td>
+            <td><a href="/admin/kho/chude/{{this.slug}}/sua" class="btn btn-info">Sửa</a></td>
+            <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"
+                    data-delete-id="{{this._id}}" data-category-name="{{this.name}}">Xóa</button>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<!--Modal=============================-->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa sản phẩm</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="modal-body" class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" id="delete-btn">Xóa vĩnh viễn</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="delete-form" action="/admin/kho/chude/xoa" method="post" style="display: none;"
+    enctype="application/x-www-form-urlencoded">
+    <input name="_method" value="DELETE">
+    <input type="text" name="deleteId" id="delete-id">
+</form>
+
+<script>
+    var productId;
+    const deleteForm = document.getElementById('delete-form');
+    const deleteId = document.getElementById('delete-id');
+    const deleteBtn = document.getElementById('delete-btn');
+    const deleteModal = document.getElementById('confirmDeleteModal');
+
+    if (deleteModal) {
+        deleteModal.addEventListener('show.bs.modal', event => {
+            const button = event.relatedTarget;
+            const modalBody = document.getElementById('modal-body');
+            modalBody.innerHTML = 'Bạn chắc chắn muốn xóa "' + button.getAttribute('data-category-name') + '"?';
+            productId = button.getAttribute('data-delete-id');
+        });
+    }
+    deleteBtn.addEventListener('click', function (event) {
+        deleteId.value = productId;
+        deleteForm.submit();
+    });
+
+    function navigateTo(url) {
+        window.location.href = url;
+    }
+</script>

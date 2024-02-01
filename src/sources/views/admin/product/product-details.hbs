@@ -1,0 +1,68 @@
+<div class="row justify-content-center mt-4">
+    <div class="d-flex justify-content-end col-md-9 col-lg-7 px-0">
+        <a href="/admin/kho/sanpham/sua/{{product.slug}}" class="me-2"><button class="btn btn-info">Sửa</button></a>
+        <a href="/admin/kho/sanpham" class=""><button class="btn btn-success">Quay lại</button></a>
+    </div>
+</div>
+<div class="row justify-content-center mt-4 mb-4">
+    <div class="card col-md-9 col-lg-7" style="background-color: rgb(103, 193, 185)">
+        <h1 class="text-center mt-4">Chi tiết sản phẩm</h1>
+        <div class="mb-3">
+            <label class="form-label mx-2">Tên sản phẩm</label>
+            <input type="text" class="form-control" disabled value="{{product.name}}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label mx-2">Số lượng:</label>
+            <input type="number" class="form-control" disabled value="{{product.stock}}">
+        </div>
+
+        <input id="isOnSale" type="hidden" value="{{product.onSale}}">
+        <div id="onSaleLabel" class="mb-3">
+            <label class="outline-label sale-tag">Đang giảm giá</label>
+            <div for="oldPrice" class="form-label mx-2">Giá cũ</div>
+            <input id="oldPrice" type="text" class="form-control" disabled value="{{product.oldPrice}}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label mx-2">Giá:</label>
+            <input type="text" id="price" class="form-control" disabled value="{{product.price}}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label mx-2">Mô tả</label>
+            <p class="form-control">{{product.description}}</p>
+        </div>
+        <div id="mainImageIndex" class="d-none">{{product.mainImageIndex}}</div>
+        <div>Ảnh minh họa:</div>
+        <div id="imageArea" class="d-flex flex-wrap mb-3">
+            {{#each product.imagesUrls}}
+            <div class="position-relative m-1">
+                <div class="d-none form-check-group position-absolute start-0 top-0" id="image{{@index}}"
+                    style="background-color: rgb(66, 171, 66); border-radius: 3px; border: 1px solid yellow;color: white;">
+                    <i class="fa-sharp fa-solid fa-badge-check"></i>
+                    <label>ảnh chính</label>
+                </div>
+                <img src="{{this}}" alt="Ảnh sản phẩm" style="width: 10rem;">
+            </div>
+            {{/each}}
+        </div>
+        <label class="form-label">Phân loại</label>
+        <div id="types-area" class="mb-3">
+            {{#each types}}
+            <div class="btn btn-success m-1">{{this.name}}</div>
+            {{/each}}
+        </div>
+    </div>
+</div>
+
+<script>
+    const isOnSale = document.getElementById('isOnSale');
+    const onSaleLabel = document.getElementById('onSaleLabel');
+
+    if (isOnSale.value !== 'true') {
+        onSaleLabel.classList.add('d-none');
+    }
+
+    const mainImageIndex = document.getElementById('mainImageIndex').innerHTML;
+    console.log('index: ', mainImageIndex);
+    const mainImageLabel = document.getElementById('image' + mainImageIndex);
+    mainImageLabel.classList.remove('d-none');
+</script>

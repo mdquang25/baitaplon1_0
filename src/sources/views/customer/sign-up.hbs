@@ -1,0 +1,87 @@
+<h1 id="brand-name-label">Việt Tuấn Trung</h1>
+<form action="/dangky" method="post" class="floating-label vstack gap-2 col-md-5 mx-auto">
+<h1 id="sign-label">Đăng ký thành viên</h1>
+    <div class="row align-items-center form-floating mb-3">
+        <input type="text" name="username" class="form-control" id="floatingInput" placeholder="Tên Đăng nhập"
+            autocomplete="username" required>
+        <label for="floatingInput">Tên đăng nhập</label>
+    </div>
+    <div class="row align-items-center form-floating mb-3">
+        <input type="password" name="password" class="form-control position-relative" id="floatingPassword"
+            placeholder="Tạo mật khẩu" autocomplete="new-password" required>
+        <button class=" position-absolute top-50 end-0 translate-middle-y eye-icon-btn" type="button"
+            id="togglePasswordButton1">
+            <i class="fa-regular fa-eye-slash"></i>
+        </button>
+        <label for="floatingPassword">Tạo mật khẩu</label>
+    </div>
+    <div class="row align-items-center form-floating mb-3">
+        <input type="password" name="password2" class="form-control position-relative" id="floatingNewPassword"
+            placeholder="Xác nhận mật khẩu" autocomplete="new-password" required>
+        <button class=" position-absolute top-50 end-0 translate-middle-y eye-icon-btn" type="button"
+            id="togglePasswordButton2">
+            <i class="fa-regular fa-eye-slash"></i>
+        </button>
+        <label for="floatingPassword">Xác nhận mật khẩu</label>
+        <div id="error-message" class="form-text text-secondary text-danger">
+        </div>
+    </div>
+    <div class="form-check d-flex align-items-center">
+        <input class="form-check-input me-2" style=" border-color: blue" type="checkbox" value="đồng ý" required id="confirm-rules">
+        <label class="form-check-label" for="confirm-rules">
+            Tôi đồng ý với các <a href="#">điều khoản và điều kiện</a> khi đăng ký và sử dụng tài khoản
+        </label>
+    </div>
+    <button type="submit" class="btn btn-success p-3">Đăng ký</button>
+    <a class="no-decor-link" href="/dangnhap">Đã có tài khoản: đăng nhập</a>
+</form>
+<script>
+    const form = document.querySelector('form');
+    const usernameInput = document.querySelector('input[name="username"]');
+    const password1 = document.querySelector('input[name="password"]');
+    const password2 = document.querySelector('input[name="password2"]');
+    const errorLabel = document.getElementById('error-message');
+    const togglePasswordButton1 = document.getElementById('togglePasswordButton1');
+    const togglePasswordButton2 = document.getElementById('togglePasswordButton2');
+
+    togglePasswordButton1.addEventListener('click', togglePassword);
+    togglePasswordButton2.addEventListener('click', togglePassword);
+     function togglePassword() {
+        const type = this.previousElementSibling.getAttribute('type') === 'password' ? 'text' : 'password';
+        this.previousElementSibling.setAttribute('type', type);
+        this.querySelector('i').classList.toggle('fa-eye');
+        this.querySelector('i').classList.toggle('fa-eye-slash');
+    };
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        if (validateForm()) {
+
+            form.submit();
+        }
+
+    });
+
+    function validateForm() {
+        let isValid = true;
+
+        if (!usernameInput.value) {
+            errorLabel.innerHTML = 'nhập tên đăng nhập!';
+            isValid = false;
+        }
+
+        if (password1.value.length < 6 || password2.value.length < 6) {
+            errorLabel.innerHTML = 'mật khẩu phải từ 6 ký tự trở lên!';
+            isValid = false;
+        }
+        else if (password1.value !== password2.value) {
+            errorLabel.innerHTML = 'mật khẩu không khớp!';
+            isValid = false;
+        }
+
+
+        return isValid;
+    }
+
+</script>

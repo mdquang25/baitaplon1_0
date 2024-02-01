@@ -1,0 +1,107 @@
+<nav class="top-nav navbar bg-body-tertiary py-0" data-bs-theme="dark">
+    <div class=" container-fluid d-flex mx-4">
+        <div class="phone navbar-text">
+            <i class="fa-solid fa-phone"></i>
+            Điện thoại hỗ trợ: 0382740405
+        </div>
+        <div class="fa fa-2x">
+            <a href="#"><i class="m-2 fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="m-2 fa-brands fa-youtube"></i></a>
+            <a href="#"><i class="m-2 fa-solid fa-map-location-dot"></i></a>
+        </div>
+    </div>
+</nav>
+<nav class="second-nav navbar sticky-top navbar-dark bg-dark navbar-expand-md bg-body-tertiary py-0"
+    data-bs-theme="dark">
+    <div class="second-nav-content container-fluid d-flex mx-4 justify-content-start">
+        <a class="navbar-brand" href="/admin">
+            <img src="https://png.pngtree.com/png-clipart/20230207/original/pngtree-beauty-logo-design-png-image_8947095.png"
+                alt="Logo" width="64" height="64" class="d-inline-block align-text-top">
+        </a>
+
+        <div id="my-account-dropdown" class="navbar-brand dropdown mx-4">
+            <a class="nav-link dropdown-toggle" href="/admin/taikhoancuatoi" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                {{manager.fullName}}
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/admin/taikhoancuatoi/xem">Tài khoản của tôi</a></li>
+                <li><a class="dropdown-item" href="/admin/taikhoancuatoi/sua">Sửa tài khoản</a></li>
+                <li><a class="dropdown-item" href="/admin/taikhoancuatoi/doimatkhau">Đổi mật khẩu</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li>
+                    <div id="logout-btn" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#logout-alert">
+                        Đăng xuất
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="offcanvas offcanvas-end text-bg-dark offcanvas-custom" tabindex="-1" id="offcanvasResponsive">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" style="align-self:flex-start">VIỆT TUẤN TRUNG</h5>
+                <button type="button" class="btn-close btn-close-white " data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body offcanvas-body-responsive">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Tài khoản nhân viên</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/kho/sanpham">Kho</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Đơn hàng</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Thống kê</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="navbar-toggler1">
+            <div class="navbar-toggler border-0 p-0 ms-2" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasResponsive" aria-controls="offcanvasResponsive">
+                <i class="fa-duotone fa-sliders fa-2x ms-2 m-2 me-0"></i>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div id="isLoggedin" class="d-none">{{isLoggedin}}</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="logout-alert" tabindex="-1" aria-labelledby="signoutModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Đăng xuất</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc muốn đăng xuất?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <form action="/admin/dangxuat" method="post">
+                    <button type="submit" class="btn btn-primary">Đăng xuất ngay</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const isLoggedin = document.getElementById('isLoggedin').innerHTML;
+    const myAccountDropdown = document.getElementById('my-account-dropdown');
+    const logoutAlert = document.getElementById('logout-alert');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    logoutAlert.addEventListener('shown.bs.modal', () => {
+        logoutBtn.focus();
+    })
+
+</script>
