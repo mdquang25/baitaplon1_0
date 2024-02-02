@@ -48,8 +48,9 @@
     .mobile-hidden {
         display: none;
     }
-    .mobile-show{
-        display:flex;
+
+    .mobile-show {
+        display: flex;
     }
 
 }
@@ -76,6 +77,11 @@
     padding: 30px;
     background-color: white;
     border-radius: 5px;
+}
+
+.floating-label-header {
+    width: 380px;
+    padding: 30px;
 }
 
 #brand-name-label {
@@ -223,16 +229,14 @@
     color: white;
 }
 
-#my-account-dropdown {
-    
-}
+#my-account-dropdown {}
 
-.navbar-toggler1{
+.navbar-toggler1 {
     flex: 1;
     display: flex;
     justify-content: end;
 }
 
-#offcanvasResponsive{
+#offcanvasResponsive {
     flex: 100;
 }

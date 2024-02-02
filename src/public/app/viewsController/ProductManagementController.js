@@ -10,7 +10,7 @@ class ProductManagementController {
         Product.find({})
             .then(products => {
 
-                res.render('admin/product/product-management', { pageTitle: 'Quản lý sản phẩm', layout: 'admin', manager: req.session.manager, products: multiMongooseToObjs(products), });
+                res.render('admin/product/products', { pageTitle: 'Quản lý sản phẩm', layout: 'admin', manager: req.session.manager, products: multiMongooseToObjs(products), });
             }).catch(next);
     }
 
@@ -148,13 +148,13 @@ class ProductManagementController {
             .then((categories) => {
                 let typeCount = 0;
                 categories.forEach(category => typeCount += category.typeCount);
-                res.render('admin/product/type-management', { pageTitle: 'Quản lý phân loại', layout: 'admin', manager: req.session.manager, categories: multiMongooseToObjs(categories), typeCount, })
+                res.render('admin/product/categories-types', { pageTitle: 'Quản lý phân loại', layout: 'admin', manager: req.session.manager, categories: multiMongooseToObjs(categories), typeCount, })
             })
             .catch(next);
     }
 
     addCategory(req, res) {
-        res.render('admin/product/add-product-category', { pageTitle: 'Thêm phân chủ đề', layout: 'admin', manager: req.session.manager, });
+        res.render('admin/product/add-category', { pageTitle: 'Thêm phân chủ đề', layout: 'admin', manager: req.session.manager, });
     }
 
     //[POST] /admin/kho/chude/luu
@@ -223,7 +223,7 @@ class ProductManagementController {
     //[GET] /admin/kho/chude/:slug/them-phanloai
     addType(req, res, next) {
         Category.findOne({ slug: req.params.slug }).then((category) => {
-            res.render('admin/product/add-product-type', { pageTitle: 'Thêm phân loại', layout: 'admin', manager: req.session.manager, category: mongooseToObj(category) });
+            res.render('admin/product/add-type', { pageTitle: 'Thêm phân loại', layout: 'admin', manager: req.session.manager, category: mongooseToObj(category) });
         }).catch(next);
     }
     //[POST] /admin/kho/chude/:slug/them-phanloai/luu
