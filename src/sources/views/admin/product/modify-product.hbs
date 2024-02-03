@@ -1,6 +1,7 @@
 <div class="row justify-content-center mt-4">
     <div class="d-flex justify-content-end col-md-9 col-lg-7 px-0">
-        <a href="/admin/kho/sanpham" class=""><button class="btn btn-primary"><i class="fa-sharp fa-solid fa-house-person-return"></i> Quay lại</button></a>
+        <a href="/admin/kho/sanpham" class=""><button class="btn btn-primary"><i
+                    class="fa-sharp fa-solid fa-house-person-return"></i> Quay lại</button></a>
     </div>
 </div>
 <div class="row justify-content-center mt-4 mb-4">
@@ -69,15 +70,20 @@
             </div>
             {{/each}}
         </div>
-        <div id="types-select-area" class="mb-3 mt-3">
-            <label class="form-label mx-2">Chọn các phân loại</label>
+        <label class="form-label mx-2">Chọn các phân loại</label>
+        <div id="types-select-area" class="mb-3 d-flex flex-wrap">
             {{#each categories}}
-            <select class="form-select mb-3" name="typesIds[]" required>
-                <option value="">--{{this.name}}--</option>
+            <div class="m-1"><b>{{this.name}}</b>
                 {{#each this.types}}
-                <option value="{{this._id}}">{{this.name}}</option>
+                <div class="form-check">
+                    <input class="form-check-input" name="typesIds[]" type="checkbox" value="{{this._id}}"
+                        id="{{this._id}}">
+                    <label class="form-check-label" for="{{this._id}}">
+                        {{this.name}}
+                    </label>
+                </div>
                 {{/each}}
-            </select>
+            </div>
             {{/each}}
         </div>
         <button type="submit" class="btn btn-success mb-3"><i class="fa-regular fa-floppy-disk me-1"></i>Lưu thay
@@ -106,6 +112,6 @@
     document.getElementById('image' + mainImageIndex).setAttribute('checked', 'true');
 
     types.forEach(function (typeInput) {
-        typesArea.querySelector('option[value="' + typeInput.value + '"]').setAttribute('selected', 'true');
+        typesArea.querySelector('input[value="' + typeInput.value + '"]').setAttribute('checked', 'true');
     });
 </script>

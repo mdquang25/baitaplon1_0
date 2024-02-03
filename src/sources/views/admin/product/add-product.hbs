@@ -25,14 +25,14 @@
             <label for="oldPrice" class="form-label mx-2">Giá cũ</label>
             <div class="input-group">
                 <input type="number" name="oldPrice" id="oldPrice" autocomplete="transaction-amount"
-                    class="form-control">
+                    class="form-control" value="0" required>
                 <span class="input-group-text">đ</span>
             </div>
         </div>
         <div class="mb-3">
             <label for="price" class="form-label mx-2">Giá hiện tại</label>
             <div class="input-group">
-                <input type="number" name="price" id="price" autocomplete="transaction-amount" class="form-control">
+                <input type="number" name="price" id="price" autocomplete="transaction-amount" class="form-control" required>
                 <span class="input-group-text">đ</span>
             </div>
         </div>
@@ -47,7 +47,7 @@
         </div>
 
         <label class="form-label mx-2">Chọn các phân loại</label>
-        <div class="mb-3 ">
+        <div class="mb-3 d-flex flex-wrap">
             {{#each categories}}
             <div class="m-1"><b>{{this.name}}</b>
                 {{#each this.types}}

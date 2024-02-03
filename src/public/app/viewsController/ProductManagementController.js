@@ -20,17 +20,22 @@ class ProductManagementController {
         Category.find({})
             .then(categories => {
                 const objs = multiMongooseToObjs(categories);
-                objs.forEach(category => {
-                    Type.find({ categoryId: category._id })
+                const categoryPromises = objs.map(category => {
+                    return Type.find({ categoryId: category._id })
                         .then(types => {
                             const tps = multiMongooseToObjs(types);
                             category.types = tps;
-                        })
-                        .catch(next);
+                            return category;
+                        });
                 });
+
+                return Promise.all(categoryPromises);
+            })
+            .then(objs => {
                 console.log(objs);
-                res.render('admin/product/add-product', { pageTitle: 'Thêm sản phẩm', layout: 'admin', manager: req.session.manager, categories: objs })
-            }).catch(next);
+                res.render('admin/product/add-product', { pageTitle: 'Thêm sản phẩm', layout: 'admin', manager: req.session.manager, categories: objs });
+            })
+            .catch(next);
     }
     //[POST] //admin/kho/sanpham/them
     saveProduct(req, res, next) {
