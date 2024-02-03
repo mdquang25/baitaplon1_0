@@ -28,6 +28,7 @@ class ProductManagementController {
                         })
                         .catch(next);
                 });
+                console.log(objs);
                 res.render('admin/product/add-product', { pageTitle: 'Thêm sản phẩm', layout: 'admin', manager: req.session.manager, categories: objs })
             }).catch(next);
     }
