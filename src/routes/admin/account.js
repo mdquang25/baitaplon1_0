@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const adminAccountManagementController = require('../../public/app/viewsController/AdminAccountManagementController');
-const requireAdminLogin = require('../middleware/requireAdminLogin');
 const requireManagerLogin = require('../middleware/requireManagerLogin');
 
 
