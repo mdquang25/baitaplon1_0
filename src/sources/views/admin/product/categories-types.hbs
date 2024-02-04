@@ -30,12 +30,10 @@
     <tbody>
         {{#each categories}}
         <tr>
-            <th onclick="navigateTo('/admin/kho/chude/{{this.slug}}')" scope="row" class="to-be-hidden">{{sum @index 1}}
-            </th>
+            <th onclick="navigateTo('/admin/kho/chude/{{this.slug}}')" scope="row" class="to-be-hidden">{{sum @index 1}}</th>
             <td onclick="navigateTo('/admin/kho/chude/{{this.slug}}')"> {{this.name}}</td>
             <td onclick="navigateTo('/admin/kho/chude/{{this.slug}}')">
-                <div class="outline-label">{{this.typeCount}}</div>
-            </td>
+                <div class="outline-label">{{this.typeCount}}</div></td>
             <td onclick="navigateTo('/admin/kho/chude/{{this.slug}}')" class="mobile-hidden">
                 <div class="outline-label">{{this.productCount}}</div>
             </td>

@@ -9,7 +9,6 @@ class ProductManagementController {
     productManagement(req, res, next) {
         Product.find({})
             .then(products => {
-
                 res.render('admin/product/products', { pageTitle: 'Quản lý sản phẩm', layout: 'admin', manager: req.session.manager, products: multiMongooseToObjs(products), });
             }).catch(next);
     }
@@ -38,7 +37,7 @@ class ProductManagementController {
             .catch(next);
     }
     //[POST] //admin/kho/sanpham/them
-    saveProduct(req, res, next) {
+    async saveProduct(req, res, next) {
         const product = new Product(req.body);
         const files = req.files;
         console.log('files: ', files);
@@ -46,12 +45,14 @@ class ProductManagementController {
             const imagePaths = req.files.map(file => '/uploads/' + file.filename);
             product.imagesUrls = imagePaths;
         };
-
-        product.save();
-        console.log('product is saved!');
-        //add some check funtion if category already exist
-        //...
-        res.redirect('back');
+        try {
+            await product.save();
+            console.log('product is saved!');
+        } catch (error) {
+            next(error); // Pass the error to the error handling middleware
+        } finally {
+            res.redirect('back');
+        }
     }
 
     //[GET] //admin/kho/sanpham/:slug
@@ -151,10 +152,35 @@ class ProductManagementController {
     //=====================================================================================
     typeManagement(req, res, next) {
         Category.find({})
-            .then((categories) => {
-                let typeCount = 0;
-                categories.forEach(category => typeCount += category.typeCount);
-                res.render('admin/product/categories-types', { pageTitle: 'Quản lý phân loại', layout: 'admin', manager: req.session.manager, categories: multiMongooseToObjs(categories), typeCount, })
+            .then((docs) => {
+                const categories = multiMongooseToObjs(docs);
+                const promises = [];
+
+                categories.forEach((category) => {
+                    const typePromise = Type.find({ categoryId: category._id })
+                        .then((types) => {
+                            const type_ids = types.map(type => type._id);
+                            category.typeCount = types.length;
+                            return Product.find({ typesIds: { $in: type_ids } })
+                                .then((products) => {
+                                    category.productCount = products.length;
+                                });
+                        });
+
+                    promises.push(typePromise);
+                });
+
+                return Promise.all(promises)
+                    .then(() => Type.countDocuments({}))
+                    .then((typeCount) => {
+                        res.render('admin/product/categories-types', {
+                            pageTitle: 'Quản lý phân loại',
+                            layout: 'admin',
+                            manager: req.session.manager,
+                            categories,
+                            typeCount,
+                        });
+                    });
             })
             .catch(next);
     }
@@ -215,13 +241,30 @@ class ProductManagementController {
     //[GET] /admin/kho/chude/:slug
     categoryDetails(req, res, next) {
         Category.findOne({ slug: req.params.slug })
-            .then(category => {
+            .then((doc) => {
+                const category = mongooseToObj(doc);
                 Type.find({ categoryId: category._id })
-                    .then(types => {
+                    .then((types) => {
                         let objs = null;
-                        if (types && types.length > 0)
+                        let promises = [];
+                        if (types && types.length > 0) {
                             objs = multiMongooseToObjs(types);
-                        res.render('admin/product/category-details', { pageTitle: 'Chi tiết phân loại', layout: 'admin', category: mongooseToObj(category), types: objs, });
+                            promises = objs.map((type) => {
+                                return Product.find({ typesIds: type._id })
+                                    .then((products) => {
+                                        type.productCount = products.length;
+                                    });
+                            });
+                        }
+                        Promise.all(promises)
+                            .then(() => {
+                                res.render('admin/product/category-details', {
+                                    pageTitle: 'Chi tiết phân loại',
+                                    layout: 'admin',
+                                    category,
+                                    types: objs,
+                                });
+                            }).catch(next);
                     }).catch(next);
             }).catch(next);
     }
@@ -301,14 +344,12 @@ class ProductManagementController {
                         }
                         console.log(type.imageUrl + ': deleted successfully');
                     });
-                Category.findByIdAndUpdate(req.body.categoryId, { $inc: { typeCount: - 1, } })
+                Product.updateMany({ typesIds: type._id },
+                    { $pull: { typesIds: type._id } })
                     .then(() => {
-                        Product.updateMany({ typesIds: type._id },
-                            { $pull: { typesIds: type._id } })
-                            .then(() => {
-                                res.redirect('back');
-                            }).catch(next);
+                        res.redirect('back');
                     }).catch(next);
+
             }).catch(next);
     }
 

@@ -5,7 +5,6 @@ const Type = new mongoose.Schema(
     {
         name: { type: String, require: true, },
         description: { type: String, },
-        productCount: { type: Number, default: 0, },
         imageUrl: { type: String, }, 
         categoryId: { type: String, required: true, },
         slug: { type: String, unique: true },
