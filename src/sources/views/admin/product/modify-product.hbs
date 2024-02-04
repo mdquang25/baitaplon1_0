@@ -6,7 +6,7 @@
 </div>
 <div class="row justify-content-center mt-4 mb-4">
 
-    <form action="/admin/kho/sanpham/sua/{{product.slug}}" method="post" enctype="multipart/form-data"
+    <form action="/admin/kho/sanpham/{{product.slug}}/sua" method="post" enctype="multipart/form-data"
         class="card col-md-9 col-lg-7" style="background-color: rgb(103, 193, 185)">
         {{!-- <input name="_method" value="PUT" type="hidden"> --}}
         <h1 class="text-center mt-4">Sửa sản phẩm</h1>
@@ -90,28 +90,29 @@
             đổi</button>
     </form>
 
-    <div id="preTypes" class="d-none">
-        {{#each product.typesIds}}
-        <input type="text" value="{{this}}">
-        {{/each}}
-    </div>
+</div>
+<div hidden>
+    {{#each product.typesIds}}
+    <input class="preTypes" value="{{this}}">
+    {{/each}}
 </div>
 
 <script>
-    const typesArea = document.getElementById('types-select-area');
-    const preTypes = document.getElementById('preTypes');
-    const types = preTypes.querySelectorAll('input');
-    const isOnSale = document.getElementById('isOnSale');
-    const onSale = document.getElementById('onSale');
+    document.addEventListener('DOMContentLoaded', function () {
+        const typesArea = document.getElementById('types-select-area');
+        const types = [...document.getElementsByClassName('preTypes')];
+        const isOnSale = document.getElementById('isOnSale');
+        const onSale = document.getElementById('onSale');
+        if (isOnSale.value === 'true') {
+            onSale.setAttribute('checked', 'true');
+        }
 
-    if (isOnSale.value === 'true') {
-        onSale.setAttribute('checked', 'true');
-    }
+        const mainImageIndex = document.getElementById('mainImageIndex').innerHTML;
+        document.getElementById('image' + mainImageIndex).setAttribute('checked', 'true');
 
-    const mainImageIndex = document.getElementById('mainImageIndex').innerHTML;
-    document.getElementById('image' + mainImageIndex).setAttribute('checked', 'true');
+        types.forEach(function (typeInput) {
+            document.getElementById(typeInput.value).setAttribute('checked', 'true');
+        });
 
-    types.forEach(function (typeInput) {
-        typesArea.querySelector('input[value="' + typeInput.value + '"]').setAttribute('checked', 'true');
     });
 </script>

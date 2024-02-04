@@ -7,7 +7,7 @@ const Product = new mongoose.Schema(
     {
         name: { type: String, require: true },
         description: { type: String },
-        onSale: { type: Boolean, },
+        onSale: { type: Boolean, default: false},
         oldPrice: { type: mongoose.Types.Decimal128, default: 0, },
         price: { type: mongoose.Types.Decimal128, default: 0, },
         stock: { type: Number, default: 0, },

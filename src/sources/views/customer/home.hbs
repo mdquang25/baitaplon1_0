@@ -56,7 +56,7 @@
             <img src="{{valueAt this.imagesUrls this.mainImageIndex}}" class="card-img-top card-image object-fit-cover" alt="{{this.name}}">
             <div class="card-body">
                 <h6 class="card-title">{{this.name}}</h6>
-                <span class="old-price-label" data-on-sale="{{this.onSale}}">{{this.oldPrice}}</span><span class="old-price-label price-label-ending">đ</span><br>
+                <span class="old-price-label" data-onsale="{{this.onSale}}">{{this.oldPrice}}</span><span class="old-price-label price-label-ending">đ</span><br>
                 <span class="price-label">{{this.price}}</span><span class="price-label price-label-ending">đ</span><br>
                
             </div>
@@ -65,8 +65,8 @@
     {{/each}}
 </div>
 <script>
-    const prices = document.querySelectorAll('div[class="price-label"]');
-    const oldPrices = document.querySelectorAll('div[class="old-price-label"]');
+    const prices = document.querySelectorAll('span[class="price-label"]');
+    const oldPrices = document.querySelectorAll('span[class="old-price-label"]');
     const cards = document.querySelectorAll('div[data-name="cards"]');
 
     cards.forEach(card =>{
@@ -78,7 +78,8 @@
         });
     })
     oldPrices.forEach(function(oldPrice){
-        const onSale = oldPrice.getAttribute('data-on-sale');
+        const onSale = oldPrice.getAttribute('data-onsale');
+        console.log(onSale);
         if(onSale){
         const number = parseFloat(oldPrice.innerHTML);
         oldPrice.innerHTML = number.toLocaleString('vi-VN');

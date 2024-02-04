@@ -17,9 +17,9 @@ class ProductManagementController {
     addProduct(req, res, next) {
         console.log('addProduct');
         Category.find({})
-            .then(categories => {
-                const objs = multiMongooseToObjs(categories);
-                const categoryPromises = objs.map(category => {
+            .then(docs => {
+                const objs = multiMongooseToObjs(docs);
+                const categories = objs.map(category => {
                     return Type.find({ categoryId: category._id })
                         .then(types => {
                             const tps = multiMongooseToObjs(types);
@@ -28,11 +28,10 @@ class ProductManagementController {
                         });
                 });
 
-                return Promise.all(categoryPromises);
+                return Promise.all(categories);
             })
-            .then(objs => {
-                console.log(objs);
-                res.render('admin/product/add-product', { pageTitle: 'Thêm sản phẩm', layout: 'admin', manager: req.session.manager, categories: objs });
+            .then(categories => {
+                res.render('admin/product/add-product', { pageTitle: 'Thêm sản phẩm', layout: 'admin', manager: req.session.manager, categories });
             })
             .catch(next);
     }
@@ -70,21 +69,23 @@ class ProductManagementController {
     //[GET] //admin/kho/sanpham/sua/:slug
     modifyProduct(req, res, next) {
         Category.find({})
-            .then(items => {
-                const categories = multiMongooseToObjs(items);
-                categories.forEach(category => {
-                    Type.find({ categoryId: category._id })
+            .then(docs => {
+                const objects = multiMongooseToObjs(docs);
+                const categories = objects.map(category => {
+                    return Type.find({ categoryId: category._id })
                         .then(types => {
                             category.types = multiMongooseToObjs(types);
-                            console.log(types);
-                        })
-                        .catch(next);
+                            return category;
+                        });
                 });
+                return Promise.all(categories);
+            }).then(categories => {
                 Product.findOne({ slug: req.params.slug })
-                    .then(product => {
-                        res.render('admin/product/modify-product', { pageTitle: 'Sửa sản phẩm', layout: 'admin', manager: req.session.manager, categories, product: mongooseToObj(product), })
+                    .then(obj => {
+                        const product = mongooseToObj(obj);
+                        res.render('admin/product/modify-product', { pageTitle: 'Sửa sản phẩm', layout: 'admin', manager: req.session.manager, categories, product, })
                     }).catch(next);
-            }).catch(next);
+            })
     }
     //[PUT] //admin/kho/sanpham/sua
     saveModifiedProduct(req, res, next) {
@@ -244,28 +245,28 @@ class ProductManagementController {
             .then((doc) => {
                 const category = mongooseToObj(doc);
                 Type.find({ categoryId: category._id })
-                    .then((types) => {
-                        let objs = null;
-                        let promises = [];
-                        if (types && types.length > 0) {
-                            objs = multiMongooseToObjs(types);
-                            promises = objs.map((type) => {
-                                return Product.find({ typesIds: type._id })
-                                    .then((products) => {
-                                        type.productCount = products.length;
+                    .then((docs) => {
+                        const types = multiMongooseToObjs(docs);
+                        category.typeCount = types.length;
+                        const type_ids = types.map(type => type._id);
+                        Product.find({ typesIds: { $in: type_ids } })
+                            .then((products) => {
+                                category.productCount = products.length;
+                                Promise.all(types.map(type => {
+                                    return Product.find({ typesIds: type._id })
+                                        .then(products => {
+                                            type.productCount = products.length;
+                                        });
+                                })).then(() => {
+                                    res.render('admin/product/category-details', {
+                                        pageTitle: 'Chi tiết phân loại',
+                                        layout: 'admin',
+                                        category,
+                                        types,
                                     });
-                            });
-                        }
-                        Promise.all(promises)
-                            .then(() => {
-                                res.render('admin/product/category-details', {
-                                    pageTitle: 'Chi tiết phân loại',
-                                    layout: 'admin',
-                                    category,
-                                    types: objs,
                                 });
-                            }).catch(next);
-                    }).catch(next);
+                            });
+                    });
             }).catch(next);
     }
 
