@@ -214,4 +214,8 @@
   flex: 100;
 }
 
+.table-hover tbody tr:hover {
+  background-color: orange;
+}
+
 /*# sourceMappingURL=app.css.map */
