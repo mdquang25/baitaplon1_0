@@ -9,20 +9,22 @@ const bcrypt = require('bcryptjs');
 class SiteController {
     index(req, res, next) {
         Category.find({})
-            .then(categories => {
-                const objs = multiMongooseToObjs(categories);
-                objs.forEach(category => {
-                    Type.find({ categoryId: category._id })
+            .then(docs => {
+                const objs = multiMongooseToObjs(docs);
+                const categories = objs.map(category => {
+                    return Type.find({ categoryId: category._id })
                         .then(types => {
                             const tps = multiMongooseToObjs(types);
                             category.types = tps;
-                        })
-                        .catch(next);
+                            return category;
+                        });
                 });
-                Product.find({})
-                    .then(products => {
-                        res.render('customer/home', { pageTitle: 'Trang chủ', isLoggedin: req.session.isLoggedin, user: req.session.user, categories: objs, products: multiMongooseToObjs(products) });
-                    }).catch(next);
+                Promise.all(categories).then(categories => {
+                    Product.find({})
+                        .then(products => {
+                            res.render('customer/home', { pageTitle: 'Trang chủ', isLoggedin: req.session.isLoggedin, user: req.session.user, categories, products: multiMongooseToObjs(products) });
+                        }).catch(next);
+                }).catch(next);
             }).catch(next);
     }
 

@@ -2,8 +2,8 @@
     <b class="col-2">{{employees.length}} <span class="mobile-hidden">nhân viên</span></b>
     <h2 class="col-8 text-center"><span class="mobile-hidden">Danh sách</span> Nhân viên</h2>
     <div class="col-2 d-flex justify-content-end align-middle">
-        <a href="/admin/kho/sanpham/them" class="btn btn-success d-flex align-items-center"><i
-                class="fa fa-regular fa-plus mobile-hidden"></i>Thêm <span class="mobile-hidden">nhân viên</span></a>
+        <a href="/admin/taikhoan-nhanvien/them" class="btn btn-success d-flex align-items-center"><i
+                class="fa fa-regular fa-plus mobile-hidden"></i>Thêm</span></a>
     </div>
 </div>
 <table class="table text-center">
@@ -11,12 +11,9 @@
         <tr>
             <th scope="col" class="table-header to-be-hidden">STT</th>
             <th scope="col" class="table-header">Tên nhân viên</th>
-            <th scope="col" class="table-header mobile-hidden">Đơn giá</th>
-            <th scope="col" class="table-header mobile-hidden">Số lượng</th>
-            <th scope="col" class="table-header to-be-hidden">Đã bán</th>
-            <th scope="col" class="table-header">Ảnh</th>
-            <th scope="col" class="table-header to-be-hidden">Mô tả</th>
-            <th scope="col"></th>
+            <th scope="col" class="table-header">Ngày sinh</th>
+            <th scope="col" class="table-header to-be-hidden">Số điện thoại</th>
+            <th scope="col" class="table-header to-be-hidden">Địa chỉ</th>
             <th scope="col"></th>
         </tr>
     </thead>
@@ -25,21 +22,15 @@
         <tr>
             <th onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" scope="row" class="to-be-hidden">{{sum @index 1}}</th>
             <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')"> {{this.name}}</td>
-            <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" class="mobile-hidden">
-                <div class="price-label outline-label">{{this.price}}</div>
-            </td>
-            <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" class="mobile-hidden">
-                <div class="outline-label">{{this.stock}}</div>
+            <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')">
+                <div class="price-label outline-label">{{this.dateOfBirth}}</div>
             </td>
             <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" class="to-be-hidden">
-                <div class="outline-label">{{subtract this.count this.stock}}</div>
-            </td>
-            <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')"> <img class="product-thumnail" src="{{valueAt this.imagesUrls this.mainImageIndex}}" alt="Ảnh sản phẩm">
+                <div class="outline-label">{{this.phoneNumber}}</div>
             </td>
             <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" class="to-be-hidden">
-                <p class="product-management_description">{{this.description}}</p>
+                <p class="product-management_description">{{this.address}}</p>
             </td>
-            <td><a href="/admin/kho/sanpham/{{this.slug}}/sua" class="btn btn-info">Sửa</a></td>
             <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"
                     data-delete-id="{{this._id}}" data-product-name="{{this.name}}">Xóa</button>
             </td>
@@ -90,13 +81,7 @@
         deleteId.value = productId;
         deleteForm.submit();
     });
-    const prices = document.querySelectorAll('div[class="price-label outline-label"]');
-
-    prices.forEach(function (price) {
-        const number = parseFloat(price.innerHTML);
-        price.innerHTML = number.toLocaleString('vi-VN') + 'đ';
-    })
-
+  
     function navigateTo(url) {
             window.location.href = url;
     }

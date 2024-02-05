@@ -8,8 +8,8 @@ class EmployeeAccountsManagementController {
         Admin.find({})
             .then(docs => {
                 const accounts = multiMongooseToObjs(docs);
-                res.render('admin/employees-account/accounts', {pageTitle: 'Tài khoản nhân viên', layout: 'admin', accounts})
-        })
+                res.render('admin/employees-account/accounts', { pageTitle: 'Tài khoản nhân viên', layout: 'admin', accounts })
+            })
     }
 }
 

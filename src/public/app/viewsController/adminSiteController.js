@@ -12,43 +12,53 @@ class adminSiteController {
         if (req.session.manager)
             res.redirect('/admin');
         else
-        res.render('admin/admin-login', { pageTitle: 'Admin đăng nhập', layout: 'no-header-footer' })
+            res.render('admin/admin-login', { pageTitle: 'Admin đăng nhập', layout: 'no-header-footer' })
     }
 
     //[POST] /admin/login
     checkLogin(req, res, next) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            console.log('validation error');
         }
-        Admin.findOne({ username: req.body.username })
-            .then((admin) => {
-                if (!admin) {
-                    console.log('admin not found');
-                    res.render('admin/admin-login', { pageTitle: 'Admin đăng nhập', layout: 'no-header-footer', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body });
-                    return;
+        const checkPassword = (admin) => {
+            bcrypt.compare(req.body.password, admin.password, function (err, isMatch) {
+                if (err) {
+                    console.error('password err');
+                    return res.status(400).json({ errors: errors.array() });
                 }
-                bcrypt.compare(req.body.password, admin.password, function (err, isMatch) {
-                    if (err) {
-                        console.error(err);
-                        return res.status(400).json({ errors: errors.array() });
-                    }
-                    if (isMatch) {
-                        req.session.manager = {
-                            id: admin._id,
-                            username: admin.username,
-                            fullName: admin.fullName,
-                        };
-                        req.session.isAdmin = admin.isAdmin;
-                        res.redirect('/admin');
-                    } else {
-                        console.log('Invalid admin password');
-                        res.render('admin/admin-login', { pageTitle: 'Admin đăng nhập', layout: 'no-header-footer', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body })
-                    }
-                });
-            })
-            .catch(next);
+                if (isMatch) {
+                    req.session.manager = {
+                        id: admin._id,
+                        fullName: admin.fullName,
+                    };
+                    req.session.isAdmin = admin.isAdmin;
+                    res.redirect('/admin');
+                } else {
+                    console.log('Invalid admin password');
+                    res.render('admin/admin-login', { pageTitle: 'Admin đăng nhập', layout: 'no-header-footer', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body });
+                }
+            });
+        }
+        Admin.findById(req.body.username)
+            .then(admin => {
+                console.log('1');
+                if (admin)
+                    checkPassword(admin);
+            }).catch(() => {
+                console.log('2');
+                Admin.findOne({ phoneNumber: req.body.username })
+                    .then(admin => {
+                        console.log('3');
+                        if (admin) {
+                            checkPassword(admin);
+                        }
+                        else
+                            res.render('admin/admin-login', { pageTitle: 'Admin đăng nhập', layout: 'no-header-footer', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body });
+                    }).catch(next);
+            });
     }
+
 
     //[POST] /admin/dangxuat
     logout(req, res) {
@@ -56,7 +66,7 @@ class adminSiteController {
         res.redirect('/admin/dangnhap');
     }
 
-    
+
 }
 
 module.exports = new adminSiteController;

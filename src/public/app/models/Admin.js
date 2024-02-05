@@ -3,9 +3,10 @@ const PhoneNumber = require('libphonenumber-js');
 
 const Admin = new mongoose.Schema(
     {
-        username: { type: String, require: true,},
-        password: { type: String, require: true,},
+        password: { type: String, require: true, },
+        initPassword: { type: String, },
         fullName: { type: String, default: function () { return this.username; } },
+        dateOfBirth: { type: Date, },
         phoneNumber: {
             type: String,
             validate: {
@@ -17,7 +18,7 @@ const Admin = new mongoose.Schema(
             }
         },
         address: { type: String, },
-        isAdmin: {type: Boolean, },
+        isAdmin: { type: Boolean, },
     },
     {
         timestamps: true,
