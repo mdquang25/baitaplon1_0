@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
-const port = process.env.port || 8080;
+const host = process.env.HOST || '0.0.0.0';
+const port = process.env.PORT || 3000;
 const handlebar = require('express-handlebars');
 const path = require('path');
 const methodOverride = require('method-override');
@@ -46,13 +47,6 @@ app.set('view engine', 'hbs');
 db.connect();
 router(app);
 
-app.listen(
-    { port: port, host: "104.196.232.237" }, 
-    function (err, address) {
-        if (err) {
-            console.error(err);
-            process.exit(1);
-        }
-        console.log(`Your app is listening on ${address}`);
-    }
-);
+app.listen(port, host, () => {
+    console.log(`Your app is listening on ${host}:${port}`);
+});
