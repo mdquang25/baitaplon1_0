@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = process.env.port || 3000;
 const handlebar = require('express-handlebars');
 const path = require('path');
 const methodOverride = require('method-override');
@@ -46,4 +46,13 @@ app.set('view engine', 'hbs');
 db.connect();
 router(app);
 
-app.listen(port, console.log('Listening to http://127.0.0.1:' + port));
+app.listen(
+    { port: port, host: "104.196.232.237" }, 
+    function (err, address) {
+        if (err) {
+            console.error(err);
+            process.exit(1);
+        }
+        console.log(`Your app is listening on ${address}`);
+    }
+);
