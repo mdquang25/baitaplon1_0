@@ -4,7 +4,7 @@ const port = 3000;
 const handlebar = require('express-handlebars');
 const path = require('path');
 const methodOverride = require('method-override');
-const session = require('express-session');
+const session = require('./config/mongodb-session');
 const cookieParser = require('cookie-parser');
 
 
@@ -25,15 +25,7 @@ app.use(methodOverride(function (req, res) {
     }
 }))
 app.use(cookieParser());
-app.use(session({
-    secret: 'gTTFVAzZSl6im$O',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: false, // Set to 'true' if using HTTPS
-        maxAge: 7 * 24 * 60 * 60 * 1000, // Cookie expiration time in milliseconds 7days
-    },
-}));
+app.use(session);
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
