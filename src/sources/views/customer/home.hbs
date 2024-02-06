@@ -40,7 +40,8 @@
 
 <div class="d-flex m-4 justify-content-center flex-wrap">
     {{#each categories}}
-    <select class="form-select mb-2 flex-flow-1 mx-2" style="width: fit-content; background-color: rgb(255, 223, 245)" name="typesId[]">
+    <select class="form-select mb-2 flex-flow-1 mx-2" style="width: fit-content; background-color: rgb(255, 223, 245)"
+        name="typesId[]">
         <option value="">--{{this.name}}--</option>
         {{#each this.types}}
         <option value="{{this._id}}">{{this.name}}</option>
@@ -53,12 +54,14 @@
     {{#each products}}
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 p-0 mb-1 mb-sm-0  d-flex justify-content-center">
         <div data-name="cards" class="card product-card mb-1" style="height: 24rem; width: 13rem; max-width:inherit;">
-            <img src="{{valueAt this.imagesUrls this.mainImageIndex}}" class="card-img-top card-image object-fit-cover" alt="{{this.name}}">
+            <img src="{{valueAt this.imagesUrls this.mainImageIndex}}" class="card-img-top card-image object-fit-cover"
+                alt="{{this.name}}">
             <div class="card-body">
                 <h6 class="card-title">{{this.name}}</h6>
-                <span class="old-price-label" data-onsale="{{this.onSale}}">{{this.oldPrice}}</span><span class="old-price-label price-label-ending">đ</span><br>
+                <span class="old-price-label" data-onsale="{{this.onSale}}">{{this.oldPrice}}</span><span
+                    class="old-price-label price-label-ending">đ</span><br>
                 <span class="price-label">{{this.price}}</span><span class="price-label price-label-ending">đ</span><br>
-               
+
             </div>
         </div>
     </div>
@@ -69,23 +72,25 @@
     const oldPrices = document.querySelectorAll('span[class="old-price-label"]');
     const cards = document.querySelectorAll('div[data-name="cards"]');
 
-    cards.forEach(card =>{
-        card.addEventListener('touchstart', function(e){
+    cards.forEach(card => {
+        card.addEventListener('touchstart', function (e) {
             this.classList.add('touched');
         });
-        card.addEventListener('touchend', function(e){
-           this.classList.remove('touched');
+        card.addEventListener('touchend', function (e) {
+            this.classList.remove('touched');
         });
     })
-    oldPrices.forEach(function(oldPrice){
+    oldPrices.forEach(function (oldPrice) {
         const onSale = oldPrice.getAttribute('data-onsale');
         console.log(onSale);
-        if(onSale){
-        const number = parseFloat(oldPrice.innerHTML);
-        oldPrice.innerHTML = number.toLocaleString('vi-VN');
+        if (onSale === 'true') {
+            const number = parseFloat(oldPrice.innerHTML);
+            oldPrice.innerHTML = number.toLocaleString('vi-VN');
         }
-        else
+        else {
             oldPrice.setAttribute('hidden', 'true');
+            oldPrice.nextElementSibling.setAttribute('hidden', 'true');
+        }
     })
     prices.forEach(function (price) {
         const number = parseFloat(price.innerHTML);

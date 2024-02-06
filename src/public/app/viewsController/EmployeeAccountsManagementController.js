@@ -11,6 +11,11 @@ class EmployeeAccountsManagementController {
                 res.render('admin/employees-account/accounts', { pageTitle: 'Tài khoản nhân viên', layout: 'admin', accounts })
             })
     }
+
+    //[GET] /admin/taikhoan-nhanvien/add
+    add(req, res) {
+        res.render('admin/employees-account/add', { pageTitle: 'Thêm tài khoản nhân viên', layout: 'admin' })
+    }
 }
 
 module.exports = new EmployeeAccountsManagementController;

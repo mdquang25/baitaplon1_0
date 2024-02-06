@@ -4,6 +4,7 @@ const employeeAccountsManagementController = require('../../public/app/viewsCont
 const requireAdminLogin = require('../middleware/requireAdminLogin');
 
 
+router.get('/them', requireAdminLogin, employeeAccountsManagementController.add);
 router.get('/', requireAdminLogin, employeeAccountsManagementController.accounts);
 
 module.exports = router;
