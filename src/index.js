@@ -25,6 +25,7 @@ app.use(methodOverride(function (req, res) {
         return method
     }
 }))
+
 app.use(cookieParser());
 app.use(session);
 
@@ -47,6 +48,11 @@ app.set('view engine', 'hbs');
 db.connect();
 router(app);
 
-app.listen(port, host, () => {
-    console.log(`Your app is listening on ${host}:${port}`);
-});
+app.listen({ port, host },
+    function (err, address) {
+        if (err) {
+            console.error(err);
+            process.exit(1);
+        }
+        console.log(`Your app is listening on ${address}`);
+    });

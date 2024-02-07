@@ -13,26 +13,42 @@
             <th scope="col" class="table-header">Tên nhân viên</th>
             <th scope="col" class="table-header">Ngày sinh</th>
             <th scope="col" class="table-header to-be-hidden">Số điện thoại</th>
+            <th scope="col" class="table-header to-be-hidden">Init password</th>
             <th scope="col" class="table-header to-be-hidden">Địa chỉ</th>
             <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
-        {{#each products}}
+        {{#each accounts}}
         <tr>
-            <th onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" scope="row" class="to-be-hidden">{{sum @index 1}}</th>
-            <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')"> {{this.name}}</td>
-            <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')">
+            <th scope="row" class="to-be-hidden">{{sum @index 1}}</th>
+            <td> {{this.fullName}}</td>
+            <td>
                 <div class="price-label outline-label">{{this.dateOfBirth}}</div>
             </td>
-            <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" class="to-be-hidden">
+            <td class="to-be-hidden">
                 <div class="outline-label">{{this.phoneNumber}}</div>
             </td>
-            <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" class="to-be-hidden">
+            <td class="to-be-hidden">
+                <p class="d-inline-flex gap-1">
+                    <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#collapseExample" role="button"
+                        aria-expanded="false" aria-controls="collapseExample">
+                        {{this.fullName}}
+                    </a>
+                </p>
+                <div class="collapse" id="collapseExample">
+                    <div class="card card-body">
+                        <div class="outline-label">{{this.fullName}}</div>
+                        <div class="outline-label">{{this._id}}</div>
+                        <div class="outline-label">{{this.initPassword}}</div>
+                    </div>
+                </div>
+            </td>
+            <td class="to-be-hidden">
                 <p class="product-management_description">{{this.address}}</p>
             </td>
             <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"
-                    data-delete-id="{{this._id}}" data-product-name="{{this.name}}">Xóa</button>
+                    data-delete-id="{{this._id}}" data-full-name="{{this.fullName}}">Xóa</button>
             </td>
         </tr>
         {{/each}}
@@ -56,33 +72,35 @@
     </div>
 </div>
 
-<form id="delete-form" action="/admin/kho/sanpham/xoa" method="post" style="display: none;"
+<form id="delete-form" action="/admin/taikhoan-nhanvien/xoa" method="post" style="display: none;"
     enctype="application/x-www-form-urlencoded">
     <input name="_method" value="PATCH">
     <input type="text" name="deleteId" id="delete-id">
 </form>
 
 <script>
-    var productId;
+    var accountId;
     const deleteForm = document.getElementById('delete-form');
     const deleteId = document.getElementById('delete-id');
     const deleteBtn = document.getElementById('delete-btn');
     const deleteModal = document.getElementById('confirmDeleteModal');
 
+
+
     if (deleteModal) {
         deleteModal.addEventListener('show.bs.modal', event => {
             const button = event.relatedTarget;
             const modalBody = document.getElementById('modal-body');
-            modalBody.innerHTML = 'Bạn chắc chắn muốn xóa "' + button.getAttribute('data-product-name') + '"?';
-            productId = button.getAttribute('data-delete-id');
+            modalBody.innerHTML = 'Bạn chắc chắn muốn xóa "' + button.getAttribute('data-full-name') + '"?';
+            accountId = button.getAttribute('data-delete-id');
         });
     }
     deleteBtn.addEventListener('click', function (event) {
-        deleteId.value = productId;
+        deleteId.value = accountId;
         deleteForm.submit();
     });
-  
+
     function navigateTo(url) {
-            window.location.href = url;
+        window.location.href = url;
     }
 </script>

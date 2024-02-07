@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const PhoneNumber = require('libphonenumber-js');
+const softDelete = require('mongoosejs-soft-delete');
 
 const Admin = new mongoose.Schema(
     {
@@ -34,5 +35,7 @@ Admin.pre('save', function (next) {
     }
     next();
 });
+
+Admin.plugin(softDelete);
 
 module.exports = mongoose.model('Admin', Admin);
