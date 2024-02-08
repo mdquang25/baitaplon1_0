@@ -2,9 +2,9 @@
 <form action="/dangnhap" method="post" class="floating-label vstack gap-2 col-md-5 mx-auto">
 <h1 id="sign-label">Đăng nhập</h1>
     <div class="row align-items-center form-floating mb-3">
-        <input type="text" autocomplete="username" name="username" class="form-control" id="floatingInput"
+        <input type="tel" autocomplete="tel" name="phoneNumber" class="form-control" id="phoneNumber"
             placeholder="Tên đăng nhập" value="{{preInput.username}}" required>
-        <label for="floatingInput">Tên đăng nhập</label>
+        <label for="phoneNumber">Số điện thoại</label>
     </div>
     <div class="row align-items-center form-floating mb-3">
         <input type="password" autocomplete="current-password" name="password" class="form-control psition-relative"

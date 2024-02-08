@@ -49,16 +49,17 @@ class adminSiteController {
             }).catch(() => {
                 Admin.findOne({ phoneNumber: req.body.username })
                     .then(admin => {
-                        console.log('3');
                         if (admin)
+                        {
+                            console.log('3');
                             checkPassword(admin);
+                        }
                         else
                             res.render('admin/admin-login', { pageTitle: 'Admin đăng nhập', layout: 'no-header-footer', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body });
                     }).catch(next);
             });
     }
-
-
+    
     //[POST] /admin/dangxuat
     logout(req, res) {
         req.session.destroy();

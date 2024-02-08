@@ -4,15 +4,17 @@ const PhoneNumber = require('libphonenumber-js');
 
 const Customer = new mongoose.Schema(
     {
-        password: { type: String, require: true,},
+        password: { type: String, require: true, },
         fullName: { type: String, default: function () { return this.username; } },
         phoneNumber: {
             type: String,
             validate: {
-                validator: (value) => PhoneNumber.isValid(value, 'VN'),
+                validator: (value) => {
+                    const parsedNumber = PhoneNumber.parsePhoneNumberFromString(value, 'VN');
+                    return parsedNumber && parsedNumber.isValid();
+                },
                 message: 'Invalid phone number'
-            },
-            set: (value) => PhoneNumber.parsePhoneNumberFromString(value, 'VN').format('E.164')
+            }
         },
         address: { type: String, },
     },

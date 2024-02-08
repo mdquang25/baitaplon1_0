@@ -1,10 +1,10 @@
 <h1 id="brand-name-label">Việt Tuấn Trung</h1>
 <form action="/dangky" method="post" class="floating-label vstack gap-2 col-md-5 mx-auto">
-<h1 id="sign-label">Đăng ký thành viên</h1>
+    <h1 id="sign-label">Đăng ký thành viên</h1>
     <div class="row align-items-center form-floating mb-3">
-        <input type="text" name="username" class="form-control" id="floatingInput" placeholder="Tên Đăng nhập"
-            autocomplete="username" required>
-        <label for="floatingInput">Tên đăng nhập</label>
+        <input type="tel" name="phoneNumber" id="phoneNumber" autocomplete="tel" class="form-control"
+            value="{{account.phoneNumber}}" placeholder="Nhập số điện thoại.." pattern="[0-9]{10}" required>
+        <label for="phoneNumber">Số điện thoại</label>
     </div>
     <div class="row align-items-center form-floating mb-3">
         <input type="password" name="password" class="form-control position-relative" id="floatingPassword"
@@ -27,7 +27,8 @@
         </div>
     </div>
     <div class="form-check d-flex align-items-center">
-        <input class="form-check-input me-2" style=" border-color: blue" type="checkbox" value="đồng ý" required id="confirm-rules">
+        <input class="form-check-input me-2" style=" border-color: blue" type="checkbox" value="đồng ý" required
+            id="confirm-rules">
         <label class="form-check-label" for="confirm-rules">
             Tôi đồng ý với các <a href="#">điều khoản và điều kiện</a> khi đăng ký và sử dụng tài khoản
         </label>
@@ -37,7 +38,7 @@
 </form>
 <script>
     const form = document.querySelector('form');
-    const usernameInput = document.querySelector('input[name="username"]');
+    const phoneNumberInput = document.querySelector('input[name="phoneNumber"]');
     const password1 = document.querySelector('input[name="password"]');
     const password2 = document.querySelector('input[name="password2"]');
     const errorLabel = document.getElementById('error-message');
@@ -46,7 +47,7 @@
 
     togglePasswordButton1.addEventListener('click', togglePassword);
     togglePasswordButton2.addEventListener('click', togglePassword);
-     function togglePassword() {
+    function togglePassword() {
         const type = this.previousElementSibling.getAttribute('type') === 'password' ? 'text' : 'password';
         this.previousElementSibling.setAttribute('type', type);
         this.querySelector('i').classList.toggle('fa-eye');
@@ -66,7 +67,7 @@
     function validateForm() {
         let isValid = true;
 
-        if (!usernameInput.value) {
+        if (!phoneNumberInput.value) {
             errorLabel.innerHTML = 'nhập tên đăng nhập!';
             isValid = false;
         }

@@ -42,7 +42,7 @@ class SiteController {
             // Handle validation errors, such as sending an error response
             return res.status(400).json({ errors: errors.array() });
         }
-        Customer.findOne({ username: req.body.username })
+        Customer.findOne({ phoneNumber: req.body.phoneNumber })
             .then((customer) => {
                 if (!customer) {
                     console.log('User not found');
