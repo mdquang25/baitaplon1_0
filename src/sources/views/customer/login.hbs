@@ -1,16 +1,16 @@
 <h1 id="brand-name-label">Việt Tuấn Trung</h1>
 <form action="/dangnhap" method="post" class="floating-label vstack gap-2 col-md-5 mx-auto">
-<h1 id="sign-label">Đăng nhập</h1>
+    <h1 id="sign-label">Đăng nhập</h1>
     <div class="row align-items-center form-floating mb-3">
         <input type="tel" autocomplete="tel" name="phoneNumber" class="form-control" id="phoneNumber"
-            placeholder="Tên đăng nhập" value="{{preInput.username}}" required>
+            placeholder="Tên đăng nhập" value="{{preInput.phoneNumber}}" required>
         <label for="phoneNumber">Số điện thoại</label>
     </div>
     <div class="row align-items-center form-floating mb-3">
         <input type="password" autocomplete="current-password" name="password" class="form-control psition-relative"
             id="floatingPassword" placeholder="Mật khẩu" value="{{preInput.password}}" required>
-        <button class=" position-absolute top-50 end-0 translate-middle-y eye-icon-btn"
-            type="button" id="togglePasswordButton">
+        <button class=" position-absolute top-50 end-0 translate-middle-y eye-icon-btn" type="button"
+            id="togglePasswordButton">
             <i class="fa-regular fa-eye-slash"></i>
         </button>
         <label for="floatingPassword">Mật khẩu</label>
@@ -18,16 +18,19 @@
             {{error}}
         </div>
     </div>
-    <button type="submit" class="btn btn-primary p-3">Đăng nhập</button>
+    <button id="submit-btn" type="submit" class="btn btn-primary p-3">Đăng nhập</button>
     <a class="no-decor-link" href="/dangky">Đăng ký tài khoản</a>
 </form>
 
 <script>
     const form = document.querySelector('form');
-    const username = document.querySelector('input[name="username"]');
+    const phoneNumber = document.querySelector('input[name="phoneNumber"]');
     const password = document.querySelector('input[name="password"]');
     const errorLabel = document.getElementById('error-message');
     const togglePasswordButton = document.getElementById('togglePasswordButton');
+
+
+    
 
     togglePasswordButton.addEventListener('click', function () {
         const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -37,10 +40,10 @@
     });
 
     form.addEventListener('submit', (event) => {
+        console.log('1.1');
         event.preventDefault();
 
         if (validateForm()) {
-            // Submit the form or perform further actions
             form.submit();
         }
     });

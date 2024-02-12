@@ -2,7 +2,7 @@ const Customer = require('../models/Customer');
 const Category = require('../models/ProductCategory');
 const Type = require('../models/ProductType');
 const Product = require('../models/Product');
-const {multiMongooseToObjs, mongooseToObj} = require('../../../util/mongoose')
+const { multiMongooseToObjs, mongooseToObj } = require('../../../util/mongoose')
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 
@@ -31,8 +31,9 @@ class SiteController {
     login(req, res) {
         if (req.session.isLoggedin)
             res.redirect('/');
-        else
+        else {
             res.render('customer/login', { pageTitle: 'Đăng nhập', layout: 'no-header', });
+        }
     }
 
     //[POST] /dangnhap
@@ -107,13 +108,13 @@ class SiteController {
     }
 
     //[POST] /dangxuat
-    logout(req, res){
+    logout(req, res) {
         req.session.destroy();
         res.redirect('/');
     }
 
     notFound(req, res) {
-        res.render('not-found', {pageTitle: 'Không tìm thấy trang', layout: 'no-header-footer',});
+        res.render('not-found', { pageTitle: 'Không tìm thấy trang', layout: 'no-header-footer', });
     }
 }
 

@@ -9,36 +9,34 @@ class EmployeeAccountsManagementController {
         Admin.find({ isAdmin: { $ne: 'true' } })
             .then(docs => {
                 const accounts = multiMongooseToObjs(docs);
-                res.render('admin/employees-account/accounts', { pageTitle: 'Tài khoản nhân viên', layout: 'admin', accounts })
+                res.render('admin/employees-account/accounts', { pageTitle: 'Tài khoản nhân viên', layout: 'admin', accounts, isAdmin: req.session.isAdmin, })
             })
     }
 
     //[GET] /admin/taikhoan-nhanvien/them
     add(req, res) {
-        res.render('admin/employees-account/add', { pageTitle: 'Thêm tài khoản nhân viên', layout: 'admin' })
+        res.render('admin/employees-account/add', { pageTitle: 'Thêm tài khoản nhân viên', layout: 'admin', isAdmin: req.session.isAdmin, })
     }
 
     //[POST] /admin/taikhoan-nhanvien/them
-    saveNewAccount(req, res) {
+    async saveNewAccount(req, res) {
+    try {
         const employee = new Admin(req.body);
         const initPassword = generateShortPassword(6);
-        bcrypt.genSalt(10, function (err, salt) {
-            if (err) {
-                console.error(err);
-                return res.status(400).json({ errors: errors.array() });
-            }
-            bcrypt.hash(initPassword, salt, function (err, hash) {
-                if (err) {
-                    console.error(err);
-                    return res.status(400).json({ errors: errors.array() });
-                }
-                employee.initPassword = hash;
-            });
-        });
-        employee.save().then(() => {
-            res.redirect('/admin/taikhoan-nhanvien');
-        })
+        employee.initPassword = initPassword;
+
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(initPassword, salt);
+        employee.password = hash;
+
+        await employee.save();
+        res.redirect('/admin/taikhoan-nhanvien');
+    } catch (error) {
+        console.error(error);
+        return res.status(400).json({ errors: errors.array() });
     }
+}
+
     //[PATCH] /admin/taikhoan-nhanvien/xoa
     deleteAccount(req, res) {
         Admin.findByIdAndDelete(req.body.deleteId).then(() => {

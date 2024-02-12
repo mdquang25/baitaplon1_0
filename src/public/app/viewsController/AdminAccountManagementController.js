@@ -11,14 +11,14 @@ class AdminAcountManagementController {
                     phoneNumber: user.phoneNumber,
                     address: user.address,
                 }
-                res.render('admin/account/info', { pageTitle: 'Tài khoản của tôi', layout: 'admin', account, manager: req.session.manager, })
+                res.render('admin/account/info', { pageTitle: 'Tài khoản của tôi', layout: 'admin', account, isAdmin: req.session.isAdmin, })
             }).catch(next);
     }
 
     modify(req, res, next) {
         Admin.findById(req.session.manager.id)
             .then((user) => {
-                res.render('admin/account/modify-profile', { pageTitle: 'Sửa tài khoản của tôi', layout: 'admin', account: mongooseToObj(user), manager: req.session.manager, })
+                res.render('admin/account/modify-profile', { pageTitle: 'Sửa tài khoản của tôi', layout: 'admin', account: mongooseToObj(user), account, isAdmin: req.session.isAdmin, })
             }).catch(next);
     }
 
@@ -36,7 +36,7 @@ class AdminAcountManagementController {
     }
 
     changePassword(req, res, next) {
-        res.render('admin/account/change-password', { pageTitle: 'Đổi mật khẩu', layout: 'no-header-footer', user: req.session.manager, });
+        res.render('admin/account/change-password', { pageTitle: 'Đổi mật khẩu', layout: 'no-header-footer', isAdmin: req.session.isAdmin, });
     }
 
     //[PATCH] /admin/taikhoancuatoi/doimatkhau

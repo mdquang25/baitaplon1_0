@@ -7,6 +7,7 @@ const path = require('path');
 const methodOverride = require('method-override');
 const session = require('./config/mongodb-session');
 const cookieParser = require('cookie-parser');
+const storage = require('./config/firebaseStorage');
 
 
 const db = require('./config/db');

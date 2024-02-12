@@ -1,5 +1,5 @@
 <div class="d-flex mgx-2 mt-4">
-    <b class="col-2">{{employees.length}} <span class="mobile-hidden">nhân viên</span></b>
+    <b class="col-2">{{accounts.length}} <span class="mobile-hidden">nhân viên</span></b>
     <h2 class="col-8 text-center"><span class="mobile-hidden">Danh sách</span> Nhân viên</h2>
     <div class="col-2 d-flex justify-content-end align-middle">
         <a href="/admin/taikhoan-nhanvien/them" class="btn btn-success d-flex align-items-center"><i
@@ -12,8 +12,6 @@
             <th scope="col" class="table-header to-be-hidden">STT</th>
             <th scope="col" class="table-header">Tên nhân viên</th>
             <th scope="col" class="table-header">Ngày sinh</th>
-            <th scope="col" class="table-header to-be-hidden">Số điện thoại</th>
-            <th scope="col" class="table-header to-be-hidden">Init password</th>
             <th scope="col" class="table-header to-be-hidden">Địa chỉ</th>
             <th scope="col"></th>
         </tr>
@@ -22,30 +20,22 @@
         {{#each accounts}}
         <tr>
             <th scope="row" class="to-be-hidden">{{sum @index 1}}</th>
-            <td> {{this.fullName}}</td>
+            <td>
+                <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#{{this._id}}" role="button"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    {{this.fullName}}
+                </a>
+                <div class="collapse" style="width: auto;" id="{{this._id}}">
+                    <div>id: <span class="outline-label">{{this._id}}</span></div>
+                    <div>Số điện thoại: <span class="outline-label">{{this.phoneNumber}}</span></div>
+                    <div>Mật khẩu: <span class="outline-label">{{this.initPassword}}</span></div>
+                </div>
+            </td>
             <td>
                 <div class="price-label outline-label">{{this.dateOfBirth}}</div>
             </td>
             <td class="to-be-hidden">
-                <div class="outline-label">{{this.phoneNumber}}</div>
-            </td>
-            <td class="to-be-hidden">
-                <p class="d-inline-flex gap-1">
-                    <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#collapseExample" role="button"
-                        aria-expanded="false" aria-controls="collapseExample">
-                        {{this.fullName}}
-                    </a>
-                </p>
-                <div class="collapse" id="collapseExample">
-                    <div class="card card-body">
-                        <div class="outline-label">{{this.fullName}}</div>
-                        <div class="outline-label">{{this._id}}</div>
-                        <div class="outline-label">{{this.initPassword}}</div>
-                    </div>
-                </div>
-            </td>
-            <td class="to-be-hidden">
-                <p class="product-management_description">{{this.address}}</p>
+                <p class="management_description">{{this.description}}</p>
             </td>
             <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"
                     data-delete-id="{{this._id}}" data-full-name="{{this.fullName}}">Xóa</button>

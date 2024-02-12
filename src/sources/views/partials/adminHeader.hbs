@@ -38,7 +38,7 @@
                 </li>
             </ul>
         </div>
-
+        <input id="isAdmin" type="text" value="{{isAdmin}}" hidden>
         <div class="offcanvas offcanvas-end text-bg-dark offcanvas-custom" tabindex="-1" id="offcanvasResponsive">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" style="align-self:flex-start">VIỆT TUẤN TRUNG</h5>
@@ -47,7 +47,7 @@
             </div>
             <div class="offcanvas-body offcanvas-body-responsive">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
+                    <li class="nav-item admin-item">
                         <a class="nav-link" href="/admin/taikhoan-nhanvien">Tài khoản nhân viên</a>
                     </li>
                     <li class="nav-item">
@@ -71,9 +71,6 @@
     </div>
 </nav>
 
-<div id="isLoggedin" class="d-none">{{isLoggedin}}</div>
-
-
 <!-- Modal -->
 <div class="modal fade" id="logout-alert" tabindex="-1" aria-labelledby="signoutModal" aria-hidden="true">
     <div class="modal-dialog">
@@ -95,11 +92,18 @@
     </div>
 </div>
 <script>
-    const isLoggedin = document.getElementById('isLoggedin').innerHTML;
+    const isAdmin = document.getElementById('isAdmin').value;
+    const adminItems = [...document.getElementsByClassName('admin-item')];
     const myAccountDropdown = document.getElementById('my-account-dropdown');
     const logoutAlert = document.getElementById('logout-alert');
     const logoutBtn = document.getElementById('logout-btn');
 
+console.log('isadmin: ', isAdmin);
+    if(isAdmin !== 'true'){
+        adminItems.forEach(item =>{
+            item.setAttribute('hidden', 'true');
+        })
+    }
     logoutAlert.addEventListener('shown.bs.modal', () => {
         logoutBtn.focus();
     })

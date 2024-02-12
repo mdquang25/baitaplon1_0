@@ -131,4 +131,5 @@ dist
 .pnp.*
 =======
 node_modules
->>>>>>> 88283fa (remove node_modules/* from pushing up)
+node_modules/*
+src/public/uploads/*
