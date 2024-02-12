@@ -18,7 +18,9 @@ class AdminAcountManagementController {
     modify(req, res, next) {
         Admin.findById(req.session.manager.id)
             .then((user) => {
-                res.render('admin/account/modify-profile', { pageTitle: 'Sửa tài khoản của tôi', layout: 'admin', account: mongooseToObj(user), account, isAdmin: req.session.isAdmin, })
+                const account = mongooseToObj(user);
+                account.password = null;
+                res.render('admin/account/modify-profile', { pageTitle: 'Sửa tài khoản của tôi', layout: 'admin', account, isAdmin: req.session.isAdmin, })
             }).catch(next);
     }
 
