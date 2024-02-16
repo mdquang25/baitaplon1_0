@@ -25,17 +25,23 @@
                     aria-expanded="false" aria-controls="collapseExample">
                     {{this.fullName}}
                 </a>
-                <div class="collapse" style="width: auto;" id="{{this._id}}">
-                    <div>id: <span class="outline-label">{{this._id}}</span></div>
-                    <div>Số điện thoại: <span class="outline-label">{{this.phoneNumber}}</span></div>
-                    <div>Mật khẩu: <span class="outline-label">{{this.initPassword}}</span></div>
+                <div class="collapse text-end" style="width: fit-content; margin: auto" id="{{this._id}}">
+                    <div>id: <span class="outline-label">{{this._id}}</span><button
+                            class="to-be-copy btn btn-warning p-0" data-value="{{this._id}}"><i
+                                class="fa-light fa-clipboard fa-lg px-1"></i></button></div>
+                    <div>Số điện thoại: <span class="outline-label">{{this.phoneNumber}}</span><button
+                            class="to-be-copy btn btn-warning p-0" data-value="{{this.phoneNumber}}"><i
+                                class="fa-light fa-clipboard fa-lg px-1"></i></button></div>
+                    <div>Mật khẩu: <span class="outline-label">{{this.initPassword}}</span><button
+                            class="to-be-copy btn btn-warning p-0" data-value="{{this.initPassword}}"><i
+                                class="fa-light fa-clipboard fa-lg px-1"></i></button></div>
                 </div>
             </td>
             <td>
                 <div class="price-label outline-label">{{this.dateOfBirth}}</div>
             </td>
             <td class="to-be-hidden">
-                <p class="management_description">{{this.description}}</p>
+                <p class="management_description">{{this.address}}</p>
             </td>
             <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"
                     data-delete-id="{{this._id}}" data-full-name="{{this.fullName}}">Xóa</button>
@@ -68,13 +74,32 @@
     <input type="text" name="deleteId" id="delete-id">
 </form>
 
+<!--toast=============================================-->
+<div id="copied-toast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+        <div class="toast-body">
+            Copied!
+        </div>
+    </div>
+</div>
+
+
 <script>
     var accountId;
     const deleteForm = document.getElementById('delete-form');
     const deleteId = document.getElementById('delete-id');
     const deleteBtn = document.getElementById('delete-btn');
     const deleteModal = document.getElementById('confirmDeleteModal');
+    const copyItems = document.querySelectorAll('.to-be-copy');
+    const copiedToastElement = document.getElementById('copied-toast');
+    const copiedToast = bootstrap.Toast.getOrCreateInstance(copiedToastElement);
 
+    copyItems.forEach(item => {
+        item.addEventListener('click', (item) => {
+            console.log('clicked');
+            copyToClipboard(item.currentTarget.getAttribute('data-value'));
+        });
+    })
 
 
     if (deleteModal) {
@@ -92,5 +117,16 @@
 
     function navigateTo(url) {
         window.location.href = url;
+    }
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                console.log('Text copied to clipboard');
+                copiedToast.show();
+            })
+            .catch((error) => {
+                console.error('Unable to copy text to clipboard:', error);
+            });
     }
 </script>

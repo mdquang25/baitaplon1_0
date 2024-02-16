@@ -243,3 +243,12 @@
 .table-hover tbody tr:hover {
     background-color: orange;
 }
+
+#copied-toast {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: fit-content;
+    margin: 0 auto;
+}

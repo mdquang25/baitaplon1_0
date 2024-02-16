@@ -53,7 +53,7 @@
 <div class="row">
     {{#each products}}
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 p-0 mb-1 mb-sm-0  d-flex justify-content-center">
-        <div data-name="cards" class="card product-card mb-1" style="height: 24rem; width: 13rem; max-width:inherit;">
+        <div onclick="navigateTo('/sanpham/{{this.slug}}/chitiet')" data-name="cards" class="card product-card mb-1" style="height: 24rem; width: 13rem; max-width:inherit;">
             <img src="{{valueAt this.imagesUrls this.mainImageIndex}}" class="card-img-top card-image object-fit-cover"
                 alt="{{this.name}}">
             <div class="card-body">
@@ -96,4 +96,8 @@
         const number = parseFloat(price.innerHTML);
         price.innerHTML = number.toLocaleString('vi-VN');
     })
+
+    function navigateTo(url) {
+            window.location.href = url;
+        }
 </script>

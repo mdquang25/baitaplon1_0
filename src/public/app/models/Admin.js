@@ -7,7 +7,7 @@ const Admin = new mongoose.Schema(
         password: { type: String, require: true, },
         initPassword: { type: String, },
         fullName: { type: String, default: function () { return this.username; } },
-        dateOfBirth: { type: Date, },
+        dateOfBirth: { type: String, },
         phoneNumber: {
             type: String,
             validate: {

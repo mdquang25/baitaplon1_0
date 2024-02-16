@@ -10,6 +10,7 @@ class AdminAcountManagementController {
                     fullName: user.fullName,
                     phoneNumber: user.phoneNumber,
                     address: user.address,
+                    dateOfBirth: user.dateOfBirth,
                 }
                 res.render('admin/account/info', { pageTitle: 'Tài khoản của tôi', layout: 'admin', account, isAdmin: req.session.isAdmin, })
             }).catch(next);
@@ -26,11 +27,13 @@ class AdminAcountManagementController {
 
     //[PATCH] /admin/taikhoancuatoi/sua
     saveModify(req, res, next) {
+        console.log(req.body.dateOfBirth);
         Admin.findById(req.session.manager.id)
             .then(account => {
                 account.fullName = req.body.fullName;
                 account.phoneNumber = req.body.phoneNumber;
                 account.address = req.body.address;
+                account.dateOfBirth = req.body.dateOfBirth;
                 account.save();
                 req.session.manager.fullName = account.fullName;
                 res.redirect('/admin/taikhoancuatoi/xem');
