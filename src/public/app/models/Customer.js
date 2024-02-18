@@ -6,6 +6,7 @@ const Customer = new mongoose.Schema(
     {
         password: { type: String, require: true, },
         fullName: { type: String, default: function () { return this.username; } },
+        dateOfBirth: { type: String, },
         phoneNumber: {
             type: String,
             validate: {
@@ -17,6 +18,7 @@ const Customer = new mongoose.Schema(
             }
         },
         address: { type: String, },
+        cartId: { type: String, },
     },
     {
         timestamps: true,

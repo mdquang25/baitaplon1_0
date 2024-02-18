@@ -3,8 +3,8 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 
 // Create a new MongoDBStore instance
 const store = new MongoDBStore({
-    //uri: 'mongodb://mongo:a5gA1F34E-bEcA-42AbEC2hDFHdba3Bh@viaduct.proxy.rlwy.net:58783',// 'mongodb+srv://mdquang25_mongodb:ENA7RghS0Q2yfL0J@cluster0.twexh1b.mongodb.net/baitaplon1_db_dev?retryWrites=true&w=majority',
-    uri: 'mongodb://mongo:a5gA1F34E-bEcA-42AbEC2hDFHdba3Bh@mongodb.railway.internal:27017',
+    //uri: 'mongodb://mongo:hEfAee3Cg-FeeD2HcafE45FDHFaaGB-d@monorail.proxy.rlwy.net:40488',// 'mongodb+srv://mdquang25_mongodb:ENA7RghS0Q2yfL0J@cluster0.twexh1b.mongodb.net/baitaplon1_db_dev?retryWrites=true&w=majority',
+    uri: 'mongodb://mongo:hEfAee3Cg-FeeD2HcafE45FDHFaaGB-d@mongodb-uhyx.railway.internal:27017',
     collection: 'sessions' // The collection where sessions will be stored
 });
 

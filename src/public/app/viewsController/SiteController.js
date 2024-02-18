@@ -2,6 +2,7 @@ const Customer = require('../models/Customer');
 const Category = require('../models/ProductCategory');
 const Type = require('../models/ProductType');
 const Product = require('../models/Product');
+const Cart = require('../models/Cart');
 const { multiMongooseToObjs, mongooseToObj } = require('../../../util/mongoose')
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
@@ -100,6 +101,9 @@ class SiteController {
                     return res.status(400).json({ errors: errors.array() });
                 }
                 req.body.password = hash;
+                const cart = new Cart();
+                cart.save();
+                req.body.cartId = cart._id;
                 const customer = new Customer(req.body);
                 customer.save();
             });

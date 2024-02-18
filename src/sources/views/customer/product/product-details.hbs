@@ -78,13 +78,13 @@
     }
 </style>
 <div class="row d-flex justify-content-center">
-    <div class="col-12">
+    <div class="col-12 p-0">
         <div class="card">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="images p-3">
-                        <div class="text-center p-4"> <img id="main-image"
-                                src="{{valueAt product.imagesUrls product.mainImageIndex}}" height="350"
+            <div class="row m-0">
+                <div class="col-md-6 px-0">
+                    <div class="images py-2">
+                        <div class="text-center pb-3"> <img id="main-image"
+                                src="{{valueAt product.imagesUrls product.mainImageIndex}}" height="340" width="350"
                                 class="object-fit-cover" /> </div>
                         <div class="thumbnail text-center">
                             {{#each product.imagesUrls}}
@@ -93,7 +93,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 px-0">
                     <div class="product p-4">
                         <div class="mt-4 mb-3">
                             <h5 class="text-uppercase">{{product.name}}</h5>
@@ -107,16 +107,16 @@
                             </div>
                         </div>
                         <div class="sizes mt-2">
-                            <h6 class="text-uppercase">Size</h6> <label class="radio"> <input type="radio" name="size"
-                                    value="S" checked> <span>S</span> </label> <label class="radio">
-                                <input type="radio" name="size" value="M"> <span>M</span> </label> <label class="radio">
-                                <input type="radio" name="size" value="L"> <span>L</span> </label>
-                            <label class="radio"> <input type="radio" name="size" value="XL"> <span>XL</span>
-                            </label> <label class="radio"> <input type="radio" name="size" value="XXL">
-                                <span>XXL</span> </label>
+                            <h6 class="text-uppercase">Màu</h6>
+                            <label class="radio"> <input type="radio" name="size" value="S" checked> <span>S</span>
+                            </label>
+                            <label class="radio"> <input type="radio" name="size" value="M"> <span>M</span> </label>
+                            <label class="radio"> <input type="radio" name="size" value="L"> <span>L</span> </label>
+                            <label class="radio"> <input type="radio" name="size" value="XL"> <span>XL</span></label>
+                            <label class="radio"> <input type="radio" name="size" value="XXL"><span>XXL</span> </label>
                         </div>
-                        <div class="cart mt-4 align-items-center mb-3"> <button
-                                class="btn btn-danger text-uppercase mr-2 px-4">Add to cart</button> <i
+                        <div class="cart mt-4 align-items-center mb-3"> <a href="/giohang/them/{{product.slug}}"
+                                class="btn btn-danger text-uppercase mr-2 px-4">Thêm vào giỏ hàng</a> <i
                                 class="fa fa-heart text-muted"></i> <i class="fa fa-share-alt text-muted"></i>
                         </div>
                         <p class="about" style="white-space: pre-line;">{{{product.description}}}</p>
