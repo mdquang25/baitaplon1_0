@@ -8,6 +8,7 @@ const Carousel = new mongoose.Schema(
         title: { type: String, require: true },
         description: { type: String },
         imageUrl: { type: String, require: true },
+        link: { type: String, },
         slug: { type: String, unique: true },
     },
     {

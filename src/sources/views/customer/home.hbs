@@ -3,7 +3,7 @@
         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 {{#each carousels}}
-                <div class="carousel-item">
+                <div class="carousel-item"  onclick="navigateTo('{{this.link}}')">
                     <img src="{{this.imageUrl}}" class="d-block w-100" alt="{{this.title}}">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>{{this.title}}</h5>
