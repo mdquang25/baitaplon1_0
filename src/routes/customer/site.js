@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
-const siteController = require('../../public/app/viewsController/SiteController');
+const siteController = require('../../public/app/viewsController/customer/SiteController');
 
 
 router.post('/dangxuat', siteController.logout);

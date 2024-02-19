@@ -98,12 +98,12 @@
                         <div class="mt-4 mb-3">
                             <h5 class="text-uppercase">{{product.name}}</h5>
                             <div class="price">
-                                <span id="price" class="price-label">{{product.price}}</span><span
+                                <span id="price" class="price-label detail-price">{{product.price}}</span><span
                                     class="price-label price-label-ending">đ</span>
                                 <span id="old-price" class="old-price-label"
                                     data-onsale="{{product.onSale}}">{{product.oldPrice}}</span><span
                                     class="old-price-label price-label-ending">đ </span>
-                                <div class="ml-2"><span id="percent-off"></span>% OFF</div>
+                                <div class="ml-2">Giảm <span id="percent-off"></span>%</div>
                             </div>
                         </div>
                         <div class="sizes mt-2">
@@ -119,7 +119,9 @@
                                 class="btn btn-danger text-uppercase mr-2 px-4">Thêm vào giỏ hàng</a> <i
                                 class="fa fa-heart text-muted"></i> <i class="fa fa-share-alt text-muted"></i>
                         </div>
-                        <p class="about" style="white-space: pre-line;">{{{product.description}}}</p>
+                        <p class="about" style="white-space: pre-line;">
+                            <b style="font-size:medium;">Thông tin sản phẩm:</b><br>{{{product.description}}}
+                        </p>
                     </div>
                 </div>
             </div>

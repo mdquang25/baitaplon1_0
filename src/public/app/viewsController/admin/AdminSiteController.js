@@ -1,10 +1,11 @@
-const Admin = require('../models/Admin');
+const Admin = require('../../models/Admin');
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 
 class adminSiteController {
     index(req, res) {
-        res.render('admin/admin-home', { pageTitle: 'Trang chủ Admin', layout: 'admin', isAdmin: req.session.isAdmin });
+        console.log(req.session.manager);
+        res.render('admin/admin-home', { pageTitle: 'Trang chủ Admin', layout: 'admin', isAdmin: req.session.isAdmin, user: req.session.manager });
     }
 
     //[GET] /admin/login

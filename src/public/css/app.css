@@ -101,7 +101,7 @@
   margin-right: 2%;
 }
 
-.product-thumnail {
+.thumnail {
   height: 3rem;
 }
 
@@ -162,6 +162,10 @@
   font-size: 1rem;
   color: red;
   font-weight: 500;
+}
+
+.detail-price {
+  font-size: 1.5rem;
 }
 
 .price-label-ending {

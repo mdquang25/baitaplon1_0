@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const adminSiteController = require('../../public/app/viewsController/adminSiteController');
+const adminSiteController = require('../../public/app/viewsController/admin/AdminSiteController');
 const { body } = require('express-validator');
 const requireManagerLogin = require('../middleware/requireManagerLogin');
 

@@ -1,28 +1,16 @@
 <div class="row justify-content-center">
-    <div class="col-sm-8 col-md-6">
+    <div class="col-sm-8 col-md-6 px-0">
         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="https://i.ytimg.com/vi/qsA7v2zTmPM/hq720.jpg" class="d-block w-100" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>First slide label</h5>
-                        <p>Some representative placeholder content for the first slide.</p>
-                    </div>
-                </div>
+                {{#each carousels}}
                 <div class="carousel-item">
-                    <img src="https://i.ytimg.com/vi/nKEepOm37bQ/hq720.jpg" class="d-block w-100" alt="...">
+                    <img src="{{this.imageUrl}}" class="d-block w-100" alt="{{this.title}}">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>First slide label</h5>
-                        <p>Some representative placeholder content for the first slide.</p>
+                        <h5>{{this.title}}</h5>
+                        <p>{{this.description}}</p>
                     </div>
                 </div>
-                <div class="carousel-item">
-                    <img src="https://i.ytimg.com/vi/e7SUpxkcFnU/hq720.jpg" class="d-block w-100" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>First slide label</h5>
-                        <p>Some representative placeholder content for the first slide.</p>
-                    </div>
-                </div>
+                {{/each}}
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
                 data-bs-slide="prev">
@@ -71,7 +59,9 @@
     const prices = document.querySelectorAll('span[class="price-label"]');
     const oldPrices = document.querySelectorAll('span[class="old-price-label"]');
     const cards = document.querySelectorAll('div[data-name="cards"]');
+    const firstCarousel = document.querySelector('div[class="carousel-item"]');
 
+    firstCarousel.classList.add('active');
     cards.forEach(card => {
         card.addEventListener('touchstart', function (e) {
             this.classList.add('touched');

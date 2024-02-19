@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const adminAccountManagementController = require('../../public/app/viewsController/AdminAccountManagementController');
+const adminMyAccountController = require('../../public/app/viewsController/admin/AdminMyAccountController');
 const requireManagerLogin = require('../middleware/requireManagerLogin');
 
 
-router.patch('/sua', requireManagerLogin, adminAccountManagementController.saveModify);
-router.patch('/doimatkhau', requireManagerLogin, adminAccountManagementController.saveChangePassword);
-router.get('/doimatkhau', requireManagerLogin, adminAccountManagementController.changePassword);
-router.get('/sua', requireManagerLogin, adminAccountManagementController.modify);
-router.get('/xem', requireManagerLogin, adminAccountManagementController.showInfo);
+router.patch('/sua', requireManagerLogin, adminMyAccountController.saveModify);
+router.patch('/doimatkhau', requireManagerLogin, adminMyAccountController.saveChangePassword);
+router.get('/doimatkhau', requireManagerLogin, adminMyAccountController.changePassword);
+router.get('/sua', requireManagerLogin, adminMyAccountController.modify);
+router.get('/xem', requireManagerLogin, adminMyAccountController.showInfo);
 
 
 module.exports = router;

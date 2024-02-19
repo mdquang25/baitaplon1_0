@@ -1,10 +1,10 @@
-const Customer = require('../models/Customer');
-const { mongooseToObj } = require('../../../util/mongoose');
+const Admin = require('../../models/Admin');
+const { mongooseToObj } = require('../../../../util/mongoose');
 const bcrypt = require('bcryptjs');
 
-class CustomerAcountManagementController {
+class AdminAcountManagementController {
     showInfo(req, res, next) {
-        Customer.findById(req.session.user.id)
+        Admin.findById(req.session.manager.id)
             .then((user) => {
                 const account = {
                     fullName: user.fullName,
@@ -12,41 +12,41 @@ class CustomerAcountManagementController {
                     address: user.address,
                     dateOfBirth: user.dateOfBirth,
                 }
-                res.render('customer/account/info', { pageTitle: 'Tài khoản của tôi', account, isLoggedin: req.session.isLoggedin, })
+                res.render('admin/account/info', { pageTitle: 'Tài khoản của tôi', layout: 'admin', account, isAdmin: req.session.isAdmin, })
             }).catch(next);
     }
 
     modify(req, res, next) {
-        Customer.findById(req.session.user.id)
+        Admin.findById(req.session.manager.id)
             .then((user) => {
                 const account = mongooseToObj(user);
                 account.password = null;
-                res.render('customer/account/modify-profile', { pageTitle: 'Sửa tài khoản của tôi', account, isLoggedin: req.session.isLoggedin, })
+                res.render('admin/account/modify-profile', { pageTitle: 'Sửa tài khoản của tôi', layout: 'admin', account, isAdmin: req.session.isAdmin, })
             }).catch(next);
     }
 
-    //[PATCH] /customer/taikhoancuatoi/sua
+    //[PATCH] /admin/taikhoancuatoi/sua
     saveModify(req, res, next) {
         console.log(req.body.dateOfBirth);
-        Customer.findById(req.session.user.id)
+        Admin.findById(req.session.manager.id)
             .then(account => {
                 account.fullName = req.body.fullName;
                 account.phoneNumber = req.body.phoneNumber;
                 account.address = req.body.address;
                 account.dateOfBirth = req.body.dateOfBirth;
                 account.save();
-                req.session.user.fullName = account.fullName;
-                res.redirect('/taikhoan/xem');
+                req.session.manager.fullName = account.fullName;
+                res.redirect('/admin/taikhoancuatoi/xem');
             }).catch(next);
     }
 
     changePassword(req, res, next) {
-        res.render('customer/account/change-password', { pageTitle: 'Đổi mật khẩu', layout: 'no-header', isLoggedin: req.session.isLoggedin, });
+        res.render('admin/account/change-password', { pageTitle: 'Đổi mật khẩu', layout: 'no-header-footer', isAdmin: req.session.isAdmin, });
     }
 
-    //[PATCH] /customer/taikhoancuatoi/doimatkhau
+    //[PATCH] /admin/taikhoancuatoi/doimatkhau
     saveChangePassword(req, res, next){
-        Customer.findById(req.session.user.id)
+        Admin.findById(req.session.manager.id)
             .then(user => {
                 if (req.body.password1 === req.body.password2) {
                     bcrypt.compare(req.body.oldPassword, user.password, function (err, isMatch) {
@@ -70,9 +70,9 @@ class CustomerAcountManagementController {
                                     user.save();
                                 });
                             });
-                            res.redirect('/');
+                            res.redirect('/admin');
                         } else {
-                            console.log('Invalid Customer password');
+                            console.log('Invalid admin password');
                             res.redirect('back');
                         }
                     });
@@ -82,4 +82,4 @@ class CustomerAcountManagementController {
     }
 }
 
-module.exports = new CustomerAcountManagementController;
+module.exports = new AdminAcountManagementController;

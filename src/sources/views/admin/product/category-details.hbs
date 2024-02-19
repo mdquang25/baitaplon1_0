@@ -39,9 +39,9 @@
             <td>
                 <div class="outline-label">{{this.productCount}}</div>
             </td>
-            <td class="mobile-hidden"><img src="{{this.imageUrl}}" style="height: 50px;" alt="icon"></td>
+            <td class="mobile-hidden"><img class="thumnail" src="{{this.imageUrl}}" alt="icon"></td>
             <td class="to-be-hidden">
-                <p class="product-management_description">{{this.description}}</p>
+                <p class="management_description">{{this.description}}</p>
             </td>
             <td><a href="/admin/kho/chude/{{../category.slug}}/phanloai/{{this.slug}}/sua" class="btn btn-info">Sửa</a></td>
             <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"

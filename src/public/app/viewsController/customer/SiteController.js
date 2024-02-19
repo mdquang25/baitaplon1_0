@@ -1,11 +1,12 @@
-const Customer = require('../models/Customer');
-const Category = require('../models/ProductCategory');
-const Type = require('../models/ProductType');
-const Product = require('../models/Product');
-const Cart = require('../models/Cart');
-const { multiMongooseToObjs, mongooseToObj } = require('../../../util/mongoose')
+const Customer = require('../../models/Customer');
+const Category = require('../../models/ProductCategory');
+const Type = require('../../models/ProductType');
+const Product = require('../../models/Product');
+const Cart = require('../../models/Cart');
+const { multiMongooseToObjs, mongooseToObj } = require('../../../../util/mongoose')
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
+const Carousel = require('../../models/Carousel');
 
 class SiteController {
     index(req, res, next) {
@@ -21,9 +22,9 @@ class SiteController {
                         });
                 });
                 Promise.all(categories).then(categories => {
-                    Product.find({})
-                        .then(products => {
-                            res.render('customer/home', { pageTitle: 'Trang chủ', isLoggedin: req.session.isLoggedin, user: req.session.user, categories, products: multiMongooseToObjs(products) });
+                    Promise.all([Product.find({}), Carousel.find({})])
+                        .then(([products, carousels]) => {
+                            res.render('customer/home', { pageTitle: 'Trang chủ', isLoggedin: req.session.isLoggedin, user: req.session.user, categories, products: multiMongooseToObjs(products), carousels: multiMongooseToObjs(carousels), });
                         }).catch(next);
                 }).catch(next);
             }).catch(next);
@@ -60,6 +61,7 @@ class SiteController {
                         req.session.user = {
                             id: customer._id,
                             name: customer.fullName,
+                            cartId: customer.cartId,
                         };
                         req.session.isLoggedin = true;
                         res.redirect('/');
