@@ -25,6 +25,9 @@
         <label for="floatingPassword">Xác nhận mật khẩu</label>
         <div id="error-message" class="form-text text-secondary text-danger">
         </div>
+        <div id="error-message" class="form-text text-secondary text-danger">
+            {{error}}
+        </div>
     </div>
     <div class="form-check d-flex align-items-center">
         <input class="form-check-input me-2" style=" border-color: blue" type="checkbox" value="đồng ý" required
@@ -74,6 +77,10 @@
 
         if (password1.value.length < 6 || password2.value.length < 6) {
             errorLabel.innerHTML = 'mật khẩu phải từ 6 ký tự trở lên!';
+            isValid = false;
+        }
+        else if (password1.value.length>32) {
+            errorLabel.innerHTML = 'mật khẩu tối đa 32 kí tự!';
             isValid = false;
         }
         else if (password1.value !== password2.value) {

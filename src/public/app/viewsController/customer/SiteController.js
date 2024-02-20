@@ -91,26 +91,34 @@ class SiteController {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const password = req.body.password;
-        bcrypt.genSalt(10, function (err, salt) {
-            if (err) {
-                console.error(err);
-                return res.status(400).json({ errors: errors.array() });
-            }
-            bcrypt.hash(password, salt, function (err, hash) {
-                if (err) {
-                    console.error(err);
-                    return res.status(400).json({ errors: errors.array() });
+        Customer.findOne({ phoneNumber: req.body.phoneNumber })
+            .then(doc => {
+                if (doc) {
+                    res.render('customer/sign-up', { pageTitle: 'Đăng ký', layout: 'no-header', error: 'Tài khoản đã tồn tại!', })
                 }
-                req.body.password = hash;
-                const cart = new Cart();
-                cart.save();
-                req.body.cartId = cart._id;
-                const customer = new Customer(req.body);
-                customer.save();
-            });
-        });
-        res.redirect('/dangnhap');
+                else {
+                    const password = req.body.password;
+                    bcrypt.genSalt(10, function (err, salt) {
+                        if (err) {
+                            console.error(err);
+                            return res.status(400).json({ errors: errors.array() });
+                        }
+                        bcrypt.hash(password, salt, function (err, hash) {
+                            if (err) {
+                                console.error(err);
+                                return res.status(400).json({ errors: errors.array() });
+                            }
+                            req.body.password = hash;
+                            const cart = new Cart();
+                            cart.save();
+                            req.body.cartId = cart._id;
+                            const customer = new Customer(req.body);
+                            customer.save();
+                        });
+                    });
+                    res.redirect('/dangnhap');
+                }                   
+        })
     }
 
     //[POST] /dangxuat
