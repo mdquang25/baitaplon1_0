@@ -54,6 +54,9 @@
         if (password.value.length < 6) {
             errorLabel.innerHTML = 'mật khẩu phải từ 6 ký tự trở lên!';
             isValid = false;
+        }else if (password.value.length > 32) {
+            errorLabel.innerHTML = 'mật khẩu tối đa 32 kí tự!';
+            isValid = false;
         }
 
 
