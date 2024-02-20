@@ -26,10 +26,28 @@ class CartController {
                                 quantity: 1,
                             });
                             productQ.save();
+                            cart.newProduct = true;
+                            cart.save();
                         }
                     })
             })
         res.redirect('back');
+    }
+    //[GET] /giohang
+    products(req, res, next) {
+        Cart.findById(req.session.user.cartId)
+            .then(cart => {
+                ProductQ.find({ cartId: cart._id})
+                    .then(docs => {
+                        var productQs;
+                        if (docs) {
+                            productQs = multiMongooseToObjs(docs);
+                        }
+                        cart.newProduct = false;
+                        cart.save();
+                        res.render('customer/cart/cart-products', {pageTitle: 'Giỏ hàng', isLoggedin: req.session.isLoggedin, productQs, shopInfo: res.locals.shopInfo, })
+                    })
+            })
     }
 }
 

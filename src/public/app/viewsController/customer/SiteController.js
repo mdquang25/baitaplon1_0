@@ -24,7 +24,7 @@ class SiteController {
                 Promise.all(categories).then(categories => {
                     Promise.all([Product.find({}), Carousel.find({})])
                         .then(([products, carousels]) => {
-                            res.render('customer/home', { pageTitle: 'Trang chủ', isLoggedin: req.session.isLoggedin, user: req.session.user, categories, products: multiMongooseToObjs(products), carousels: multiMongooseToObjs(carousels), });
+                            res.render('customer/home', { pageTitle: 'Trang chủ', isLoggedin: req.session.isLoggedin, user: req.session.user, categories, products: multiMongooseToObjs(products), carousels: multiMongooseToObjs(carousels), cart: res.locals.cart, shopInfo: res.locals.shopInfo, });
                         }).catch(next);
                 }).catch(next);
             }).catch(next);
@@ -34,7 +34,7 @@ class SiteController {
         if (req.session.isLoggedin)
             res.redirect('/');
         else {
-            res.render('customer/login', { pageTitle: 'Đăng nhập', layout: 'no-header', });
+            res.render('customer/login', { pageTitle: 'Đăng nhập', layout: 'no-header', shopInfo: res.locals.shopInfo, });
         }
     }
 
@@ -67,7 +67,7 @@ class SiteController {
                         res.redirect('/');
                     } else {
                         console.log('Invalid password');
-                        res.render('customer/login', { pageTitle: 'Đăng nhập', layout: 'no-header', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body })
+                        res.render('customer/login', { pageTitle: 'Đăng nhập', layout: 'no-header', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body, shopInfo: res.locals.shopInfo, })
                     }
                 });
             })
@@ -79,7 +79,7 @@ class SiteController {
         if (req.session.isLoggedin)
             res.redirect('/');
         else
-            res.render('customer/sign-up', { pageTitle: 'Đăng ký', layout: 'no-header', })
+            res.render('customer/sign-up', { pageTitle: 'Đăng ký', layout: 'no-header', shopInfo: res.locals.shopInfo, })
     }
 
     //[POST] /dangky
@@ -94,7 +94,7 @@ class SiteController {
         Customer.findOne({ phoneNumber: req.body.phoneNumber })
             .then(doc => {
                 if (doc) {
-                    res.render('customer/sign-up', { pageTitle: 'Đăng ký', layout: 'no-header', error: 'Tài khoản đã tồn tại!', })
+                    res.render('customer/sign-up', { pageTitle: 'Đăng ký', layout: 'no-header', error: 'Tài khoản đã tồn tại!', shopInfo: res.locals.shopInfo, })
                 }
                 else {
                     const password = req.body.password;
@@ -109,7 +109,12 @@ class SiteController {
                                 return res.status(400).json({ errors: errors.array() });
                             }
                             req.body.password = hash;
-                            const cart = new Cart();
+                            const cart = new Cart({
+                                productQ_id: [],
+                                order_id: [],
+                                newProduct: false,
+                                newOrderUpdate: false,
+                            });
                             cart.save();
                             req.body.cartId = cart._id;
                             const customer = new Customer(req.body);
@@ -121,7 +126,7 @@ class SiteController {
         })
     }
 
-    //[POST] /dangxuat
+    //[GET] /dangxuat
     logout(req, res) {
         req.session.destroy();
         res.redirect('/');

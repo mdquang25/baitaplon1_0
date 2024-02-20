@@ -2,13 +2,13 @@
     <div class=" container-fluid d-flex mx-4">
         <div class="phone navbar-text">
             <i class="fa-solid fa-phone"></i>
-            Gọi ngay: 0382740405
+            Gọi ngay: {{shopInfo.phoneNumber}}
         </div>
         <div class="fa fa-2x">
-            <a href="https://www.facebook.com/profile.php?id=100009440423560"><i
+            <a href="{{shopInfo.linkFacebook}}"><i
                     class="m-2 fa-brands fa-facebook"></i></a>
-            <a href="https://www.youtube.com/@mdquang25mq35"><i class="m-2 fa-brands fa-youtube"></i></a>
-            <a href="https://maps.app.goo.gl/fPN8XiYCucfBgA2F6"><i class="m-2 fa-solid fa-map-location-dot"></i></a>
+            <a href="{{shopInfo.linkYoutube}}"><i class="m-2 fa-brands fa-youtube"></i></a>
+            <a href="{{shopInfo.linkGoogleMap}}"><i class="m-2 fa-solid fa-map-location-dot"></i></a>
         </div>
     </div>
 </nav>
@@ -41,7 +41,7 @@
 
         <div class="offcanvas offcanvas-end text-bg-dark offcanvas-custom" tabindex="-1" id="offcanvasResponsive">
             <div class="offcanvas-header">
-                <h5 class="offcanvas-title" style="align-self:flex-start">VIỆT TUẤN TRUNG</h5>
+                <h5 class="offcanvas-title text-uppercase" style="align-self:flex-start;">{{shopInfo.shortName}}</h5>
                 <button type="button" class="btn-close btn-close-white " data-bs-dismiss="offcanvas"
                     aria-label="Close"></button>
             </div>
@@ -80,8 +80,10 @@
                 <a href="/giohang">
                     <i class="fa-2x fa-duotone fa-cart-shopping"></i>
                 </a>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    9
+                <input id="newProduct" type="text" class="d-none" value="{{cart.newProduct}}">
+                <input id="newOrderUpdate" type="text" class="d-none" value="{{cart.newOrderUpdate}}">
+                <span id="red-dot"
+                    class="d-none position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger text-danger" style="font-size: .5rem;">*
                     <span class="visually-hidden">sản phẩm trong giỏ hàng</span>
                 </span>
             </div>
@@ -115,7 +117,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <form action="/dangxuat" method="post">
+                <form action="/dangxuat" method="get">
                     <button type="submit" class="btn btn-primary">Đăng xuất ngay</button>
                 </form>
             </div>
@@ -129,6 +131,13 @@
     const myAccountDropdown = document.getElementById('my-account-dropdown');
     const logoutAlert = document.getElementById('logout-alert')
     const logoutBtn = document.getElementById('logout-btn')
+    const newProduct = document.getElementById('newProduct').value;
+    const newOrderUpdate = document.getElementById('newOrderUpdate').value;
+    const redDot = document.getElementById('red-dot');
+
+    if(newProduct==='true' || newOrderUpdate === 'true'){
+        redDot.classList.remove('d-none');
+    }
 
     logoutAlert.addEventListener('shown.bs.modal', () => {
         logoutBtn.focus()

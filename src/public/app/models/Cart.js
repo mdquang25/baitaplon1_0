@@ -6,7 +6,8 @@ const Cart = new mongoose.Schema(
     {
         productQ_id: [{ type: String, }],
         order_id: [{ type: String, }],
-        
+        newProduct: { type: Boolean, },
+        newOrderUpdate: { type: Boolean, },
     },
     {
         timestamps: true,
