@@ -131,6 +131,3 @@ dist
 =======
 node_modules
 node_modules/*
-package.json
-src/config/db/index.js
-src/config/mongodb-session.js
