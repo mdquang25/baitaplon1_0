@@ -39,10 +39,21 @@ class CartController {
             .then(cart => {
                 ProductQ.find({ cartId: cart._id})
                     .then(docs => {
+                        var productQPromises;
                         var productQs;
                         if (docs) {
                             productQs = multiMongooseToObjs(docs);
+                            productQPromises = productQs.map(productQ => {
+                                return Product.findOne({ slug: productQ.productSlug })
+                                    .then(product => {
+                                        productQ.product = mongooseToObj(product);
+                                        return productQ;
+                                    });
+                            });
                         }
+                        return Promise.all(productQPromises);
+                    }).then(productQs => {   
+                        console.log(productQs);
                         cart.newProduct = false;
                         cart.save();
                         res.render('customer/cart/cart-products', {pageTitle: 'Giỏ hàng', isLoggedin: req.session.isLoggedin, productQs, shopInfo: res.locals.shopInfo, })

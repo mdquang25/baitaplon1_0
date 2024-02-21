@@ -5,7 +5,6 @@ const userHeaderObjects = (req, res, next) => {
     if (req.session.user) {
         Cart.findOne({ _id: req.session.user.cartId })
             .then(doc => {
-                console.log(doc);
                 if (doc) {
                     const cart = {
                         newProduct: doc.newProduct,
