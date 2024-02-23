@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const softDelete = require('mongoosejs-soft-delete');
-
 
 const ProductQ = new mongoose.Schema(
     {
@@ -20,7 +18,5 @@ const ProductQ = new mongoose.Schema(
         timestamps: true,
     },
 );
-
-ProductQ.plugin(softDelete);
 
 module.exports = mongoose.model('ProductQ', ProductQ);

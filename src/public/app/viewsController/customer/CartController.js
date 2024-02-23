@@ -37,7 +37,7 @@ class CartController {
     products(req, res, next) {
         Cart.findById(req.session.user.cartId)
             .then(cart => {
-                ProductQ.find({ cartId: cart._id})
+                ProductQ.find({ cartId: cart._id })
                     .then(docs => {
                         var productQPromises;
                         var productQs;
@@ -52,13 +52,25 @@ class CartController {
                             });
                         }
                         return Promise.all(productQPromises);
-                    }).then(productQs => {   
-                        console.log(productQs);
+                    }).then(productQs => {
                         cart.newProduct = false;
                         cart.save();
-                        res.render('customer/cart/cart-products', {pageTitle: 'Giỏ hàng', isLoggedin: req.session.isLoggedin, productQs, shopInfo: res.locals.shopInfo, })
-                    })
-            })
+                        res.render('customer/cart/cart-products', { pageTitle: 'Giỏ hàng', isLoggedin: req.session.isLoggedin, productQs, shopInfo: res.locals.shopInfo, })
+                    });
+            });
+    }
+
+    //[DELETE] /giohang/xoa-chon
+    deleteSelected(req, res, next) {
+        Cart.findById(req.session.user.cartId)
+            .then(cart => {
+                cart.productQ_id = cart.productQ_id.filter((element) => !req.body.productQ_ids.includes(element));
+                cart.save();
+                ProductQ.deleteMany({ _id: { $in: req.body.productQ_ids } })
+                    .then(() => {
+                        res.redirect('back');
+                    });
+        })
     }
 }
 

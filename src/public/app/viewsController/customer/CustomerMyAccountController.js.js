@@ -27,7 +27,6 @@ class CustomerAcountManagementController {
 
     //[PATCH] /customer/taikhoancuatoi/sua
     saveModify(req, res, next) {
-        console.log(req.body.dateOfBirth);
         Customer.findById(req.session.user.id)
             .then(account => {
                 account.fullName = req.body.fullName;

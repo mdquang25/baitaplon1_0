@@ -11,6 +11,13 @@
   .to-be-hidden {
     display: none;
   }
+  .to-be-show-col {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .cart-table-header {
+    position: static;
+  }
 }
 .offcanvas-body-responsive {
   display: flex;

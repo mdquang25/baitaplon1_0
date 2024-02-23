@@ -1,76 +1,99 @@
 <div class="d-flex justify-content-center">
-    <div class="d-flex justify-content-end align-middle col-10">
-        <div class="fs-4 col-4 justify-content-center d-flex align-items-center">Giỏ hàng</div>
+    <div class="d-flex justify-content-end align-middle col-12 mx-lg-4">
+        <div class="fs-4 col-4 justify-content-center d-flex align-items-center"><b>Giỏ hàng</b></div>
         <div class="col-4 d-flex justify-content-end"><a href="/admin/kho/sanpham/them"
                 class="btn btn-primary d-flex align-items-center mt-4 mb-2" style="max-width: fit-content;"><i
                     class="fa-regular fa-rectangle-list"></i>&nbsp;Đơn mua</a>
         </div>
     </div>
 </div>
-<table class="table table-hover text-center">
-    <thead class="table-warning">
-        <tr>
-            <th scope="col" class="table-header">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
-                    </label>
-                </div>
-            </th>
-            <th scope="col" class="table-header"></th>
-            <th scope="col" class="table-header">Sản phẩm</th>
-            <th scope="col" class="table-header mobile-hidden">Đơn giá</th>
-            <th scope="col" class="table-header mobile-hidden">Số lượng</th>
-            <th scope="col" class="table-header to-be-hidden">Số tiền</th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#each productQs}}
-        <tr>
-            <th scope="row">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
-                    </label>
-                </div>
-            </th>
-            <td> <img class="thumnail" src="{{valueAt this.product.imagesUrls this.product.mainImageIndex}}"
-                    alt="Ảnh sản phẩm">
-            </td>
-            <td class="text-start"> {{this.product.name}}</td>
-            <td class="mobile-hidden">
-                <div class="price-label outline-label">{{this.product.price}}</div>
-            </td>
-            <td class="mobile-hidden">
-                <div class="outline-label">{{this.quantity}}</div>
-            </td>
-            <td class="to-be-hidden">
-                <div class="outline-label">{{subtract this.count this.stock}}</div>
-            </td>
-            <td class="to-be-hidden">
-                <p class="management_description">{{this.description}}</p>
-            </td>
-            <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"
-                    data-delete-id="{{this._id}}" data-product-name="{{this.name}}">Xóa</button>
-            </td>
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
-<nav class="card sticky-bottom navbar navbar-expand-md navbar-dark bg-dark py-2 mx-0 mb-2">
-    <div class="container-fluid d-flex mx-4 justify-content-between">
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
+<form method="post" id="select-form">
+    <input type="text" name="_method" class="d-none">
+    <table class="table table-hover text-center">
+        <thead class="table-warning sticky-top cart-table-header" style="top:5rem;">
+            <tr>
+                <th scope="col" class="table-header">
+                    <div class="form-check">
+                        <input class="form-check-input fs-5" type="checkbox" value="" id="check-all-1">
+                        <label class="form-check-label" for="check-all-1">
+                        </label>
+                    </div>
+                </th>
+                <th scope="col" class="table-header"></th>
+                <th scope="col" class="table-header text-start">Sản phẩm</th>
+                <th scope="col" class="table-header to-be-hidden">Đơn giá</th>
+                <th scope="col" class="table-header to-be-hidden">Số lượng</th>
+                <th scope="col" class="table-header to-be-hidden">Số tiền</th>
+                <th scope="col" class="to-be-hidden"></th>
+            </tr>
+        </thead>
+        <style>
+            .buttons-only {
+                min-width: 4rem !important;
+                max-width: 4rem !important;
+            }
+
+            .buttons-only:focus {
+                /* Override the default focus styles */
+                outline: none !important;
+                box-shadow: none !important;
+            }
+        </style>
+        <tbody>
+            {{#each productQs}}
+            <tr>
+                <th scope="row">
+                    <div class="form-check">
+                        <input class="checkbox form-check-input fs-5" type="checkbox" value="{{this._id}}"
+                           name="productQ_ids[]" id="{{this._id}}-checkbox">
+                        <label class="form-check-label" for="{{this._id}}-checkbox">
+                        </label>
+                    </div>
+                </th>
+                <td> <img class="thumnail" src="{{valueAt this.product.imagesUrls this.product.mainImageIndex}}"
+                        alt="Ảnh sản phẩm">
+                </td>
+                <td class="text-start">
+                    {{this.product.name}}
+                    <div class="to-be-show-col" style="display:none;">
+                        <div class="price-label">{{this.product.price}}</div>
+                        <input class="buttons-only form-control-sm" type="number" min="1" max="{{this.product.stock}}"
+                            step="1" value="{{this.quantity}}">
+                    </div>
+                </td>
+                <td class="to-be-hidden">
+                    <div class="price-label outline-label">{{this.product.price}}</div>
+                </td>
+                <td class="to-be-hidden">
+                    <input class="buttons-only form-control-sm" type="number" min="1" max="{{this.product.stock}}"
+                        step="1" value="{{this.quantity}}">
+                </td>
+                <td class="to-be-hidden">
+                    <div class="price-label outline-label">100000</div>
+                </td>
+                <td class="to-be-hidden"><button class="delete-one-btn btn btn-outline-danger"
+                        data-delete-id="{{this._id}}">Xóa</button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</form>
+<nav class="card sticky-bottom navbar-dark bg-dark py-2 mx-0 mb-2">
+    <div class="d-flex justify-content-between">
+        <div class="form-check ms-2">
+            <input class="form-check-input fs-5" type="checkbox" value="" id="check-all-2">
+            <label class="form-check-label" for="check-all-2">
             </label>
         </div>
-        <button class="btn btn-warning" type="submit">Đặt hàng</button>
+        <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Xóa</button>
+        <button class="btn btn-warning me-2" type="submit">Đặt hàng</button>
     </div>
 </nav>
 
 <!--Modal=============================-->
-<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="confirmDeleteModal" style="z-index: 999999;" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -85,32 +108,77 @@
         </div>
     </div>
 </div>
+<form id="delete-form" action="/giohang/sanpham/xoa" method="post" style="display: none;">
 
-<form id="delete-form" action="/admin/kho/sanpham/xoa" method="post" style="display: none;"
-    enctype="application/x-www-form-urlencoded">
-    <input name="_method" value="PATCH">
+    <input name="_method" value="DELETE">
     <input type="text" name="deleteId" id="delete-id">
 </form>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/scripts/bootstrap-input-spinner.js"></script>
 <script>
-    var productId;
     const deleteForm = document.getElementById('delete-form');
     const deleteId = document.getElementById('delete-id');
-    const deleteBtn = document.getElementById('delete-btn');
+    const deleteOneBtns = [...document.getElementsByClassName('delete-one-btn')];
     const deleteModal = document.getElementById('confirmDeleteModal');
+    const deleteBtn = document.getElementById('delete-btn');
+    const checkAll_1 = document.getElementById('check-all-1');
+    const checkAll_2 = document.getElementById('check-all-2');
+    const checkBoxes = [...document.getElementsByClassName('checkbox')];
+    const selectForm = document.getElementById('select-form');
+
+    checkAll_1.addEventListener('change', (e) => {
+        const isChecked = e.target.checked;
+        checkBoxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+        checkAll_2.checked = isChecked;
+    });
+    checkAll_2.addEventListener('change', (e) => {
+        const isChecked = e.target.checked;
+        checkBoxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+        checkAll_1.checked = isChecked;
+    });
+
+    checkBoxes.forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+            var allChecked = true;
+            checkBoxes.forEach(checkbox => {
+                if (!checkbox.checked) {
+                    allChecked = false;
+                }
+            });
+            checkAll_1.checked = allChecked;
+            checkAll_2.checked = allChecked;
+        })
+    });
 
     if (deleteModal) {
         deleteModal.addEventListener('show.bs.modal', event => {
-            const button = event.relatedTarget;
             const modalBody = document.getElementById('modal-body');
-            modalBody.innerHTML = 'Bạn chắc chắn muốn xóa "' + button.getAttribute('data-product-name') + '"?';
-            productId = button.getAttribute('data-delete-id');
+            var checkedCount = 0;
+            checkBoxes.forEach(checkbox => {
+                if (checkbox.checked)
+                    checkedCount++;
+            });
+            modalBody.innerHTML = 'Bạn chắc chắn muốn xóa ' + checkedCount + ' sản phẩm khỏi giỏ hàng?';
         });
     }
     deleteBtn.addEventListener('click', function (event) {
-        deleteId.value = productId;
-        deleteForm.submit();
+        selectForm.action = '/giohang/xoa-chon';
+        selectForm.querySelector(':first-child').setAttribute('value', 'DELETE');
+        selectForm.submit();
     });
+
+    deleteOneBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            deleteId.value = e.target.getAttribute('data-delete-id');
+            deleteForm.submit();
+        });
+    })
     const prices = document.querySelectorAll('div[class="price-label outline-label"]');
 
     prices.forEach(function (price) {
@@ -121,4 +189,6 @@
     function navigateTo(url) {
         window.location.href = url;
     }
+
+    $(".buttons-only").inputSpinner({ buttonsOnly: true, autoInterval: undefined, onfocus: false, })
 </script>

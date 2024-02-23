@@ -39,6 +39,7 @@ app.engine(
             sum: (a, b) => a + b,
             subtract: (a, b) => a - b,
             valueAt: (a, b) => a[b],
+            mult: (a, b) => a*b,
         },
         extname: 'hbs',
     }),
