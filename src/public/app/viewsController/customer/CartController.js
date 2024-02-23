@@ -69,8 +69,24 @@ class CartController {
                 ProductQ.deleteMany({ _id: { $in: req.body.productQ_ids } })
                     .then(() => {
                         res.redirect('back');
-                    });
-        })
+                    }).catch(next);
+            }).catch(next);
+    }
+
+    //[DELETE] /giohang/sanpham/xoa
+    removeProduct(req, res, next) {
+        Cart.findById(req.session.user.cartId)
+            .then(cart => {
+                const index = cart.productQ_id.indexOf(req.body.deleteId);
+                if (index > -1) {
+                    cart.productQ_id.splice(index, 1);
+                }
+                cart.save();
+                ProductQ.findByIdAndDelete(req.body.deleteId)
+                    .then(() => {
+                        res.redirect('back');
+                    }).catch(next);
+            }).catch(next);
     }
 }
 
