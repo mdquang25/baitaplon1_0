@@ -17,8 +17,15 @@
         display: flex !important;
         flex-direction: column !important;
     }
-    .cart-table-header{
+
+    .cart-table-header {
         position: static;
+    }
+
+    .mobile-break {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start !important;
     }
 }
 

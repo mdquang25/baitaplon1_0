@@ -22,17 +22,18 @@ class EmployeeAccountsManagementController {
     //[POST] /admin/taikhoan-nhanvien/them
     async saveNewAccount(req, res) {
         try {
-            if (req.body.phoneNumber && isValidPhoneNumber(req.body.phoneNumber)) {
-                const employee = new Admin(req.body);
-                const initPassword = generateShortPassword(6);
-                employee.initPassword = initPassword;
+            if (req.body.phoneNumber && !isValidPhoneNumber(req.body.phoneNumber))
+                delete req.body.phoneNumber;
+            
+            const employee = new Admin(req.body);
+            const initPassword = generateShortPassword(6);
+            employee.initPassword = initPassword;
 
-                const salt = await bcrypt.genSalt(10);
-                const hash = await bcrypt.hash(initPassword, salt);
-                employee.password = hash;
+            const salt = await bcrypt.genSalt(10);
+            const hash = await bcrypt.hash(initPassword, salt);
+            employee.password = hash;
 
-                await employee.save();
-            }
+            await employee.save();
             res.redirect('/admin/taikhoan-nhanvien');
         } catch (error) {
             console.error(error);

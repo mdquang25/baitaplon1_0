@@ -18,6 +18,11 @@
   .cart-table-header {
     position: static;
   }
+  .mobile-break {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
 }
 .offcanvas-body-responsive {
   display: flex;

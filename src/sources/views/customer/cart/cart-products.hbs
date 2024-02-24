@@ -69,21 +69,17 @@
                         style="text-decoration: none;">{{this.product.name}}</a>
                     <div class="to-be-show-col" style="display:none;">
                         <div class="price-label">{{this.product.price}}</div>
-                        {{!-- <div class="d-flex justify-content-start" style="max-width: fit-content;">
-                            <input readonly class="buttons-only" type="number" name="quantities" min="1"
-                                max="{{this.product.stock}}" step="1" value="{{this.quantity}}">
-                        </div> --}}
-                        <div class="input-group">
-                            <div class="input-group-prepend"><button style="min-width: 1rem;"
-                                    class="btn rounded-0 btn-secondary p-0" type="button">-</button>
-                            </div>
-                            <input class="" type="number" name="quantities" min="1"
+                        <div class="d-flex text-center" style="max-width: 8rem;">
+                            <button onclick="updateQuantity('{{this._id}}', -1)"
+                                class="btn rounded-0 btn-outline-secondary px-1 py-0" type="button"><i
+                                    class="fa-solid fa-minus"></i></button>
+                            <input readonly type="number" name="{{this._id}}quantity1" min="1"
                                 max="{{this.product.stock}}" step="1" value="{{this.quantity}}" inputmode="decimal"
                                 style="text-align: center; padding: 0 !important;"
-                                class="form-control form-control-text-input" />
-                            <div class="input-group-append"><button style="min-width: 1rem;"
-                                    class="btn rounded-0 btn-secondary p-0" type="button">+</button>
-                            </div>
+                                class="form-control form-control-text-input" id="{{this._id}}quantity1" />
+                            <button onclick="updateQuantity('{{this._id}}', 1)"
+                                class="btn rounded-0 btn-outline-secondary px-1 py-0" type="button"><i
+                                    class="fa-solid fa-plus"></i></button>
                         </div>
                     </div>
                 </td>
@@ -91,11 +87,22 @@
                     <div class="price-label outline-label">{{this.product.price}}</div>
                 </td>
                 <td class="to-be-hidden">
-                    <input class="buttons-only" type="number" min="1" max="{{this.product.stock}}" step="1"
-                        value="{{this.quantity}}">
+                    <div class="d-flex text-center" style="max-width: 8rem;">
+                        <button onclick="updateQuantity('{{this._id}}', -1)"
+                            class="btn rounded-0 btn-outline-secondary px-1 py-0" type="button"><i
+                                class="fa-solid fa-minus"></i></button>
+                        <input readonly type="number" name="{{this._id}}quantity2" min="1" max="{{this.product.stock}}"
+                            step="1" value="{{this.quantity}}" inputmode="decimal"
+                            style="text-align: center; padding: 0 !important;"
+                            class="form-control form-control-text-input" id="{{this._id}}quantity2" />
+                        <button onclick="updateQuantity('{{this._id}}', 1)"
+                            class="btn rounded-0 btn-outline-secondary px-1 py-0" type="button"><i
+                                class="fa-solid fa-plus"></i></button>
+                    </div>
                 </td>
                 <td class="to-be-hidden">
-                    <div class="price-label outline-label">{{mult this.quantity this.product.price}}</div>
+                    <div id="{{this._id}}total" data-price="{{this.product.price}}" class="price-label outline-label">
+                        {{mult this.quantity this.product.price}}</div>
                 </td>
                 <td class="to-be-hidden"><button class="delete-one-btn btn btn-outline-danger"
                         data-delete-id="{{this._id}}">Xóa</button>
@@ -108,7 +115,7 @@
 
 <nav class="card sticky-bottom navbar-light py-2 mx-auto mt-3 mb-2 table-max-width" style="background-color: #e3f2fd;">
     <div class="d-flex justify-content-between">
-        <div class="form-check d-flex justify-content-end align-items-center ms-3">
+        <div class="form-check d-flex justify-content-center align-items-center ms-3">
             <input class="form-check-input fs-5 my-auto" type="checkbox" id="check-all-2">
             <label class="form-check-label d-flex align-items-center" for="check-all-2">&nbsp;<span
                     class="to-be-hidden">Chọn&nbsp;</span>tất cả<span class="to-be-hidden">({{productQs.length}})</span>
@@ -116,7 +123,14 @@
                     data-bs-target="#confirmDeleteModal">Xóa</button>
             </label>
         </div>
-        <button class="btn btn-warning me-2" type="submit">Đặt hàng</button>
+        <div class="d-flex">
+            <div class="mobile-break d-flex align-items-center">
+                <div>Tổng <span class="to-be-hidden">thanh toán</span>(<span id="total-label">0</span><span
+                        class="to-be-hidden">sản phẩm</span><span>):&nbsp;</span></div>
+                <div id="total" class="price-label fs-4">0đ</div>
+            </div>
+            <button class="btn btn-warning me-2" type="submit">Đặt hàng</button>
+        </div>
     </div>
 </nav>
 
@@ -162,6 +176,7 @@
             checkbox.checked = isChecked;
         });
         checkAll_2.checked = isChecked;
+        setTotal(isChecked);
     });
     checkAll_2.addEventListener('change', (e) => {
         const isChecked = e.target.checked;
@@ -169,16 +184,51 @@
             checkbox.checked = isChecked;
         });
         checkAll_1.checked = isChecked;
+        setTotal(isChecked);
     });
 
+    function setTotal(isChecked) {
+        if (isChecked) {
+            var total = 0;
+            var count = 0;
+            checkBoxes.forEach(checkbox => {
+                count += parseInt(document.getElementById(checkbox.value + 'quantity1').value);
+                total += parseInt(document.getElementById(checkbox.value + 'total').innerHTML);
+            });
+            document.getElementById('total-label').innerHTML = count;
+            document.getElementById('total').innerHTML = total.toLocaleString('vi-VN') + 'đ';
+        }
+        else {
+            const sumTotalLabel = document.getElementById('total-label');
+            sumTotalLabel.innerHTML = 'Tổng thanh toán(0 sản phẩm): ';
+            sumTotalLabel.setAttribute('data-value', count);
+            const sumTotalTag = document.getElementById('total');
+            sumTotalTag.innerHTML = '0đ';
+            sumTotalTag.setAttribute('data-value', 0);
+        }
+    }
     checkBoxes.forEach(checkbox => {
         checkbox.addEventListener('change', (e) => {
             var allChecked = true;
+            var total = 0;
+            var count = 0;
             checkBoxes.forEach(checkbox => {
                 if (!checkbox.checked) {
                     allChecked = false;
                 }
+                else {
+                    const quantity = parseInt(document.getElementById(checkbox.value + 'quantity1').value)
+                    count += quantity;
+                    total += quantity * parseInt(document.getElementById(checkbox.value + 'total').getAttribute('data-price'));
+                }
             });
+            const sumTotalLabel = document.getElementById('total-label');
+            sumTotalLabel.innerHTML = count;
+            sumTotalLabel.setAttribute('data-value', count);
+            const sumTotalTag = document.getElementById('total');
+            sumTotalTag.innerHTML = total.toLocaleString('vi-VN') + 'đ';
+            sumTotalTag.setAttribute('data-value', total);
+
             checkAll_1.checked = allChecked;
             checkAll_2.checked = allChecked;
         })
@@ -218,6 +268,30 @@
     function navigateTo(url) {
         window.location.href = url;
     }
+    function updateQuantity(id, num) {
+        const input1 = document.getElementById(id + 'quantity1');
+        const input2 = document.getElementById(id + 'quantity2');
+        const preValue = parseInt(input1.value)
+        var newValue = preValue + num;
+        const max = parseInt(input1.max);
+        newValue = newValue < 1 ? 1 : newValue > max ? max : newValue;
+        input1.value = newValue;
+        input2.value = newValue;
 
-    //$(".buttons-only").inputSpinner({ buttonsOnly: true, autoInterval: undefined, onfocus: false, buttonsWidth: "1.4rem", })
+        const total = document.getElementById(id + 'total');
+        total.innerHTML = (newValue * parseInt(total.getAttribute('data-price'))).toLocaleString('vi-VN') + 'đ';
+
+        const sumTotalLabel = document.getElementById('total-label');
+        const sumTotalTag = document.getElementById('total');
+        console.log('value: ', preValue, ' new: ', newValue);
+        if (newValue !== preValue && document.getElementById(id + '-checkbox').checked) {
+            console.log('!=');
+            const k = parseInt(sumTotalLabel.getAttribute('data-value')) + num;
+            sumTotalLabel.innerHTML = k;
+            sumTotalLabel.setAttribute('data-value', k);
+            const sumTotal = parseInt(sumTotalTag.getAttribute('data-value')) + num * parseInt(total.getAttribute('data-price'))
+            sumTotalTag.innerHTML = sumTotal.toLocaleString('vi-VN') + 'đ';
+            sumTotalTag.setAttribute('data-value', sumTotal);
+        }
+    }
 </script>
