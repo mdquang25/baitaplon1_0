@@ -125,11 +125,11 @@
         </div>
         <div class="d-flex">
             <div class="mobile-break d-flex align-items-center">
-                <div>Tổng <span class="to-be-hidden">thanh toán</span>(<span id="total-label">0</span><span
-                        class="to-be-hidden">sản phẩm</span><span>):&nbsp;</span></div>
-                <div id="total" class="price-label fs-4">0đ</div>
+                <div>Tổng <span class="to-be-hidden">thanh toán</span>(<span id="total-label"
+                        data-value="0">0</span><span class="to-be-hidden"> sản phẩm</span><span>):&nbsp;</span></div>
+                <div id="total" class="price-label fs-4" data-value="0">0đ</div>
             </div>
-            <button class="btn btn-warning me-2" type="submit">Đặt hàng</button>
+            <button class="btn btn-warning ms-1 me-2" type="submit">Đặt hàng</button>
         </div>
     </div>
 </nav>
@@ -192,16 +192,21 @@
             var total = 0;
             var count = 0;
             checkBoxes.forEach(checkbox => {
-                count += parseInt(document.getElementById(checkbox.value + 'quantity1').value);
-                total += parseInt(document.getElementById(checkbox.value + 'total').innerHTML);
+                const quantity = parseInt(document.getElementById(checkbox.value + 'quantity1').value);
+                count += quantity;
+                total += quantity * parseInt(document.getElementById(checkbox.value + 'total').getAttribute('data-price'));
             });
-            document.getElementById('total-label').innerHTML = count;
-            document.getElementById('total').innerHTML = total.toLocaleString('vi-VN') + 'đ';
+            const sumTotalLabel = document.getElementById('total-label');
+            const sumTotalTag = document.getElementById('total');
+            sumTotalLabel.innerHTML = count;
+            sumTotalLabel.setAttribute('data-value', count);
+            sumTotalTag.innerHTML = total.toLocaleString('vi-VN') + 'đ';
+            sumTotalTag.setAttribute('data-value', total);
         }
         else {
             const sumTotalLabel = document.getElementById('total-label');
-            sumTotalLabel.innerHTML = 'Tổng thanh toán(0 sản phẩm): ';
-            sumTotalLabel.setAttribute('data-value', count);
+            sumTotalLabel.innerHTML = '0';
+            sumTotalLabel.setAttribute('data-value', 0);
             const sumTotalTag = document.getElementById('total');
             sumTotalTag.innerHTML = '0đ';
             sumTotalTag.setAttribute('data-value', 0);
@@ -217,15 +222,15 @@
                     allChecked = false;
                 }
                 else {
-                    const quantity = parseInt(document.getElementById(checkbox.value + 'quantity1').value)
+                    const quantity = parseInt(document.getElementById(checkbox.value + 'quantity1').value);
                     count += quantity;
                     total += quantity * parseInt(document.getElementById(checkbox.value + 'total').getAttribute('data-price'));
                 }
             });
             const sumTotalLabel = document.getElementById('total-label');
+            const sumTotalTag = document.getElementById('total');
             sumTotalLabel.innerHTML = count;
             sumTotalLabel.setAttribute('data-value', count);
-            const sumTotalTag = document.getElementById('total');
             sumTotalTag.innerHTML = total.toLocaleString('vi-VN') + 'đ';
             sumTotalTag.setAttribute('data-value', total);
 
