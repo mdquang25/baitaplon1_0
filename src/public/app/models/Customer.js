@@ -24,7 +24,15 @@ const Customer = new mongoose.Schema(
         timestamps: true,
     },
 );
-
+Customer.pre('save', function (next) {
+    if (this.phoneNumber) {
+        const parsedNumber = PhoneNumber.parsePhoneNumberFromString(this.phoneNumber, 'VN');
+        if (parsedNumber && parsedNumber.isValid()) {
+            this.phoneNumber = parsedNumber;
+        }
+    }
+    next();
+});
 Customer.plugin(softDelete);
 
 module.exports = mongoose.model('Customer', Customer);

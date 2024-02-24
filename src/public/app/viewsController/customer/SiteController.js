@@ -7,6 +7,7 @@ const { multiMongooseToObjs, mongooseToObj } = require('../../../../util/mongoos
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const Carousel = require('../../models/Carousel');
+const { isValidPhoneNumber } = require('libphonenumber-js/mobile');
 
 class SiteController {
     index(req, res, next) {
@@ -96,7 +97,7 @@ class SiteController {
                 if (doc) {
                     res.render('customer/sign-up', { pageTitle: 'Đăng ký', layout: 'no-header', error: 'Tài khoản đã tồn tại!', shopInfo: res.locals.shopInfo, })
                 }
-                else {
+                else if(isValidPhoneNumber(req.body.phoneNumber)){
                     const password = req.body.password;
                     bcrypt.genSalt(10, function (err, salt) {
                         if (err) {
@@ -122,7 +123,10 @@ class SiteController {
                         });
                     });
                     res.redirect('/dangnhap');
-                }                   
+                }
+                else
+                    res.render('customer/sign-up', { pageTitle: 'Đăng ký', layout: 'no-header', error: 'Số điện thoại không hợp lệ!', shopInfo: res.locals.shopInfo, })
+
         })
     }
 

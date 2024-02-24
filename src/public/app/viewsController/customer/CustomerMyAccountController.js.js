@@ -1,6 +1,7 @@
 const Customer = require('../../models/Customer');
 const { mongooseToObj } = require('../../../../util/mongoose');
 const bcrypt = require('bcryptjs');
+const { isValidPhoneNumber } = require('libphonenumber-js/mobile');
 
 class CustomerAcountManagementController {
     showInfo(req, res, next) {
@@ -30,9 +31,10 @@ class CustomerAcountManagementController {
         Customer.findById(req.session.user.id)
             .then(account => {
                 account.fullName = req.body.fullName;
-                account.phoneNumber = req.body.phoneNumber;
                 account.address = req.body.address;
                 account.dateOfBirth = req.body.dateOfBirth;
+                if(isValidPhoneNumber(req.body.phoneNumber))
+                    account.phoneNumber = req.body.phoneNumber;
                 account.save();
                 req.session.user.fullName = account.fullName;
                 res.redirect('/taikhoan/xem');

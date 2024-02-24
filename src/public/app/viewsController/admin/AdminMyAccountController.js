@@ -1,6 +1,7 @@
 const Admin = require('../../models/Admin');
 const { mongooseToObj } = require('../../../../util/mongoose');
 const bcrypt = require('bcryptjs');
+const { isValidPhoneNumber } = require('libphonenumber-js/mobile');
 
 class AdminAcountManagementController {
     showInfo(req, res, next) {
@@ -31,9 +32,10 @@ class AdminAcountManagementController {
         Admin.findById(req.session.manager.id)
             .then(account => {
                 account.fullName = req.body.fullName;
-                account.phoneNumber = req.body.phoneNumber;
                 account.address = req.body.address;
                 account.dateOfBirth = req.body.dateOfBirth;
+                if(isValidPhoneNumber(req.body.phoneNumber))
+                    account.phoneNumber = req.body.phoneNumber;
                 account.save();
                 req.session.manager.fullName = account.fullName;
                 res.redirect('/admin/taikhoancuatoi/xem');

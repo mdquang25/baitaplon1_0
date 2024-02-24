@@ -17,7 +17,12 @@ class CartController {
                     .then(doc => {
                         if (doc) {
                             doc.quantity++;
-                            doc.save();
+                            ( ()=> new Promise((resolve, reject)=>{
+                                doc.save();
+                                resolve();
+                            }))().then(() => {
+                                res.redirect('back');
+                            });
                         }
                         else {
                             const productQ = new ProductQ({
@@ -25,13 +30,13 @@ class CartController {
                                 productSlug: req.params.slug,
                                 quantity: 1,
                             });
-                            productQ.save();
                             cart.newProduct = true;
-                            cart.save();
+                            Promise.all([productQ.save(), cart.save()]).then(() => {
+                                res.redirect('back');
+                            });
                         }
                     })
             })
-        res.redirect('back');
     }
     //[GET] /giohang
     products(req, res, next) {

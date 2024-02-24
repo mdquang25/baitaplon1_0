@@ -1,0 +1,16 @@
+{
+    "folder-color.pathColors": [
+        {
+            "folderPath": "baitaplon1_0\\src\\sources\\views\\",
+            "color": "foldercolorizer.ChartreuseGreen"
+        },
+        {
+            "folderPath": "baitaplon1_0\\src\\public\\app\\models\\",
+            "color": "foldercolorizer.PaleVioletRed"
+        },
+        {
+            "folderPath": "baitaplon1_0\\src\\public\\app\\viewsController\\",
+            "color": "foldercolorizer.PastelYellow"
+        }
+    ]
+}
