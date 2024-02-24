@@ -34,7 +34,7 @@ class AdminAcountManagementController {
                 account.fullName = req.body.fullName;
                 account.address = req.body.address;
                 account.dateOfBirth = req.body.dateOfBirth;
-                if(isValidPhoneNumber(req.body.phoneNumber))
+                if(isValidPhoneNumber(req.body.phoneNumber, 'VN'))
                     account.phoneNumber = req.body.phoneNumber;
                 account.save();
                 req.session.manager.fullName = account.fullName;

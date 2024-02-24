@@ -60,7 +60,7 @@ class CartController {
                     }).then(productQs => {
                         cart.newProduct = false;
                         cart.save();
-                        res.render('customer/cart/cart-products', { pageTitle: 'Giỏ hàng', isLoggedin: req.session.isLoggedin, productQs, shopInfo: res.locals.shopInfo, })
+                        res.render('customer/cart/cart-products', { pageTitle: 'Giỏ hàng', isLoggedin: req.session.isLoggedin, productQs, cart: res.locals.cart, shopInfo: res.locals.shopInfo, })
                     });
             });
     }

@@ -22,9 +22,9 @@ class EmployeeAccountsManagementController {
     //[POST] /admin/taikhoan-nhanvien/them
     async saveNewAccount(req, res) {
         try {
-            if (req.body.phoneNumber && !isValidPhoneNumber(req.body.phoneNumber))
+            if (req.body.phoneNumber && !isValidPhoneNumber(req.body.phoneNumber, 'VN'))
                 delete req.body.phoneNumber;
-            
+
             const employee = new Admin(req.body);
             const initPassword = generateShortPassword(6);
             employee.initPassword = initPassword;

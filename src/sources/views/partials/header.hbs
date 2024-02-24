@@ -5,8 +5,7 @@
             Gọi ngay: {{shopInfo.phoneNumber}}
         </div>
         <div class="fa fa-2x">
-            <a href="{{shopInfo.linkFacebook}}"><i
-                    class="m-2 fa-brands fa-facebook"></i></a>
+            <a href="{{shopInfo.linkFacebook}}"><i class="m-2 fa-brands fa-facebook"></i></a>
             <a href="{{shopInfo.linkYoutube}}"><i class="m-2 fa-brands fa-youtube"></i></a>
             <a href="{{shopInfo.linkGoogleMap}}"><i class="m-2 fa-solid fa-map-location-dot"></i></a>
         </div>
@@ -15,11 +14,12 @@
 
 <div id="isLoggedin" class="d-none">{{isLoggedin}}</div>
 <!--MAIN NAVBAR====================================-->
-<nav class="second-nav sticky-top navbar navbar-expand-md navbar-dark bg-dark py-0" data-bs-theme="dark" style="z-index: 9999;">
+<nav class="second-nav sticky-top navbar navbar-expand-md navbar-dark bg-dark py-0" data-bs-theme="dark"
+    >
     <div class="second-nav-content container-fluid d-flex mx-4 justify-content-start">
         <a class="navbar-brand" href="/">
-            <img src="/assets/icons/icon1.jpg" style="border-radius: 50%; border: 3px solid yellow;"
-                alt="Logo" width="64" height="64" class="d-inline-block align-text-top">
+            <img src="/assets/icons/icon1.jpg" style="border-radius: 50%; border: 3px solid yellow;" alt="Logo"
+                width="64" height="64" class="d-inline-block align-text-top">
         </a>
         <div id="my-account-dropdown" class="nav-item dropdown">
             <div class="outline-label1 dropdown-toggle font1" role="button" data-bs-toggle="dropdown"
@@ -83,7 +83,8 @@
                 <input id="newProduct" type="text" class="d-none" value="{{cart.newProduct}}">
                 <input id="newOrderUpdate" type="text" class="d-none" value="{{cart.newOrderUpdate}}">
                 <span id="red-dot"
-                    class="d-none position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger text-danger" style="font-size: .5rem;">*
+                    class="d-none position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger text-danger"
+                    style="font-size: .5rem;">*
                     <span class="visually-hidden">sản phẩm trong giỏ hàng</span>
                 </span>
             </div>
@@ -135,7 +136,7 @@
     const newOrderUpdate = document.getElementById('newOrderUpdate').value;
     const redDot = document.getElementById('red-dot');
 
-    if(newProduct==='true' || newOrderUpdate === 'true'){
+    if (newProduct === 'true' || newOrderUpdate === 'true') {
         redDot.classList.remove('d-none');
     }
 

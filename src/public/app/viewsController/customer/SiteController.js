@@ -97,7 +97,7 @@ class SiteController {
                 if (doc) {
                     res.render('customer/sign-up', { pageTitle: 'Đăng ký', layout: 'no-header', error: 'Tài khoản đã tồn tại!', shopInfo: res.locals.shopInfo, })
                 }
-                else if(isValidPhoneNumber(req.body.phoneNumber)){
+                else if (isValidPhoneNumber(req.body.phoneNumber, 'VN')) {
                     const password = req.body.password;
                     bcrypt.genSalt(10, function (err, salt) {
                         if (err) {
@@ -127,7 +127,7 @@ class SiteController {
                 else
                     res.render('customer/sign-up', { pageTitle: 'Đăng ký', layout: 'no-header', error: 'Số điện thoại không hợp lệ!', shopInfo: res.locals.shopInfo, })
 
-        })
+            })
     }
 
     //[GET] /dangxuat
