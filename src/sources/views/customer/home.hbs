@@ -1,9 +1,9 @@
-<div class="row justify-content-center">
+<div class="row col-12 mx-auto justify-content-center">
     <div class="col-sm-8 col-md-6 px-0">
         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 {{#each carousels}}
-                <div class="carousel-item"  onclick="navigateTo('{{this.link}}')">
+                <div class="carousel-item" style="max-height: 10rem;" onclick="navigateTo('{{this.link}}')">
                     <img src="{{this.imageUrl}}" class="d-block w-100" alt="{{this.title}}">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>{{this.title}}</h5>
@@ -38,10 +38,11 @@
     {{/each}}
 </div>
 
-<div class="row">
+<div class="row col-12 mx-auto">
     {{#each products}}
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 p-0 mb-1 mb-sm-0  d-flex justify-content-center">
-        <div onclick="navigateTo('/sanpham/{{this.slug}}/chitiet')" data-name="cards" class="card product-card mb-1" style="height: 24rem; width: 13rem; max-width:inherit;">
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2 p-0 mb-1 mb-sm-0">
+        <div onclick="navigateTo('/sanpham/{{this.slug}}/chitiet')" data-name="cards"
+            class="card product-card mb-1 mx-auto" style="height: 24rem; width: 13rem; max-width:inherit;">
             <img src="{{valueAt this.imagesUrls this.mainImageIndex}}" class="card-img-top card-image object-fit-cover"
                 alt="{{this.name}}">
             <div class="card-body">
@@ -88,6 +89,6 @@
     })
 
     function navigateTo(url) {
-            window.location.href = url;
-        }
+        window.location.href = url;
+    }
 </script>

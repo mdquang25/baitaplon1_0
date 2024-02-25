@@ -1,6 +1,7 @@
 const Customer = require('../../models/Customer');
 const Cart = require('../../models/Cart');
 const ProductQ = require('../../models/ProductQ');
+const Order = require('../../models/Order');
 const Category = require('../../models/ProductCategory');
 const Type = require('../../models/ProductType');
 const Product = require('../../models/Product');
@@ -92,6 +93,22 @@ class CartController {
                         res.redirect('back');
                     }).catch(next);
             }).catch(next);
+    }
+
+    //[GET] /giohang/don-mua
+    orders(req, res, next) {
+        Cart.findById(req.session.user.cartId)
+            .then(cart => {
+                Order.find({ cartId: cart._id })
+                    .then(docs => {
+                        var orderQPromises;
+                        var orders;
+                            orders = multiMongooseToObjs(docs);
+                        cart.newOrderUpdate = false;
+                        cart.save();
+                        res.render('customer/cart/cart-orders', { pageTitle: 'Đơn mua', isLoggedin: req.session.isLoggedin, orders, cart: res.locals.cart, shopInfo: res.locals.shopInfo, })
+                    });
+            });
     }
 }
 

@@ -1,3 +1,7 @@
+.app {
+  background-color: rgb(191, 255, 234);
+}
+
 .btn {
   min-width: fit-content;
 }
