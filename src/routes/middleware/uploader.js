@@ -1,5 +1,5 @@
 const multer = require('multer');
-
+const path = require('path');
 // Configure the destination and filename for uploaded images
 const storage = multer.diskStorage({
     // destination: function (req, file, cb) {
