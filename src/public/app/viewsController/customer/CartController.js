@@ -12,6 +12,7 @@ const { validationResult } = require('express-validator');
 class CartController {
     //[GET] /giohang/them/:slug
     addProduct(req, res, next) {
+        console.log('add to cart - customer');
         Cart.findById(req.session.user.cartId)
             .then(cart => {
                 ProductQ.findOne({ cartId: cart._id, productSlug: req.params.slug })
@@ -41,6 +42,7 @@ class CartController {
     }
     //[GET] /giohang
     products(req, res, next) {
+        console.log('cart products - customer');
         Cart.findById(req.session.user.cartId)
             .then(cart => {
                 ProductQ.find({ cartId: cart._id })
@@ -68,6 +70,7 @@ class CartController {
 
     //[DELETE] /giohang/xoa-chon
     deleteSelected(req, res, next) {
+        console.log('delete selected products - customer');
         Cart.findById(req.session.user.cartId)
             .then(cart => {
                 cart.productQ_id = cart.productQ_id.filter((element) => !req.body.productQ_ids.includes(element));
@@ -81,6 +84,7 @@ class CartController {
 
     //[DELETE] /giohang/sanpham/xoa
     removeProduct(req, res, next) {
+        console.log('remove one product - customer');
         Cart.findById(req.session.user.cartId)
             .then(cart => {
                 const index = cart.productQ_id.indexOf(req.body.deleteId);
@@ -97,6 +101,7 @@ class CartController {
 
     //[GET] /giohang/don-mua
     orders(req, res, next) {
+        console.log('cart orders - customer');
         Cart.findById(req.session.user.cartId)
             .then(cart => {
                 Order.find({ cartId: cart._id })

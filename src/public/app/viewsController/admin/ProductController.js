@@ -10,6 +10,7 @@ const path = require('path');
 
 class ProductController {
     productManagement(req, res, next) {
+        console.log('products - admin');
         Product.find({})
             .then(products => {
                 res.render('admin/product/products', { pageTitle: 'Quản lý sản phẩm', layout: 'admin', isAdmin: req.session.isAdmin, products: multiMongooseToObjs(products), });
@@ -18,7 +19,7 @@ class ProductController {
 
     //[GET] //admin/kho/sanpham/them
     addProduct(req, res, next) {
-        console.log('addProduct');
+        console.log('add product - admin');
         Category.find({})
             .then(docs => {
                 const objs = multiMongooseToObjs(docs);
@@ -40,6 +41,7 @@ class ProductController {
     }
     //[POST] //admin/kho/sanpham/them
     async saveProduct(req, res, next) {
+        console.log('save product - admin');
         const product = new Product(req.body);
         const files = req.files;
 
@@ -73,7 +75,7 @@ class ProductController {
 
     //[GET] //admin/kho/sanpham/:slug
     productDetails(req, res, next) {
-        console.log('details');
+        console.log('product details - admin');
         Product.findOne({ slug: req.params.slug })
             .then(product => {
                 if (product) Type.find({ _id: { $in: product.typesIds } })
@@ -85,6 +87,7 @@ class ProductController {
     }
     //[GET] //admin/kho/sanpham/sua/:slug
     modifyProduct(req, res, next) {
+        console.log('modify product - admin');
         Category.find({})
             .then(docs => {
                 const objects = multiMongooseToObjs(docs);
@@ -106,6 +109,7 @@ class ProductController {
     }
     //[PUT] //admin/kho/sanpham/sua
     saveModifiedProduct(req, res, next) {
+        console.log('save modified product - admin');
         Product.findOne({ slug: req.params.slug })
             .then(product => {
                 product.name = req.body.name;
@@ -131,18 +135,18 @@ class ProductController {
                         product.imagesUrls = imagePaths;
                     console.log('product.imagesUrls: ', product.imagesUrls);
 
-                    files.forEach(file => {
-                        bucket.upload('src/public/uploads/' + file.filename, {
-                            gzip: true,
-                            destination: 'images/' + file.filename,
-                            metadata: {
-                                contentType: file.mimetype,
-                                cacheControl: 'public, max-age=31536000'
-                            }
-                        })
-                        const imageRef = bucket.ref().child('path/to/image.jpg');
-                        imageRef.getDownloadURL()
-                    })
+                    // files.forEach(file => {
+                    //     bucket.upload('src/public/uploads/' + file.filename, {
+                    //         gzip: true,
+                    //         destination: 'images/' + file.filename,
+                    //         metadata: {
+                    //             contentType: file.mimetype,
+                    //             cacheControl: 'public, max-age=31536000'
+                    //         }
+                    //     })
+                    //     const imageRef = bucket.ref().child('path/to/image.jpg');
+                    //     imageRef.getDownloadURL()
+                    // })
 
                 };
                 const unwantedUrls = oldUrls.filter(element => !req.body.imagesUrls.includes(element));
@@ -165,9 +169,9 @@ class ProductController {
     }
     //[PATCH] /admin/kho/sanpham/xoa/:id
     deleteProduct(req, res, next) {
+        console.log('delete product - admin');
         Product.findByIdAndDelete(req.body.deleteId)
             .then((product) => {
-                console.log('one product: ', product);
                 product.imagesUrls.forEach(function (url) {
                     fs.unlink(path.join(__dirname, '..', '..', '..', url), (err) => {
                         if (err) {
@@ -182,6 +186,7 @@ class ProductController {
     }
     //[PATCH] /admin/kho/sanpham/xoachon
     deleteManyProducts(req, res, next) {
+        console.log('delete many product - admin');
         Product.find({ _id: { $in: req.body.product_ids } })
             .then((docs) => {
                 if (docs) {

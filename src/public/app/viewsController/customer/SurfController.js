@@ -3,6 +3,7 @@ const { mongooseToObj, multiMongooseToObjs } = require('../../../../util/mongoos
 
 class ProductController {
     productDetails(req, res, next) {
+        console.log('product details - customer');
         Product.findOne({ slug: req.params.slug })
             .then(product => {
                 res.render('customer/product/product-details', { pageTitle: product.name, product: mongooseToObj(product), isLoggedin: req.session.isLoggedin, cart: res.locals.cart, shopInfo: res.locals.shopInfo, })

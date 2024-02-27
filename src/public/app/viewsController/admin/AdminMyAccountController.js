@@ -5,6 +5,7 @@ const { isValidPhoneNumber } = require('libphonenumber-js/mobile');
 
 class AdminAcountManagementController {
     showInfo(req, res, next) {
+        console.log('show info - admin');
         Admin.findById(req.session.manager.id)
             .then((user) => {
                 const account = {
@@ -18,6 +19,7 @@ class AdminAcountManagementController {
     }
 
     modify(req, res, next) {
+        console.log('modify my account - admin');
         Admin.findById(req.session.manager.id)
             .then((user) => {
                 const account = mongooseToObj(user);
@@ -28,6 +30,7 @@ class AdminAcountManagementController {
 
     //[PATCH] /admin/taikhoancuatoi/sua
     saveModify(req, res, next) {
+        console.log('save modify my account - admin');
         console.log(req.body.dateOfBirth);
         Admin.findById(req.session.manager.id)
             .then(account => {
@@ -43,11 +46,13 @@ class AdminAcountManagementController {
     }
 
     changePassword(req, res, next) {
+        console.log('change password - admin');
         res.render('admin/account/change-password', { pageTitle: 'Đổi mật khẩu', layout: 'no-header-footer', isAdmin: req.session.isAdmin, });
     }
 
     //[PATCH] /admin/taikhoancuatoi/doimatkhau
-    saveChangePassword(req, res, next){
+    saveChangePassword(req, res, next) {
+        console.log('save change password - admin');
         Admin.findById(req.session.manager.id)
             .then(user => {
                 if (req.body.password1 === req.body.password2) {

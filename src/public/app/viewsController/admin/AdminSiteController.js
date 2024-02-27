@@ -4,12 +4,14 @@ const bcrypt = require('bcryptjs');
 
 class adminSiteController {
     index(req, res) {
+        console.log('home - admin');
         console.log(req.session.manager);
         res.render('admin/admin-home', { pageTitle: 'Trang chủ Admin', layout: 'admin', isAdmin: req.session.isAdmin, user: req.session.manager });
     }
 
     //[GET] /admin/login
     login(req, res) {
+        console.log('login - admin');
         if (req.session.manager)
             res.redirect('/admin');
         else
@@ -18,6 +20,7 @@ class adminSiteController {
 
     //[POST] /admin/login
     checkLogin(req, res, next) {
+        console.log('check login - admin');
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             console.log('validation error');
@@ -34,6 +37,7 @@ class adminSiteController {
                         fullName: admin.fullName,
                     };
                     req.session.isAdmin = admin.isAdmin;
+                    console.log('logged in - admin');
                     res.redirect('/admin');
                 } else {
                     console.log('Invalid admin password');
@@ -52,17 +56,19 @@ class adminSiteController {
                     .then(admin => {
                         if (admin)
                         {
-                            console.log('3');
                             checkPassword(admin);
                         }
                         else
                             res.render('admin/admin-login', { pageTitle: 'Admin đăng nhập', layout: 'no-header-footer', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body });
-                    }).catch(next);
+                    }).catch(() => {
+                        res.render('admin/admin-login', { pageTitle: 'Admin đăng nhập', layout: 'no-header-footer', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body });
+                    });
             });
     }
     
     //[POST] /admin/dangxuat
     logout(req, res) {
+        console.log('logout - admin');
         req.session.destroy();
         res.redirect('/admin/dangnhap');
     }

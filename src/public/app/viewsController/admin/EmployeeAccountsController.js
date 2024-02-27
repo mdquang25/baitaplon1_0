@@ -7,6 +7,7 @@ const { isValidPhoneNumber } = require('libphonenumber-js/mobile');
 class EmployeeAccountsManagementController {
     //[GET] /admin/taikhoan-nhanvien
     accounts(req, res) {
+        console.log('emplyees accounts - admin');
         Admin.find({ isAdmin: { $ne: 'true' } })
             .then(docs => {
                 const accounts = multiMongooseToObjs(docs);
@@ -16,11 +17,13 @@ class EmployeeAccountsManagementController {
 
     //[GET] /admin/taikhoan-nhanvien/them
     add(req, res) {
+        console.log('add employee account - admin');
         res.render('admin/employees-account/add', { pageTitle: 'Thêm tài khoản nhân viên', layout: 'admin', isAdmin: req.session.isAdmin, })
     }
 
     //[POST] /admin/taikhoan-nhanvien/them
     async saveNewAccount(req, res) {
+        console.log('save employee account - admin');
         try {
             if (req.body.phoneNumber && !isValidPhoneNumber(req.body.phoneNumber, 'VN'))
                 delete req.body.phoneNumber;
@@ -43,6 +46,7 @@ class EmployeeAccountsManagementController {
 
     //[PATCH] /admin/taikhoan-nhanvien/xoa
     deleteAccount(req, res) {
+        console.log('delete employee account - admin');
         Admin.findByIdAndDelete(req.body.deleteId).then(() => {
             res.redirect('/admin/taikhoan-nhanvien');
         })

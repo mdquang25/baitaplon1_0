@@ -11,6 +11,7 @@ const { isValidPhoneNumber } = require('libphonenumber-js/mobile');
 
 class SiteController {
     index(req, res, next) {
+        console.log('home page - customer');
         Category.find({})
             .then(docs => {
                 const objs = multiMongooseToObjs(docs);
@@ -32,6 +33,7 @@ class SiteController {
     }
 
     login(req, res) {
+        console.log('log in - customer');
         if (req.session.isLoggedin)
             res.redirect('/');
         else {
@@ -41,6 +43,7 @@ class SiteController {
 
     //[POST] /dangnhap
     checkLogin(req, res, next) {
+        console.log('check log in - customer');
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             // Handle validation errors, such as sending an error response
@@ -65,6 +68,7 @@ class SiteController {
                             cartId: customer.cartId,
                         };
                         req.session.isLoggedin = true;
+                        console.log('logged in - customer');
                         res.redirect('/');
                     } else {
                         console.log('Invalid password');
@@ -77,6 +81,7 @@ class SiteController {
 
 
     signUp(req, res) {
+        console.log('sign up - customer');
         if (req.session.isLoggedin)
             res.redirect('/');
         else
@@ -85,6 +90,7 @@ class SiteController {
 
     //[POST] /dangky
     checkCreateAccount(req, res) {
+        console.log('check create new account - customer');
         const errors = validationResult(req);
 
         if (!errors.isEmpty()) {
@@ -120,6 +126,7 @@ class SiteController {
                             req.body.cartId = cart._id;
                             const customer = new Customer(req.body);
                             customer.save();
+                            console.log('created new account - customer');
                         });
                     });
                     res.redirect('/dangnhap');
@@ -132,11 +139,13 @@ class SiteController {
 
     //[GET] /dangxuat
     logout(req, res) {
+        console.log('log out - customer');
         req.session.destroy();
         res.redirect('/');
     }
 
     notFound(req, res) {
+        console.log('not found page?? - customer');
         res.render('not-found', { pageTitle: 'Không tìm thấy trang', layout: 'no-header-footer', });
     }
 }

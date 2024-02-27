@@ -25,8 +25,8 @@ router.delete('/phanloai/xoa', requireManagerLogin, typeController.deleteType);
 router.get('/chude/:slug/phanloai/:typeslug/sua', requireManagerLogin, typeController.modifyType);
 router.get('/chude/:slug/them-phanloai', requireManagerLogin, typeController.addType);
 
-router.post('/sanpham/them', requireManagerLogin, uploader.array('images', 10), productController.saveProduct);
-router.post('/sanpham/:slug/sua', requireManagerLogin, uploader.array('images', 10), productController.saveModifiedProduct);
+router.post('/sanpham/them', requireManagerLogin, uploader.array('images', 20), productController.saveProduct);
+router.post('/sanpham/:slug/sua', requireManagerLogin, uploader.array('images', 20), productController.saveModifiedProduct);
 router.patch('/sanpham/xoa', requireManagerLogin, productController.deleteProduct);
 router.patch('/sanpham/xoachon', requireManagerLogin, productController.deleteManyProducts);
 

@@ -8,10 +8,12 @@ const path = require('path');
 
 class ShopInfoController {
     index(req, res) {
+        console.log('shop - admin');
         res.redirect('/admin/shop/thongtin');
     }
 
     info(req, res, next) {
+        console.log('shop info - admin');
         ShopInfo.findOne({})
             .then(doc => {
                 let info;
@@ -23,6 +25,7 @@ class ShopInfoController {
 
     //[PUT] /admin/shop/thongtin/luu
     saveInfo(req, res, next) {
+        console.log('save shop info - admin');
         ShopInfo.findOneAndUpdate({}, req.body)
             .then(doc => {
                 if (!doc) {
@@ -36,6 +39,7 @@ class ShopInfoController {
     }
     //[POST] /admin/shop/quangcao/luu
     saveCarousel(req, res, next) {
+        console.log('save carousel - admin');
         const carousel = new Carousel(req.body);
         const file = req.file;
         if (!file) {
@@ -50,6 +54,7 @@ class ShopInfoController {
 
     //[GET] /admin/shop/quangcao
     carousels(req, res, next) {
+        console.log('carousels - admin');
         Carousel.find({})
             .then(docs => {
                 var carousels;
@@ -61,6 +66,7 @@ class ShopInfoController {
     }
     //[GET] /admin/shop/quangcao/them
     addCarousel(req, res, next) {
+        console.log('add carousel - admin');
         res.render('admin/shop-info/add-carousel', { pageTitle: 'Thêm tin quảng cáo', layout: 'admin', isAdmin: req.session.isAdmin, });  
     }
 }

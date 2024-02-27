@@ -5,6 +5,7 @@ const { isValidPhoneNumber } = require('libphonenumber-js/mobile');
 
 class CustomerAcountManagementController {
     showInfo(req, res, next) {
+        console.log('show my info - customer');
         Customer.findById(req.session.user.id)
             .then((user) => {
                 const account = {
@@ -18,6 +19,7 @@ class CustomerAcountManagementController {
     }
 
     modify(req, res, next) {
+        console.log('modify my info - customer');
         Customer.findById(req.session.user.id)
             .then((user) => {
                 const account = mongooseToObj(user);
@@ -28,6 +30,7 @@ class CustomerAcountManagementController {
 
     //[PATCH] /customer/taikhoancuatoi/sua
     saveModify(req, res, next) {
+        console.log('save modify my info - customer');
         Customer.findById(req.session.user.id)
             .then(account => {
                 account.fullName = req.body.fullName;
@@ -42,11 +45,13 @@ class CustomerAcountManagementController {
     }
 
     changePassword(req, res, next) {
+        console.log('change password - customer');
         res.render('customer/account/change-password', { pageTitle: 'Đổi mật khẩu', layout: 'no-header', isLoggedin: req.session.isLoggedin, shopInfo: res.locals.shopInfo, });
     }
 
     //[PATCH] /customer/taikhoancuatoi/doimatkhau
     saveChangePassword(req, res, next) {
+        console.log('save change password - customer');
         Customer.findById(req.session.user.id)
             .then(user => {
                 if (req.body.password1 === req.body.password2) {

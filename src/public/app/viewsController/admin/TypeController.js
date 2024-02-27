@@ -8,12 +8,14 @@ const path = require('path');
 class TypeController {
     //[GET] /admin/kho/chude/:slug/them-phanloai
     addType(req, res, next) {
+        console.log('add type - admin');
         Category.findOne({ slug: req.params.slug }).then((category) => {
             res.render('admin/product/add-type', { pageTitle: 'Thêm phân loại', layout: 'admin', isAdmin: req.session.isAdmin, category: mongooseToObj(category) });
         }).catch(next);
     }
     //[POST] /admin/kho/chude/:slug/them-phanloai/luu
     saveType(req, res) {
+        console.log('add type - admin');
         const type = new Type(req.body);
         const file = req.file;
         if (!file) {
@@ -32,6 +34,7 @@ class TypeController {
 
     //[GET] /admin/kho/chude/:slug/phanloai/:typeslug/sua
     modifyType(req, res, next) {
+        console.log('modify type - admin');
         Category.findOne({ slug: req.params.slug }).then((category) => {
             Type.findOne({ slug: req.params.typeslug }).then((type) => {
                 res.render('admin/product/modify-type', { pageTitle: 'Sửa phân loại', layout: 'admin', isAdmin: req.session.isAdmin, category: mongooseToObj(category), type: mongooseToObj(type), });
@@ -40,6 +43,7 @@ class TypeController {
     }
     //[PATCH] /admin/kho/chude/:slug/phanloai/:typeslug/sua
     saveModifiedType(req, res, next) {
+        console.log('save modify type - admin');
         Type.findOne({ slug: req.params.typeslug })
             .then(type => {
                 type.name = req.body.name;
@@ -66,6 +70,7 @@ class TypeController {
 
     //[DELETE] /admin/kho/phanloai/xoa
     deleteType(req, res, next) {
+        console.log('delete type - admin');
         Type.findByIdAndDelete(req.body.deleteId)
             .then(type => {
                 if (type.imageUrl)

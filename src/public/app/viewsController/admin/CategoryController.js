@@ -7,6 +7,7 @@ const path = require('path');
 
 class CategoryController {
     index(req, res, next) {
+        console.log('categories - admin');
         Category.find({})
             .then((docs) => {
                 const categories = multiMongooseToObjs(docs);
@@ -42,11 +43,13 @@ class CategoryController {
     }
 
     addCategory(req, res) {
+        console.log('add category- admin');
         res.render('admin/product/add-category', { pageTitle: 'Thêm phân chủ đề', layout: 'admin', isAdmin: req.session.isAdmin, });
     }
 
     //[POST] /admin/kho/chude/luu
     saveCategory(req, res) {
+        console.log('save category - admin');
         const category = new Category(req.body);
         category.save();
         console.log('category is saved!');
@@ -57,6 +60,7 @@ class CategoryController {
 
     //[DELETE] /admin/kho/chude/xoa
     deleteCategory(req, res, next) {
+        console.log('delete category - admin');
         Category.findByIdAndDelete(req.body.deleteId)
             .then(category => {
                 Type.find({ categoryId: category._id })
@@ -82,6 +86,7 @@ class CategoryController {
 
     //[GET] /admin/kho/chude/:slug/sua
     modifyCategory(req, res, next) {
+        console.log('modify category - admin');
         Category.findOne({ slug: req.params.slug })
             .then(category => {
                 res.render('admin/product/modify-category', { pageTitle: 'Sửa chủ đề', layout: 'admin', category: mongooseToObj(category), isAdmin: req.session.isAdmin, });
@@ -89,6 +94,7 @@ class CategoryController {
     }
     //[PATCH] /admin/kho/chude/:slug/sua
     saveModifiedCategory(req, res) {
+        console.log('save modify category - admin');
         Category.findOneAndUpdate({ slug: req.params.slug }, { $set: { name: req.body.name, description: req.body.description, } },)
             .then(res.redirect('/admin/kho/chude-phanloai'))
             .catch(next);
@@ -96,6 +102,7 @@ class CategoryController {
 
     //[GET] /admin/kho/chude/:slug
     categoryDetails(req, res, next) {
+        console.log('category details - admin');
         Category.findOne({ slug: req.params.slug })
             .then((doc) => {
                 const category = mongooseToObj(doc);
