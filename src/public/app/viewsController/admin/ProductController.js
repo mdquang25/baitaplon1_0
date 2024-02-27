@@ -149,17 +149,18 @@ class ProductController {
                     // })
 
                 };
-                const unwantedUrls = oldUrls.filter(element => !req.body.imagesUrls.includes(element));
-                unwantedUrls.forEach(function (url) {
-                    fs.unlink(path.join(__dirname, '..', '..', url), (err) => {
-                        if (err) {
-                            console.error(url + err);
-                            return;
-                        }
-                        console.log(url + ': deleted successfully');
+                if (oldUrls && oldUrls.length > 0) {
+                    const unwantedUrls = oldUrls.filter(element => !req.body.imagesUrls.includes(element));
+                    unwantedUrls.forEach(function (url) {
+                        fs.unlink(path.join(__dirname, '..', '..', '..', url), (err) => {
+                            if (err) {
+                                console.error(url + err);
+                                return;
+                            }
+                            console.log(url + ': deleted successfully');
+                        });
                     });
-                });
-
+                }
                 product.save();
                 console.log('product modify is saved!');
                 //add some check funtion if category already exist
