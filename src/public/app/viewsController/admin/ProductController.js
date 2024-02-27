@@ -167,8 +167,9 @@ class ProductController {
     deleteProduct(req, res, next) {
         Product.findByIdAndDelete(req.body.deleteId)
             .then((product) => {
+                console.log('one product: ', product);
                 product.imagesUrls.forEach(function (url) {
-                    fs.unlink(path.join(__dirname, '..', '..', url), (err) => {
+                    fs.unlink(path.join(__dirname, '..', '..', '..', url), (err) => {
                         if (err) {
                             console.error(url + err);
                             return;
@@ -177,6 +178,31 @@ class ProductController {
                     });
                 });
                 res.redirect('back');
+            }).catch(next);
+    }
+    //[PATCH] /admin/kho/sanpham/xoachon
+    deleteManyProducts(req, res, next) {
+        Product.find({ _id: { $in: req.body.product_ids } })
+            .then((docs) => {
+                if (docs) {
+                    Array.from(docs).forEach(product => {
+                        product.imagesUrls.forEach(function (url) {
+                            fs.unlink(path.join(__dirname, '..', '..', '..', url), (err) => {
+                                if (err) {
+                                    console.error(url + err);
+                                    return;
+                                }
+                                console.log(url + ': deleted successfully');
+                            });
+                        });
+                    });
+                    Product.deleteMany({ _id: { $in: req.body.product_ids } })
+                        .then(() => {
+                            res.redirect('back');
+                        });
+                }
+                else
+                    res.redirect('back');
             }).catch(next);
     }
 }

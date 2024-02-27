@@ -7,14 +7,11 @@
 <div class="d-flex mgx-2 mt-4">
     <b class="col-2">{{products.length}} <span class="mobile-hidden">sản phẩm</span></b>
     <h2 class="col-8 text-center"><span class="mobile-hidden">Quản lý</span> Sản phẩm</h2>
-    <div class="col-2 d-flex justify-content-end align-middle">
-        <a href="/admin/kho/sanpham/them" class="btn btn-success d-flex align-items-center"><i
-                class="fa fa-regular fa-plus mobile-hidden"></i>Thêm</a>
-    </div>
 </div>
 <table class="table table-hover text-center">
     <thead>
         <tr>
+            <th scope="col" class="table-header"></th>
             <th scope="col" class="table-header to-be-hidden">STT</th>
             <th scope="col" class="table-header">Tên sản phẩm</th>
             <th scope="col" class="table-header mobile-hidden">Đơn giá</th>
@@ -23,36 +20,66 @@
             <th scope="col" class="table-header">Ảnh</th>
             <th scope="col" class="table-header to-be-hidden">Mô tả</th>
             <th scope="col"></th>
-            <th scope="col"></th>
+            <th scope="col" class="mobile-hidden"></th>
         </tr>
     </thead>
-    <tbody>
-        {{#each products}}
-        <tr>
-            <th onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" scope="row" class="to-be-hidden">{{sum @index 1}}</th>
-            <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')"> {{this.name}}</td>
-            <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" class="mobile-hidden">
-                <div class="price-label outline-label">{{this.price}}</div>
-            </td>
-            <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" class="mobile-hidden">
-                <div class="outline-label">{{this.stock}}</div>
-            </td>
-            <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" class="to-be-hidden">
-                <div class="outline-label">{{subtract this.count this.stock}}</div>
-            </td>
-            <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')"> <img class="thumnail" src="{{valueAt this.imagesUrls this.mainImageIndex}}" alt="Ảnh sản phẩm">
-            </td>
-            <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" class="to-be-hidden">
-                <p class="management_description">{{this.description}}</p>
-            </td>
-            <td><a href="/admin/kho/sanpham/{{this.slug}}/sua" class="btn btn-info">Sửa</a></td>
-            <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"
-                    data-delete-id="{{this._id}}" data-product-name="{{this.name}}">Xóa</button>
-            </td>
-        </tr>
-        {{/each}}
-    </tbody>
+    <form id="delete-selected-form" action="/admin/kho/sanpham/xoachon" method="post">
+        <input type="text" class="d-none" name="_method" value="PATCH">
+        <tbody>
+            {{#each products}}
+            <tr>
+                <th scope="row">
+                    <div class="form-check d-flex justify-content-end">
+                        <input class="checkbox form-check-input fs-5" type="checkbox" value="{{this._id}}"
+                            name="product_ids[]" id="{{this._id}}-checkbox">
+                        <label class="form-check-label" for="{{this._id}}-checkbox">
+                        </label>
+                    </div>
+                </th>
+                <th onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" scope="row" class="to-be-hidden">{{sum
+                    @index
+                    1}}</th>
+                <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')"> {{this.name}}</td>
+                <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" class="mobile-hidden">
+                    <div class="price-label outline-label">{{this.price}}</div>
+                </td>
+                <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" class="mobile-hidden">
+                    <div class="outline-label">{{this.stock}}</div>
+                </td>
+                <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" class="to-be-hidden">
+                    <div class="outline-label">{{subtract this.count this.stock}}</div>
+                </td>
+                <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')"> <img class="thumnail img-thumbnail"
+                        src="{{valueAt this.imagesUrls this.mainImageIndex}}" alt="Ảnh sản phẩm">
+                </td>
+                <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" class="to-be-hidden">
+                    <p class="management_description">{{this.description}}</p>
+                </td>
+                <td><a href="/admin/kho/sanpham/{{this.slug}}/sua" class="btn btn-info">Sửa</a></td>
+                <td class=" mobile-hidden"><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"
+                        data-delete-id="{{this._id}}" data-product-name="{{this.name}}">Xóa</button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </form>
 </table>
+
+<nav class="card sticky-bottom navbar-light py-2 mx-auto mt-3 mb-2 table-max-width" style="background-color: #e3f2fd;">
+    <div class="d-flex justify-content-between">
+        <div class="form-check d-flex justify-content-center align-items-center ms-3">
+            <input class="form-check-input fs-5 my-auto" type="checkbox" id="check-all">
+            <label class="form-check-label d-flex align-items-center" for="check-all">&nbsp;<span
+                    class="to-be-hidden">Chọn&nbsp;</span>tất cả<span class="to-be-hidden">({{products.length}})</span>
+            </label>
+            <button class="btn btn-danger mx-2" data-bs-toggle="modal"
+                data-bs-target="#confirmDeleteSelectedModal">Xóa</button>
+            <div id="selected-count" data-value="0" data-total="{{products.length}}">(0) đã chọn</div>
+        </div>
+        <a href="/admin/kho/sanpham/them" class="btn btn-success d-flex align-items-center me-1"><i
+                class="fa fa-regular fa-plus mobile-hidden"></i>Thêm</a>
+    </div>
+</nav>
 
 <!--Modal=============================-->
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -70,6 +97,23 @@
         </div>
     </div>
 </div>
+<!--Modal delete select=============================-->
+<div class="modal fade" id="confirmDeleteSelectedModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa nhiều sản phẩm</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="confirm-delete-selected-modal-body" class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" id="delete-selected-btn">Xóa vĩnh viễn</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <form id="delete-form" action="/admin/kho/sanpham/xoa" method="post" style="display: none;"
     enctype="application/x-www-form-urlencoded">
@@ -80,9 +124,44 @@
 <script>
     var productId;
     const deleteForm = document.getElementById('delete-form');
+    const deleteSelectedForm = document.getElementById('delete-selected-form');
     const deleteId = document.getElementById('delete-id');
     const deleteBtn = document.getElementById('delete-btn');
     const deleteModal = document.getElementById('confirmDeleteModal');
+    const deleteSelectedBtn = document.getElementById('delete-selected-btn');
+    const deleteSelectedModal = document.getElementById('confirmDeleteSelectedModal');
+
+    const checkAll = document.getElementById('check-all');
+    const checkBoxes = [...document.getElementsByClassName('checkbox')];
+    const selectForm = document.getElementById('select-form');
+    const selectedCount = document.getElementById('selected-count');
+    checkAll.addEventListener('change', (e) => {
+        const isChecked = e.target.checked;
+        checkBoxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+        if (isChecked) {
+            selectedCount.innerHTML = '(' + selectedCount.getAttribute('data-total') + ') đã chọn';
+            selectedCount.setAttribute('data-value', selectedCount.getAttribute('data-total'));
+        }
+    });
+
+    checkBoxes.forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+            var allChecked = true;
+            count = 0;
+            checkBoxes.forEach(checkbox => {
+                if (!checkbox.checked) {
+                    allChecked = false;
+                }
+                else
+                    count++;
+            });
+            checkAll.checked = allChecked;
+            selectedCount.innerHTML = '(' + count + ') đã chọn';
+            selectedCount.setAttribute('data-value', count);
+        })
+    });
 
     if (deleteModal) {
         deleteModal.addEventListener('show.bs.modal', event => {
@@ -96,6 +175,16 @@
         deleteId.value = productId;
         deleteForm.submit();
     });
+    if (deleteSelectedModal) {
+        deleteSelectedModal.addEventListener('show.bs.modal', event => {
+            const modalBody = document.getElementById('confirm-delete-selected-modal-body');
+            const num = document.getElementById('selected-count').getAttribute('data-value');
+            modalBody.innerHTML = 'Bạn chắc chắn muốn xóa (' + num + ') sản phẩm đã chọn"?';
+        });
+    }
+    deleteSelectedBtn.addEventListener('click', function (event) {
+        deleteSelectedForm.submit();
+    });
     const prices = document.querySelectorAll('div[class="price-label outline-label"]');
 
     prices.forEach(function (price) {
@@ -104,6 +193,6 @@
     })
 
     function navigateTo(url) {
-            window.location.href = url;
+        window.location.href = url;
     }
 </script>
