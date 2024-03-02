@@ -5,7 +5,7 @@ const PhoneNumber = require('libphonenumber-js');
 const Customer = new mongoose.Schema(
     {
         password: { type: String, require: true, },
-        fullName: { type: String, default: function () { return this.username; } },
+        fullName: { type: String, default: "unknown" },
         dateOfBirth: { type: String, },
         phoneNumber: {
             type: String,

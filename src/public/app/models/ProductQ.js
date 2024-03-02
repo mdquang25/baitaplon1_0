@@ -6,11 +6,15 @@ const ProductQ = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Cart',
         },
-        orderId: {
+        productId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Order',
+            ref: 'Product',
         },
-        productSlug: { type: String, reqired: true, },
+        productName: { type: String, },
+        imageUrl: { type: String, },
+        productSlug: { type: String, },
+        price: { type: mongoose.Types.Decimal128, default: 0, },
+        total: { type: mongoose.Types.Decimal128, default: 0, },
         quantity: { type: Number, required: true, },
 
     },

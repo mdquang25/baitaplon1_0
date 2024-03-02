@@ -1,0 +1,202 @@
+<style>
+    .limit-width {
+        max-width: 12rem;
+        word-break: break-word;
+    }
+
+    .table-max-width {
+        max-width: 75rem;
+    }
+</style>
+<div class="d-flex justify-content-center">
+    <div class="d-flex fs-4 justify-content-center align-items-center col-12 mx-lg-4 table-max-width mt-4 mb-3">
+        <b>Thanh toán</b>
+    </div>
+</div>
+<form action="/giohang/dat-hang/luu-don-hang" class="d-flex flex-wrap justify-content-center" method="post">
+
+    <div class="col-12 table-max-width py-2" style="background-color: aliceblue;">
+        <div class="ms-2">Địa chỉ nhận hàng</div>
+        <table class="table">
+            <tbody>
+                <th>
+                    <input type="text" name="reciever" value="{{user.fullName}}" readonly>
+                    <input type="text" name="phoneNumber" value="{{user.phoneNumber}}" readonly>
+
+                </th>
+                <input type="text" name="address" value="{{user.address}}" readonly>
+                <td><button type="button" class="btn btn-outline-info">sửa địa
+                        chỉ</button></td>
+            </tbody>
+        </table>
+    </div>
+
+    <table class="table text-center m-0 table-max-width mt-2">
+        <thead class="table-warning cart-table-header" style="top:5rem;">
+            <tr>
+                <th scope="col" class="table-header"></th>
+                <th scope="col" class="table-header text-start limit-width">Sản phẩm</th>
+                <th scope="col" class="table-header to-be-hidden">Đơn giá</th>
+                <th scope="col" class="table-header to-be-hidden">Số lượng</th>
+                <th scope="col" class="table-header to-be-hidden">Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each productQs}}
+            <input type="text" name="productQ_ids[]" value="{{this._id}}" hidden>
+            <tr>
+                <td onclick="navigateTo('/sanpham/{{this.product.slug}}/chitiet')"> <img class="thumnail img-thumbnail"
+                        src="{{valueAt this.product.imagesUrls this.product.mainImageIndex}}" alt="Ảnh sản phẩm">
+                </td>
+                <td class="text-start limit-width">
+                    <a href="/sanpham/{{this.product.slug}}/chitiet"
+                        style="text-decoration: none;">{{this.product.name}}</a>
+                    <div class="to-be-show-col" style="display:none;">
+                        <div class="price-label">{{this.product.price}}</div>
+                        <div class="text-start">
+                            x{{this.quantity}}
+                        </div>
+                    </div>
+                </td>
+                <td class="to-be-hidden">
+                    <div style="color: black; font-weight: 400;" class="price-label">{{this.product.price}}</div>
+                </td>
+                <td class="to-be-hidden">
+                    <div class="text-center">
+                        x{{this.quantity}}
+                    </div>
+                </td>
+                <td class="to-be-hidden">
+                    <div class="price-label" style="color:black">
+                        {{mult this.quantity this.product.price}}</div>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <div class="row table-max-width mb-2 pt-3 pb-2" style="background-color: aliceblue;">
+        <div class="d-flex flex-wrap col-6 align-items-center">
+            <div class="">
+                <label for="message" class="col-form-label mx-2">Lời nhắn</label>
+            </div>
+            <div class="px-auto flex-lg-grow-1">
+                <input type="text" id="message" name="message" class="form-control" placeholder="Lưu ý cho người bán..">
+            </div>
+            <div style="font-size: small;" class="ms-2"><b>Lưu ý:</b><i style="color: red;"> nhân viên vận chuyển sẽ thu
+                    thêm phí khuân vác
+                    dựa
+                    theo
+                    khối lượng sản
+                    phẩm và độ khó khi chuyển hàng vào vị trí theo yêu cầu( 0 - 100.000đ)</i></div>
+        </div>
+        <div class="col-3 ms-lg-auto">
+            <div class="fs-5">Phương thức nhận hàng</div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="ship" id="ship" value="true">
+                <label class="form-check-label" for="ship">
+                    Ship hàng tận nhà
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="ship" id="not-ship" value="false" checked>
+                <label class="form-check-label" for="not-ship">
+                    Nhận tại cửa hàng
+                </label>
+            </div>
+        </div>
+        <div class="col-3 text-end mt-auto">
+            <input type="number" name="productFee" value="{{total}}" hidden>
+            <div class="me-2">Tổng tiền hàng:&nbsp;<span class="price-label fs-4" style="color:black" id="products-fee"
+                    data-value="{{total}}">{{total}}</span>
+            </div>
+            <div class="me-2">Phí vận chuyển:&nbsp;<span class="price-label fs-5" style="color:black"
+                    data-value="{{shopInfo.shippingFee}}" id="shipping-fee">0</span></div>
+        </div>
+    </div>
+
+    <div class="table-max-width col-12 my-2 pt-3 pb-2" style="background-color: aliceblue;">
+        <div class="fs-5 ms-4">Phương thức thanh toán</div>
+        <input id="cod" type="text" name="cod" value="true" hidden>
+        <div class="tabs mx-lg-4 table-max-width">
+            <div class="nav nav-tabs mx-4">
+                <ul class="nav nav-pills">
+                    <li onclick="changePaymentMethod('true')">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#tab1">
+                            Thanh toán khi nhận hàng
+                        </a>
+                    </li>
+                    <li onclick="changePaymentMethod('false')">
+                        <a class="nav-link" data-bs-toggle="tab" href="#tab2">
+                            Chuyển khoản ngân hàng
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content m-4">
+                <div id="tab1" class="tab-pane fade show active">
+                    <p>Thanh toán bằng tiền mặt hoặc chuyển khoản cho shipper</p>
+                </div>
+                <div id="tab2" class="tab-pane fade">
+                    <div class="fs-6">Nhấn "đặt hàng" để quét mã QR chuyển khoản</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between col-12 table-max-width py-3 my-2" style="background-color:aliceblue;">
+        <div class="d-flex justify-content-center align-items-center ms-3">
+            <span></span>Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo &nbsp;<a href="#"
+                class="text-decoration-none">Điều
+                khoản</a>
+        </div>
+        <div class="d-flex">
+            <div class="mobile-break d-flex align-items-center">
+                <div>Tổng <span class="to-be-hidden">thanh toán</span></div>
+                <div id="total-label" class="price-label fs-2">{{total}}</div>
+            </div>
+            <button id="place-order" class="btn btn-warning ms-1 me-2" type="submit">Đặt hàng</button>
+        </div>
+    </div>
+</form>
+<script>
+    const cod = document.getElementById('cod');
+    function changePaymentMethod(value) {
+        cod.value = value;
+    }
+    document.addEventListener("DOMContentLoaded", function (event) {
+        const selectForm = document.getElementById('select-form');
+        const placeOrderBtn = document.getElementById('place-order');
+        const shipCheck = document.getElementById('ship');
+        const notShip = document.getElementById('not-ship');
+        const shippingFee = document.getElementById('shipping-fee');
+        const productsFee = document.getElementById('products-fee');
+        const totalLabel = document.getElementById('total-abel');
+        shipCheck.addEventListener('change', (e) => {
+            if (shipCheck.checked) {
+                const t = parseInt(shippingFee.getAttribute('data-value')) + parseInt(productsFee.getAttribute('data-value'));
+                totalLabel.innerHTML = (t).toLocaleString('vi-VN') + 'đ';
+                shippingFee.innerHTML = parseInt(shippingFee.getAttribute('data-value')).toLocaleString('vi-VN') + 'đ';
+            }
+        });
+        notShip.addEventListener('change', (e) => {
+            if (notShip.checked) {
+                const t = parseInt(productsFee.getAttribute('data-value'));
+                totalLabel.innerHTML = t.toLocaleString('vi-VN') + 'đ';
+                shippingFee.innerHTML = '0đ';
+            }
+        })
+        placeOrderBtn.addEventListener('click', (e) => {
+            selectForm.action = '/giohang/dat-hang';
+            selectForm.querySelector(':first-child').setAttribute('value', 'POST');
+            selectForm.submit();
+        });
+
+
+        const prices = [...document.getElementsByClassName('price-label')];
+        prices.forEach(function (price) {
+            const number = parseInt(price.innerHTML);
+            price.innerHTML = number.toLocaleString('vi-VN') + 'đ';
+        });
+    });
+</script>

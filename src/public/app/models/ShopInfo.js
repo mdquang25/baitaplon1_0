@@ -6,6 +6,7 @@ const ShopInfo = new mongoose.Schema(
         shortName: { type: String, },
         fullName: { type: String, },
         address: { type: String, },
+        shippingFee: { type: Number, },
         phoneNumber: {
             type: String,
             validate: {

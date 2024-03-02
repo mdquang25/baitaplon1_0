@@ -2,24 +2,21 @@ const Customer = require('../../models/Customer');
 const Cart = require('../../models/Cart');
 const ProductQ = require('../../models/ProductQ');
 const Order = require('../../models/Order');
-const Category = require('../../models/ProductCategory');
-const Type = require('../../models/ProductType');
 const Product = require('../../models/Product');
-const ShopInfo = require('../../models/ShopInfo');
-const { multiMongooseToObjs, mongooseToObj } = require('../../../../util/mongoose')
-const { validationResult } = require('express-validator');
-
+const { multiMongooseToObjs, mongooseToObj } = require('../../../../util/mongoose');
+const { qrContent } = require('../../../../util/qrCode');
+const { generateQRCode } = require('../../../../util/qrCodeImage');
 class CartController {
-    //[GET] /giohang/them/:slug
+    //[POST] /giohang/them
     addProduct(req, res, next) {
         console.log('add to cart - customer');
         Cart.findById(req.session.user.cartId)
             .then(cart => {
-                ProductQ.findOne({ cartId: cart._id, productSlug: req.params.slug })
+                ProductQ.findOne({ cartId: cart._id, productId: req.body.productId })
                     .then(doc => {
                         if (doc) {
                             doc.quantity++;
-                            ( ()=> new Promise((resolve, reject)=>{
+                            (() => new Promise((resolve, reject) => {
                                 doc.save();
                                 resolve();
                             }))().then(() => {
@@ -29,13 +26,15 @@ class CartController {
                         else {
                             const productQ = new ProductQ({
                                 cartId: cart._id,
-                                productSlug: req.params.slug,
+                                productId: req.body.productId,
                                 quantity: 1,
                             });
+                            productQ.save();
                             cart.newProduct = true;
-                            Promise.all([productQ.save(), cart.save()]).then(() => {
-                                res.redirect('back');
-                            });
+                            cart.productQ_ids.push(productQ._id);
+                            cart.save();
+                            res.redirect('back');
+
                         }
                     })
             })
@@ -45,14 +44,14 @@ class CartController {
         console.log('cart products - customer');
         Cart.findById(req.session.user.cartId)
             .then(cart => {
-                ProductQ.find({ cartId: cart._id })
+                ProductQ.find({ _id: { $in: cart.productQ_ids } })
                     .then(docs => {
                         var productQPromises;
                         var productQs;
                         if (docs) {
                             productQs = multiMongooseToObjs(docs);
                             productQPromises = productQs.map(productQ => {
-                                return Product.findOne({ slug: productQ.productSlug })
+                                return Product.findById(productQ.productId)
                                     .then(product => {
                                         productQ.product = mongooseToObj(product);
                                         return productQ;
@@ -73,7 +72,7 @@ class CartController {
         console.log('delete selected products - customer');
         Cart.findById(req.session.user.cartId)
             .then(cart => {
-                cart.productQ_id = cart.productQ_id.filter((element) => !req.body.productQ_ids.includes(element));
+                cart.productQ_ids = cart.productQ_ids.filter((element) => !req.body.productQ_ids.includes(element));
                 cart.save();
                 ProductQ.deleteMany({ _id: { $in: req.body.productQ_ids } })
                     .then(() => {
@@ -81,7 +80,101 @@ class CartController {
                     }).catch(next);
             }).catch(next);
     }
+    //[POST] /giohang/dat-hang
+    placeOrder(req, res, next) {
+        console.log('place order - customer');
+        Promise.all([Cart.findById(req.session.user.cartId), Customer.findById(req.session.user.id)])
+            .then(([cart, doc2]) => {
+                const user = {
+                    fullName: doc2.fullName,
+                    phoneNumber: doc2.phoneNumber,
+                    address: doc2.address,
+                }
+                ProductQ.find({ _id: { $in: cart.productQ_ids } })
+                    .then(docs => {
+                        docs.forEach(productQ => {
+                            productQ.quantity = req.body[productQ._id + 'quantity1'];
+                            productQ.save();
+                        });
+                        const items = docs.filter(doc => req.body.productQ_ids.includes(doc._id.toString()));
+                        const productQs = multiMongooseToObjs(items);
+                        const promises = productQs.map(productQ => {
+                            return Product.findById(productQ.productId)
+                                .then(product => {
+                                    productQ.product = mongooseToObj(product);
+                                    return productQ;
+                                });
+                        });
+                        Promise.all(promises).then(productQs => {
+                            var total = 0;
+                            productQs.forEach(productQ => {
+                                total += parseInt(productQ.quantity) * parseInt(productQ.product.price);
+                            });
+                            res.render('customer/cart/place-order', { pageTitle: 'Đặt hàng', isLoggedin: req.session.isLoggedin, productQs, total, user, cart: res.locals.cart, shopInfo: res.locals.shopInfo, });
+                        })
+                    });
+            });
+    }
 
+    //[POST] /giohang/dat-hang/luu-don-hang
+    saveOrder(req, res, next) {
+        console.log('save order - customer');
+        const order = new Order(req.body);
+        //order.cart_id = req.session.user.cartId;
+        order.customer_id = req.session.user.id;
+        if (req.body.ship === 'true') {
+            order.shippingFee = req.locals.shopInfo.shippingFee;
+            order.total = parseInt(req.body.productFee) + parseInt(req.locals.shopInfo.shippingFee);
+        }
+        else
+            order.total = req.body.productFee;
+        order.status = 0;
+        order.paid = false;
+        order.save();
+        Cart.findById(req.session.user.cartId)
+            .then(cart => {
+                cart.newOrderUpdate = true;
+                cart.order_ids.push(order._id);
+                cart.productQ_ids = cart.productQ_ids.filter((element) => {
+                    const elementId = element.toString();
+                    return !req.body.productQ_ids.includes(elementId);
+                });
+                cart.save();
+                ProductQ.updateMany({ _id: { $in: req.body.productQ_ids } }, { $unset: { cartId: 1 } })
+                    .then(() => {
+                        ProductQ.find({ _id: { $in: req.body.productQ_ids } })
+                            .then(docs => {
+                                const productQs = docs.map(productQ => {
+                                    return Product.findById(productQ.productId)
+                                        .then(product => {
+                                            productQ.imageUrl = product.imagesUrls[product.mainImageIndex];
+                                            productQ.productSlug = product.slug;
+                                            productQ.productName = product.name;
+                                            productQ.price = product.price;
+                                            productQ.total = product.price * productQ.quantity;
+                                            productQ.save();
+                                            return productQ;
+                                        });
+                                });
+                                return Promise.all(productQs);
+                            }).then(productQs => {
+                                if (req.body.cod === 'true') {
+                                    res.redirect('/giohang/don-mua');
+                                }
+                                else {
+                                    const code = qrContent(order.total.toString(), req.session.user.phoneNumber + ' - ' + order._id.toString());
+                                    generateQRCode(code, order._id.toString() + '-qrcode.png')
+                                        .then(path => {
+                                            order.qrcodeUrl = path;
+                                            order.save();
+                                            res.render('customer/cart/show-qrcode', { pageTitle: 'Quét mã QR thanh toán', order: mongooseToObj(order), user: req.session.user, isLoggedin: req.session.isLoggedin, cart: res.locals.cart, shopInfo: res.locals.shopInfo, });
+                                        });
+                                }
+                            })
+
+                    });
+            });
+    }
     //[DELETE] /giohang/sanpham/xoa
     removeProduct(req, res, next) {
         console.log('remove one product - customer');
@@ -104,15 +197,32 @@ class CartController {
         console.log('cart orders - customer');
         Cart.findById(req.session.user.cartId)
             .then(cart => {
-                Order.find({ cartId: cart._id })
+                Order.find({ _id: { $in: cart.order_ids } })
                     .then(docs => {
-                        var orderQPromises;
-                        var orders;
-                            orders = multiMongooseToObjs(docs);
+                        const items = multiMongooseToObjs(docs);
+                        const orders = items.map(order => {
+                            return ProductQ.find({ _id: { $in: order.productQ_ids } })
+                                .then(docs => {
+                                    order.productQs = multiMongooseToObjs(docs);
+                                    return order;
+                                });
+                        });
+                        return Promise.all(orders);
+                    }).then(items => {
+                        console.log('items: ', items);
+                        const orders0 = items.filter(order => order.status === 0);
+                        console.log('order0: ', orders0);
+                        const orders1 = items.filter(order => order.status === 1);
+                        const orders2 = items.filter(order => order.status === 2);
+                        const orders3 = items.filter(order => order.status === 3);
+                        const orders4 = items.filter(order => order.status === 4);
+                        const orders = {
+                            orders0, orders1, orders2, orders3, orders4,
+                        }
                         cart.newOrderUpdate = false;
                         cart.save();
                         res.render('customer/cart/cart-orders', { pageTitle: 'Đơn mua', isLoggedin: req.session.isLoggedin, orders, cart: res.locals.cart, shopInfo: res.locals.shopInfo, })
-                    });
+                    })
             });
     }
 }

@@ -118,9 +118,12 @@
                                 <div class="ml-2">Giảm <span id="percent-off"></span>%</div>
                             </div>
                         </div>
-                        <div class="cart mt-4 align-items-center mb-3"> <a href="/giohang/them/{{product.slug}}"
-                                class="btn btn-danger text-uppercase mr-2 px-4">Thêm vào giỏ hàng</a> <i
-                                class="fa fa-heart text-muted"></i> <i class="fa fa-share-alt text-muted"></i>
+                        <div class="cart mt-4 align-items-center mb-3"> 
+                            <form action="/giohang/them" method="post">
+                            <input type="text" name="productId" value="{{product._id}}" hidden>
+                              <button type="submit"  class="btn btn-danger text-uppercase mr-2 px-4">Thêm vào giỏ hàng</button>
+                                </form>
+                                <i class="fa fa-heart text-muted"></i> <i class="fa fa-share-alt text-muted"></i>
                         </div>
                         <p class="about" style="white-space: pre-line;">
                             <b style="font-size:medium;">Thông tin sản phẩm:</b><br>{{{product.description}}}

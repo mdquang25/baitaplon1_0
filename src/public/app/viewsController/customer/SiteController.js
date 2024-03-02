@@ -64,7 +64,7 @@ class SiteController {
                     if (isMatch) {
                         req.session.user = {
                             id: customer._id,
-                            name: customer.fullName,
+                            phoneNumber: customer.phoneNumber,
                             cartId: customer.cartId,
                         };
                         req.session.isLoggedin = true;

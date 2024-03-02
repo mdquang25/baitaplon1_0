@@ -23,6 +23,7 @@ const userHeaderObjects = (req, res, next) => {
                                 fullName: 'Cửa hàng đồ gỗ cổ Việt Tuấn Trung',
                                 phoneNumber: 'unknown',
                                 address: 'unknown',
+                                shippingFee: 30000,
                                 linkFacebook: 'unknown',
                                 linkZalo: 'unknown',
                                 linkYoutube: 'unknown',

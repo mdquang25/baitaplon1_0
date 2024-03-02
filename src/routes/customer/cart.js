@@ -8,7 +8,9 @@ const userInterfaceObjects = require('../middleware/userInterfaceObjects.js');
 
 router.delete('/sanpham/xoa', requireLogin, cartController.removeProduct);
 router.delete('/xoa-chon', requireLogin, cartController.deleteSelected);
-router.get('/them/:slug', requiredLogin, cartController.addProduct);
+router.post('/dat-hang/luu-don-hang', requireLogin, userInterfaceObjects, cartController.saveOrder);
+router.post('/dat-hang', requireLogin, userInterfaceObjects, cartController.placeOrder);
+router.post('/them', requiredLogin, cartController.addProduct);
 router.get('/don-mua', requireLogin, userInterfaceObjects, cartController.orders);
 router.get('/', requireLogin, userInterfaceObjects, cartController.products);
 

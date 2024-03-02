@@ -1,0 +1,16 @@
+<div class="d-flex justify-content-center">
+    <div class="card text-center my-5 py-4 px-2">
+        <h5>Quét mã QR để thanh toán</h5>
+        <div>Ngân hàng: Ngân hàng Quân đội - MBBank</div>
+        <div>Số tài khoản: 0382740405</div>
+        <div>Số tiền: <span id="total" class="price-label">{{order.total}}</span></div>
+        <div>Nội dung chuyển khoản: "{{user.phoneNumber}} - {{order._id}}"</div>
+        <img class="img-thumnail" src="{{order.qrcodeUrl}}" alt="mã QR thanh toán">
+        <div id="brand-name-label" style="padding-top: 0;">{{shopInfo.shortName}}</div>
+    </div>
+</div>
+<script>
+    const price = document.getElementById('total');
+    const number = parseInt(price.innerHTML);
+    price.innerHTML = number.toLocaleString('vi-VN') + 'đ';
+</script>

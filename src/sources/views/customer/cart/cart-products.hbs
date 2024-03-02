@@ -129,7 +129,7 @@
                         data-value="0">0</span><span class="to-be-hidden"> sản phẩm</span><span>):&nbsp;</span></div>
                 <div id="total" class="price-label fs-4" data-value="0">0đ</div>
             </div>
-            <button class="btn btn-warning ms-1 me-2" type="submit">Đặt hàng</button>
+            <button id="place-order" class="btn btn-warning ms-1 me-2 disabled" type="button">Mua hàng</button>
         </div>
     </div>
 </nav>
@@ -167,6 +167,13 @@
     const checkAll_2 = document.getElementById('check-all-2');
     const checkBoxes = [...document.getElementsByClassName('checkbox')];
     const selectForm = document.getElementById('select-form');
+    const placeOrderBtn = document.getElementById('place-order');
+
+    placeOrderBtn.addEventListener('click', (e) => {
+        selectForm.action = '/giohang/dat-hang';
+        selectForm.querySelector(':first-child').setAttribute('value', 'POST');
+        selectForm.submit();
+    });
 
     checkAll_1.addEventListener('change', (e) => {
         const isChecked = e.target.checked;
@@ -200,6 +207,8 @@
             sumTotalLabel.setAttribute('data-value', count);
             sumTotalTag.innerHTML = total.toLocaleString('vi-VN') + 'đ';
             sumTotalTag.setAttribute('data-value', total);
+            if(placeOrderBtn.classList.contains('disabled'))
+                placeOrderBtn.classList.remove('disabled');
         }
         else {
             const sumTotalLabel = document.getElementById('total-label');
@@ -208,6 +217,7 @@
             const sumTotalTag = document.getElementById('total');
             sumTotalTag.innerHTML = '0đ';
             sumTotalTag.setAttribute('data-value', 0);
+                placeOrderBtn.classList.add('disabled');
         }
     }
     checkBoxes.forEach(checkbox => {
@@ -234,6 +244,11 @@
 
             checkAll_1.checked = allChecked;
             checkAll_2.checked = allChecked;
+
+            if(count === 0 && !placeOrderBtn.classList.contains('disabled'))
+                placeOrderBtn.classList.add('disabled');
+            else if(count > 0 && placeOrderBtn.classList.contains('disabled'))
+                placeOrderBtn.classList.remove('disabled');
         })
     });
 

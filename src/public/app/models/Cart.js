@@ -4,8 +4,14 @@ const softDelete = require('mongoosejs-soft-delete');
 
 const Cart = new mongoose.Schema(
     {
-        productQ_id: [{ type: String, }],
-        order_id: [{ type: String, }],
+        productQ_ids: [{ 
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'ProductQ',
+        }],
+        order_ids: [{ 
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Order',
+         }],
         newProduct: { type: Boolean, },
         newOrderUpdate: { type: Boolean, },
     },

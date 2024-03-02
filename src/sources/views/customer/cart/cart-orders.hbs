@@ -26,6 +26,9 @@
                 <a class="nav-link active" data-bs-toggle="tab" href="#tab1">Chờ xác nhận</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#tab5">Đang chuẩn bị hàng</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="tab" href="#tab2">Chờ giao hàng</a>
             </li>
             <li class="nav-item">
@@ -38,6 +41,47 @@
 
         <div class="tab-content">
             <div id="tab1" class="tab-pane fade show active">
+                <table class="table text-center m-0 table-max-width mt-2 mb-4"
+                    style="border-end-end-radius: 1rem; border-top-right-radius: 1rem; overflow: hidden;">
+                    <tbody>
+                        {{#each orders.orders0}}
+                        {{#each this.productQs}}
+                        <tr onclick="navigateTo('/giohang/don-mua{{../slug}}/chitiet')">
+                            <td> <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh sản phẩm">
+                            </td>
+                            <td class="text-start limit-width">
+                                <div>{{this.productName}}</div>
+                                <div class="to-be-show-col" style="display:none;">
+                                    <div class="text-start">
+                                        x{{this.quantity}}
+                                    </div>
+                                    <div class="price-label" style="color:black">
+                                        {{this.total}}</div>
+                                </div>
+                            </td>
+                            <td class="to-be-hidden">
+                                <div class="text-center">
+                                    x{{this.quantity}}
+                                </div>
+                            </td>
+                            <td class="to-be-hidden">
+                                <div class="price-label" style="color:black">
+                                    {{this.total}}</div>
+                            </td>
+                        </tr>
+                        {{/each}}
+                        <tr>
+                            <td colspan="4">
+                                <div class="text-end me-md-2 me-lg-4" style="border-bottom: 1rem solid pink;">Tổng thanh
+                                    toán: <span class="price-label" style="color:black">
+                                        {{this.total}}</span></div>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <div id="tab5" class="tab-pane fade">
                 <h3>Content 1</h3>
                 <p>Hello.</p>
             </div>

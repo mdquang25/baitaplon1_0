@@ -5,7 +5,6 @@ const bcrypt = require('bcryptjs');
 class adminSiteController {
     index(req, res) {
         console.log('home - admin');
-        console.log(req.session.manager);
         res.render('admin/admin-home', { pageTitle: 'Trang chủ Admin', layout: 'admin', isAdmin: req.session.isAdmin, user: req.session.manager });
     }
 

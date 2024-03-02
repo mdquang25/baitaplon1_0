@@ -5,7 +5,7 @@ const port = process.env.PORT || 3000;
 const handlebar = require('express-handlebars');
 const path = require('path');
 const methodOverride = require('method-override');
-const session = require('./config/mongodb-session');
+const session = require('./config/db/mongodb-session');
 const cookieParser = require('cookie-parser');
 const storage = require('./config/firebaseStorage');
 
