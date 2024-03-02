@@ -8,7 +8,7 @@ module.exports = {
                 if (err) {
                     reject(err);
                 } else {
-                    console.log('QR code generated and saved:', '/src/public/qr/' + filename);
+                    console.log('QR code generated and saved:', '/qr/' + filename);
                     resolve('/qr/' + filename);
                 }
             });
