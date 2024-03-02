@@ -7,6 +7,7 @@ const requireManagerLogin = require('../middleware/requireManagerLogin');
 router.post('/quangcao/luu', requireManagerLogin,uploader.single('image'), shopInfoController.saveCarousel);
 router.put('/thongtin/luu', requireManagerLogin, shopInfoController.saveInfo);
 
+router.get('/quangcao/:slug/sua', requireManagerLogin, shopInfoController.carousels);
 router.get('/quangcao/them', requireManagerLogin, shopInfoController.addCarousel);
 router.get('/quangcao', requireManagerLogin, shopInfoController.carousels);
 router.get('/thongtin', requireManagerLogin, shopInfoController.info);

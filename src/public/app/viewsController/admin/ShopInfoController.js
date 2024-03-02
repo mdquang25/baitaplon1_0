@@ -9,7 +9,7 @@ const path = require('path');
 class ShopInfoController {
     index(req, res) {
         console.log('shop - admin');
-        res.redirect('/admin/shop/thongtin');
+        res.redirect('/admin/cuahang/thongtin');
     }
 
     info(req, res, next) {

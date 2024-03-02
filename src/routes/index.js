@@ -11,7 +11,7 @@ const customerAccountRouter = require('./customer/account');
 function router(app) {
     app.use('/admin/taikhoan-nhanvien', employeeAccountsRouter);
     app.use('/admin/taikhoancuatoi', adminAccountRouter);
-    app.use('/admin/shop', shopInfoRouter);
+    app.use('/admin/cuahang', shopInfoRouter);
     app.use('/admin/kho', adminKhoRouter);
     app.use('/admin', adminSiteRouter);
     app.use('/sanpham', customerSurfRouter);
