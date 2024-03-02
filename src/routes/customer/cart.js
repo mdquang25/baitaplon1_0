@@ -11,6 +11,7 @@ router.delete('/xoa-chon', requireLogin, cartController.deleteSelected);
 router.post('/dat-hang/luu-don-hang', requireLogin, userInterfaceObjects, cartController.saveOrder);
 router.post('/dat-hang', requireLogin, userInterfaceObjects, cartController.placeOrder);
 router.post('/them', requiredLogin, cartController.addProduct);
+router.get('/don-mua/:id/qr-thanh-toan', requireLogin, userInterfaceObjects, cartController.showQRCode);
 router.get('/don-mua', requireLogin, userInterfaceObjects, cartController.orders);
 router.get('/', requireLogin, userInterfaceObjects, cartController.products);
 

@@ -158,22 +158,30 @@ class CartController {
                                 });
                                 return Promise.all(productQs);
                             }).then(productQs => {
-                                if (req.body.cod === 'true') {
-                                    res.redirect('/giohang/don-mua');
-                                }
-                                else {
-                                    const code = qrContent(order.total.toString(), req.session.user.phoneNumber + ' - ' + order._id.toString());
-                                    generateQRCode(code, order._id.toString() + '-qrcode.png')
-                                        .then(path => {
-                                            order.qrcodeUrl = path;
-                                            order.save();
-                                            res.render('customer/cart/show-qrcode', { pageTitle: 'Quét mã QR thanh toán', order: mongooseToObj(order), user: req.session.user, isLoggedin: req.session.isLoggedin, cart: res.locals.cart, shopInfo: res.locals.shopInfo, });
-                                        });
-                                }
+                                const code = qrContent(order.total.toString(), req.session.user.phoneNumber + ' - ' + order._id.toString());
+                                generateQRCode(code, order._id.toString() + '-qrcode.png')
+                                    .then(path => {
+                                        order.qrcodeUrl = path;
+                                        order.save();
+                                        if (req.body.cod === 'true') {
+                                            res.redirect('/giohang/don-mua');
+                                        }
+                                        else {
+                                            res.redirect('/giohang/don-mua/' + order._id.toString() + '/qr-thanh-toan');
+                                        }
+                                    });
                             })
 
                     });
             });
+    }
+
+    //[GET] /giohang/don-mua/:id/qr-thanh-toan
+    showQRCode(req, res, next) {
+        Order.findById(req.params.id)
+            .then(order => {
+                res.render('customer/cart/show-qrcode', { pageTitle: 'Quét mã QR thanh toán', order: mongooseToObj(order), user: req.session.user, isLoggedin: req.session.isLoggedin, cart: res.locals.cart, shopInfo: res.locals.shopInfo, });
+            }).catch(next);
     }
     //[DELETE] /giohang/sanpham/xoa
     removeProduct(req, res, next) {

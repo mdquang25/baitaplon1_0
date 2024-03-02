@@ -89,46 +89,45 @@
         }
     }
 </style>
-<div class="row d-flex justify-content-center">
-    <div class="col-12 p-0">
-        <div class="card">
-            <div class="row m-0">
-                <div class="col-md-6 px-0">
-                    <div class="images py-2">
-                        <div class="text-center pb-3 image-container"> <img id="main-image"
-                                src="{{valueAt product.imagesUrls product.mainImageIndex}}" class="object-fit-scale" />
-                        </div>
-                        <div class="thumbnail text-center">
-                            {{#each product.imagesUrls}}
-                            <img onclick="change_image(this)" class="img-thumbnail" src="{{this}}" width="70">
-                            {{/each}}
-                        </div>
+<div class="col-12 m-0 row d-flex justify-content-center">
+    <div class="card p-0">
+        <div class="row m-0">
+            <div class="col-md-6 px-0">
+                <div class="images py-2">
+                    <div class="text-center pb-3 image-container"> <img id="main-image"
+                            src="{{valueAt product.imagesUrls product.mainImageIndex}}" class="object-fit-scale" />
+                    </div>
+                    <div class="thumbnail text-center">
+                        {{#each product.imagesUrls}}
+                        <img onclick="change_image(this)" class="img-thumbnail" src="{{this}}" width="70">
+                        {{/each}}
                     </div>
                 </div>
-                <div class="col-md-6 px-0">
-                    <div class="product p-4">
-                        <div class="mt-4 mb-3">
-                            <h5 class="text-uppercase">{{product.name}}</h5>
-                            <div class="price">
-                                <span id="price" class="price-label detail-price">{{product.price}}</span><span
-                                    class="price-label price-label-ending">đ</span>
-                                <span id="old-price" class="old-price-label"
-                                    data-onsale="{{product.onSale}}">{{product.oldPrice}}</span><span
-                                    class="old-price-label price-label-ending">đ </span>
-                                <div class="ml-2">Giảm <span id="percent-off"></span>%</div>
-                            </div>
+            </div>
+            <div class="col-md-6 px-0">
+                <div class="product p-4">
+                    <div class="mt-4 mb-3">
+                        <h5 class="text-uppercase">{{product.name}}</h5>
+                        <div class="price">
+                            <span id="price" class="price-label detail-price">{{product.price}}</span><span
+                                class="price-label price-label-ending">đ</span>
+                            <span id="old-price" class="old-price-label"
+                                data-onsale="{{product.onSale}}">{{product.oldPrice}}</span><span
+                                class="old-price-label price-label-ending">đ </span>
+                            <div class="ml-2">Giảm <span id="percent-off"></span>%</div>
                         </div>
-                        <div class="cart mt-4 align-items-center mb-3"> 
-                            <form action="/giohang/them" method="post">
-                            <input type="text" name="productId" value="{{product._id}}" hidden>
-                              <button type="submit"  class="btn btn-danger text-uppercase mr-2 px-4">Thêm vào giỏ hàng</button>
-                                </form>
-                                <i class="fa fa-heart text-muted"></i> <i class="fa fa-share-alt text-muted"></i>
-                        </div>
-                        <p class="about" style="white-space: pre-line;">
-                            <b style="font-size:medium;">Thông tin sản phẩm:</b><br>{{{product.description}}}
-                        </p>
                     </div>
+                    <div class="cart mt-4 align-items-center mb-3">
+                        <form action="/giohang/them" method="post">
+                            <input type="text" name="productId" value="{{product._id}}" hidden>
+                            <button type="submit" class="btn btn-danger text-uppercase mr-2 px-4">Thêm vào giỏ
+                                hàng</button>
+                        </form>
+                        <i class="fa fa-heart text-muted"></i> <i class="fa fa-share-alt text-muted"></i>
+                    </div>
+                    <p class="about" style="white-space: pre-line;">
+                        <b style="font-size:medium;">Thông tin sản phẩm:</b><br>{{{product.description}}}
+                    </p>
                 </div>
             </div>
         </div>

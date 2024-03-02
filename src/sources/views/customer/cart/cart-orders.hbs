@@ -23,19 +23,19 @@
     <div class="tabs mx-lg-4 table-max-width">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" data-bs-toggle="tab" href="#tab1">Chờ xác nhận</a>
+                <a class="nav-link active" data-bs-toggle="tab" href="#tab1">Chờ xác nhận({{orders.orders0.length}})</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab5">Đang chuẩn bị hàng</a>
+                <a class="nav-link" data-bs-toggle="tab" href="#tab5">Đang chuẩn bị hàng({{orders.orders1.length}})</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab2">Chờ giao hàng</a>
+                <a class="nav-link" data-bs-toggle="tab" href="#tab2">Chờ giao hàng({{orders.orders2.length}})</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab3">Hoàn thành</a>
+                <a class="nav-link" data-bs-toggle="tab" href="#tab3">Hoàn thành({{orders.orders3.length}})</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab4">Đã hủy</a>
+                <a class="nav-link" data-bs-toggle="tab" href="#tab4">Đã hủy({{orders.orders4.length}})</a>
             </li>
         </ul>
 
@@ -47,16 +47,17 @@
                         {{#each orders.orders0}}
                         {{#each this.productQs}}
                         <tr onclick="navigateTo('/giohang/don-mua{{../slug}}/chitiet')">
-                            <td> <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh sản phẩm">
-                            </td>
-                            <td class="text-start limit-width">
-                                <div>{{this.productName}}</div>
-                                <div class="to-be-show-col" style="display:none;">
-                                    <div class="text-start">
-                                        x{{this.quantity}}
+                            <td class="d-flex">
+                                <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh">
+                                <div class="text-start ms-2">
+                                    <div>{{this.productName}}</div>
+                                    <div class="to-be-show-col" style="display:none;">
+                                        <div class="text-start">
+                                            x{{this.quantity}}
+                                        </div>
+                                        <div class="price-label" style="color:black">
+                                            {{this.total}}</div>
                                     </div>
-                                    <div class="price-label" style="color:black">
-                                        {{this.total}}</div>
                                 </div>
                             </td>
                             <td class="to-be-hidden">
@@ -64,7 +65,7 @@
                                     x{{this.quantity}}
                                 </div>
                             </td>
-                            <td class="to-be-hidden">
+                            <td class="to-be-hidden text-end">
                                 <div class="price-label" style="color:black">
                                     {{this.total}}</div>
                             </td>
@@ -72,9 +73,18 @@
                         {{/each}}
                         <tr>
                             <td colspan="4">
-                                <div class="text-end me-md-2 me-lg-4" style="border-bottom: 1rem solid pink;">Tổng thanh
-                                    toán: <span class="price-label" style="color:black">
-                                        {{this.total}}</span></div>
+                                <div class="text-end fs-6 pb-2" style="border-bottom: 1rem solid pink;">
+                                    Tổng
+                                    thanh
+                                    toán: <span class="price-label fs-5" style="color:black">
+                                        {{this.total}}</span><br>
+                                    <a class="text-decoration-none"
+                                        href="/giohang/don-mua/{{this._id}}/qr-thanh-toan">Quét mã thanh
+                                        toán</a>
+                                    <div class="paid-label badge text-bg-secondary" data-paid="{{this.paid}}">Đã thanh
+                                        toán</div>
+                                </div>
+
                             </td>
                         </tr>
                         {{/each}}
@@ -82,26 +92,214 @@
                 </table>
             </div>
             <div id="tab5" class="tab-pane fade">
-                <h3>Content 1</h3>
-                <p>Hello.</p>
+                <table class="table text-center m-0 table-max-width mt-2 mb-4"
+                    style="border-end-end-radius: 1rem; border-top-right-radius: 1rem; overflow: hidden;">
+                    <tbody>
+                        {{#each orders.orders1}}
+                        {{#each this.productQs}}
+                        <tr onclick="navigateTo('/giohang/don-mua{{../slug}}/chitiet')">
+                            <td class="d-flex">
+                                <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh">
+                                <div class="text-start ms-2">
+                                    <div>{{this.productName}}</div>
+                                    <div class="to-be-show-col" style="display:none;">
+                                        <div class="text-start">
+                                            x{{this.quantity}}
+                                        </div>
+                                        <div class="price-label" style="color:black">
+                                            {{this.total}}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="to-be-hidden">
+                                <div class="text-center">
+                                    x{{this.quantity}}
+                                </div>
+                            </td>
+                            <td class="to-be-hidden text-end">
+                                <div class="price-label" style="color:black">
+                                    {{this.total}}</div>
+                            </td>
+                        </tr>
+                        {{/each}}
+                        <tr>
+                            <td colspan="4">
+                                <div class="text-end fs-6 pb-2" style="border-bottom: 1rem solid pink;">
+                                    Tổng
+                                    thanh
+                                    toán: <span class="price-label fs-5" style="color:black">
+                                        {{this.total}}</span><br>
+                                    <a class="text-decoration-none"
+                                        href="/giohang/don-mua/{{this._id}}/qr-thanh-toan">Quét mã thanh
+                                        toán</a>
+                                    <div class="paid-label badge text-bg-secondary" data-paid="{{this.paid}}">Đã thanh
+                                        toán</div>
+                                </div>
+
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
             </div>
             <div id="tab2" class="tab-pane fade">
-                <h3>it's me again!</h3>
-                <p>This is the content for Tab 2.</p>
+                <table class="table text-center m-0 table-max-width mt-2 mb-4"
+                    style="border-end-end-radius: 1rem; border-top-right-radius: 1rem; overflow: hidden;">
+                    <tbody>
+                        {{#each orders.orders2}}
+                        {{#each this.productQs}}
+                        <tr onclick="navigateTo('/giohang/don-mua{{../slug}}/chitiet')">
+                            <td class="d-flex">
+                                <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh">
+                                <div class="text-start ms-2">
+                                    <div>{{this.productName}}</div>
+                                    <div class="to-be-show-col" style="display:none;">
+                                        <div class="text-start">
+                                            x{{this.quantity}}
+                                        </div>
+                                        <div class="price-label" style="color:black">
+                                            {{this.total}}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="to-be-hidden">
+                                <div class="text-center">
+                                    x{{this.quantity}}
+                                </div>
+                            </td>
+                            <td class="to-be-hidden text-end">
+                                <div class="price-label" style="color:black">
+                                    {{this.total}}</div>
+                            </td>
+                        </tr>
+                        {{/each}}
+                        <tr>
+                            <td colspan="4">
+                                <div class="text-end fs-6 pb-2" style="border-bottom: 1rem solid pink;">
+                                    Tổng
+                                    thanh
+                                    toán: <span class="price-label fs-5" style="color:black">
+                                        {{this.total}}</span><br>
+                                    <a class="text-decoration-none"
+                                        href="/giohang/don-mua/{{this._id}}/qr-thanh-toan">Quét mã thanh
+                                        toán</a>
+                                    <div class="paid-label badge text-bg-secondary" data-paid="{{this.paid}}">Đã thanh
+                                        toán</div>
+                                </div>
+
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
             </div>
             <div id="tab3" class="tab-pane fade">
-                <h3>Content 3</h3>
-                <p>This is the content for Tab 3.</p>
+                <table class="table text-center m-0 table-max-width mt-2 mb-4"
+                    style="border-end-end-radius: 1rem; border-top-right-radius: 1rem; overflow: hidden;">
+                    <tbody>
+                        {{#each orders.orders3}}
+                        {{#each this.productQs}}
+                        <tr onclick="navigateTo('/giohang/don-mua{{../slug}}/chitiet')">
+                            <td class="d-flex">
+                                <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh">
+                                <div class="text-start ms-2">
+                                    <div>{{this.productName}}</div>
+                                    <div class="to-be-show-col" style="display:none;">
+                                        <div class="text-start">
+                                            x{{this.quantity}}
+                                        </div>
+                                        <div class="price-label" style="color:black">
+                                            {{this.total}}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="to-be-hidden">
+                                <div class="text-center">
+                                    x{{this.quantity}}
+                                </div>
+                            </td>
+                            <td class="to-be-hidden text-end">
+                                <div class="price-label" style="color:black">
+                                    {{this.total}}</div>
+                            </td>
+                        </tr>
+                        {{/each}}
+                        <tr>
+                            <td colspan="4">
+                                <div class="text-end fs-6 pb-2" style="border-bottom: 1rem solid pink;">
+                                    Tổng
+                                    thanh
+                                    toán: <span class="price-label fs-5" style="color:black">
+                                        {{this.total}}</span><br>
+                                    <a class="text-decoration-none"
+                                        href="/giohang/don-mua/{{this._id}}/qr-thanh-toan">Quét mã thanh
+                                        toán</a>
+                                    <div class="paid-label badge text-bg-secondary" data-paid="{{this.paid}}">Đã thanh
+                                        toán</div>
+                                </div>
+
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
             </div>
             <div id="tab4" class="tab-pane fade">
-                <h3>Content 3</h3>
-                <p>This is the content for Tab 3.</p>
+                <table class="table text-center m-0 table-max-width mt-2 mb-4"
+                    style="border-end-end-radius: 1rem; border-top-right-radius: 1rem; overflow: hidden;">
+                    <tbody>
+                        {{#each orders.orders4}}
+                        {{#each this.productQs}}
+                        <tr onclick="navigateTo('/giohang/don-mua{{../slug}}/chitiet')">
+                            <td class="d-flex">
+                                <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh">
+                                <div class="text-start ms-2">
+                                    <div>{{this.productName}}</div>
+                                    <div class="to-be-show-col" style="display:none;">
+                                        <div class="text-start">
+                                            x{{this.quantity}}
+                                        </div>
+                                        <div class="price-label" style="color:black">
+                                            {{this.total}}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="to-be-hidden">
+                                <div class="text-center">
+                                    x{{this.quantity}}
+                                </div>
+                            </td>
+                            <td class="to-be-hidden text-end">
+                                <div class="price-label" style="color:black">
+                                    {{this.total}}</div>
+                            </td>
+                        </tr>
+                        {{/each}}
+                        <tr>
+                            <td colspan="4">
+                                <div class="text-end fs-6 pb-2" style="border-bottom: 1rem solid pink;">
+                                    Tổng
+                                    thanh
+                                    toán: <span class="price-label fs-5" style="color:black">
+                                        {{this.total}}</span><br>
+                                    <a class="text-decoration-none"
+                                        href="/giohang/don-mua/{{this._id}}/qr-thanh-toan">Quét mã thanh
+                                        toán</a>
+                                    <div class="paid-label badge text-bg-secondary" data-paid="{{this.paid}}">Đã thanh
+                                        toán</div>
+                                </div>
+
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
 <!--Modal=============================-->
-<div class="modal fade" id="confirmDeleteModal" style="z-index: 999999;" tabindex="-1"
+{{!-- <div class="modal fade" id="confirmDeleteModal" style="z-index: 999999;" tabindex="-1"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -121,39 +319,46 @@
 
     <input name="_method" value="DELETE">
     <input type="text" name="deleteId" id="delete-id">
-</form>
+</form> --}}
 
 <script>
-    const deleteForm = document.getElementById('delete-form');
-    const deleteId = document.getElementById('delete-id');
-    const deleteOneBtns = [...document.getElementsByClassName('delete-one-btn')];
-    const deleteModal = document.getElementById('confirmDeleteModal');
-    const deleteBtn = document.getElementById('delete-btn');
+    //const deleteForm = document.getElementById('delete-form');
+    //const deleteId = document.getElementById('delete-id');
+    //const deleteOneBtns = [...document.getElementsByClassName('delete-one-btn')];
+    //const deleteModal = document.getElementById('confirmDeleteModal');
+    //const deleteBtn = document.getElementById('delete-btn');
+    const paidLabels = [...document.getElementsByClassName('paid-label')];
 
-    if (deleteModal) {
-        deleteModal.addEventListener('show.bs.modal', event => {
-            const modalBody = document.getElementById('modal-body');
-            var checkedCount = 0;
-            checkBoxes.forEach(checkbox => {
-                if (checkbox.checked)
-                    checkedCount++;
-            });
-            modalBody.innerHTML = 'Bạn chắc chắn muốn xóa ' + checkedCount + ' sản phẩm khỏi giỏ hàng?';
-        });
-    }
-    deleteBtn.addEventListener('click', function (event) {
-        selectForm.action = '/giohang/xoa-chon';
-        selectForm.querySelector(':first-child').setAttribute('value', 'DELETE');
-        selectForm.submit();
-    });
-
-    deleteOneBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            deleteId.value = e.target.getAttribute('data-delete-id');
-            deleteForm.submit();
-        });
+    paidLabels.forEach(paidLabel => {
+        if (paidLabel.getAttribute('data-paid') === 'true')
+            paidLabel.previousElementSibling.classList.add('d-none');
+        else
+            paidLabel.classList.add('d-none');
     })
+    //if (deleteModal) {
+    //    deleteModal.addEventListener('show.bs.modal', event => {
+    //        const modalBody = document.getElementById('modal-body');
+    //        var checkedCount = 0;
+    //        checkBoxes.forEach(checkbox => {
+    //            if (checkbox.checked)
+    //                checkedCount++;
+    //        });
+    //        modalBody.innerHTML = 'Bạn chắc chắn muốn xóa ' + checkedCount + ' sản phẩm khỏi giỏ hàng?';
+    //    });
+    //}
+    //deleteBtn.addEventListener('click', function (event) {
+    //    selectForm.action = '/giohang/xoa-chon';
+    //    selectForm.querySelector(':first-child').setAttribute('value', 'DELETE');
+    //    selectForm.submit();
+    //});
+
+    //deleteOneBtns.forEach(btn => {
+    //    btn.addEventListener('click', (e) => {
+    //        e.preventDefault();
+    //        deleteId.value = e.target.getAttribute('data-delete-id');
+    //        deleteForm.submit();
+    //    });
+    //})
     const prices = [...document.getElementsByClassName('price-label')];
 
     prices.forEach(function (price) {
