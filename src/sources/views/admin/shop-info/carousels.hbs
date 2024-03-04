@@ -10,9 +10,9 @@
     <thead>
         <tr>
             <th scope="col" class="table-header to-be-hidden">STT</th>
-            <th scope="col" class="table-header">Tiêu đề</th>
             <th scope="col" class="table-header">Hình ảnh</th>
             <th scope="col" class="table-header to-be-hidden">Mô tả</th>
+            <th scope="col"></th>
             <th scope="col"></th>
         </tr>
     </thead>
@@ -20,12 +20,11 @@
         {{#each carousels}}
         <tr>
             <th scope="row" class="to-be-hidden">{{sum @index 1}}</th>
-            <td>{{this.title}}</td>
             <td>
                 <img class="thumnail" src="{{this.imageUrl}}" alt="Ảnh">
             </td>
-            <td class="to-be-hidden">
-                <p class="management_description">{{this.description}}</p>
+            <td class="mobile-hidden">
+                <p>{{this.link}}</p>
             </td>
             <td><a href="/admin/cuahang/quangcao/{{this.slug}}/sua" class="btn btn-info">Sửa</a></td>
             <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"
@@ -66,7 +65,7 @@
         const deleteId = document.getElementById('delete-id');
         const deleteBtn = document.getElementById('delete-btn');
         const deleteModal = document.getElementById('confirmDeleteModal');
-        
+
         if (deleteModal) {
             deleteModal.addEventListener('show.bs.modal', event => {
                 const button = event.relatedTarget;

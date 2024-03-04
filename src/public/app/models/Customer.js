@@ -7,6 +7,7 @@ const Customer = new mongoose.Schema(
         password: { type: String, require: true, },
         fullName: { type: String, default: "unknown" },
         dateOfBirth: { type: String, },
+        gender: { type: String, },
         phoneNumber: {
             type: String,
             validate: {

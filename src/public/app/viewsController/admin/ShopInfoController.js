@@ -67,7 +67,7 @@ class ShopInfoController {
     //[GET] /admin/shop/quangcao/them
     addCarousel(req, res, next) {
         console.log('add carousel - admin');
-        res.render('admin/shop-info/add-carousel', { pageTitle: 'Thêm tin quảng cáo', layout: 'admin', isAdmin: req.session.isAdmin, });  
+        res.render('admin/shop-info/add-carousel', { pageTitle: 'Thêm tin quảng cáo', layout: 'admin', isAdmin: req.session.isAdmin, });
     }
 }
 

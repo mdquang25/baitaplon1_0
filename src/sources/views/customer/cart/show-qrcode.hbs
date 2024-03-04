@@ -1,12 +1,18 @@
-<div class="d-flex justify-content-center">
-    <div class="card text-center my-2 py-4 px-2">
-        <h5>Quét mã QR để thanh toán</h5>
-        <div>Ngân hàng Quân đội - MBBank</div>
-        <div>Số tài khoản: 0382740405</div>
-        <div>Số tiền: <span id="total" class="price-label">{{order.total}}</span></div>
-        <div>Nội dung chuyển khoản: "{{user.phoneNumber}} - {{order._id}}"</div>
-        <img class="img-fluid mx-4" src="{{order.qrcodeUrl}}" alt="mã QR thanh toán">
-        <div id="brand-name-label" class="text-bg-success pt-0">{{shopInfo.shortName}}</div>
+<div class="d-flex justify-content-center mt-4">
+    <div class="d-flex flex-column">
+        <a href="/giohang/don-mua" class="btn btn-primary ms-auto"><i
+                class="fa-sharp fa-solid fa-house-person-return"></i>Quay lại<span class="mobile-hidden"> danh sách đơn
+                mua</span></a>
+
+        <div class="card text-center my-2 py-4 px-2">
+            <h5>Quét mã QR để thanh toán</h5>
+            <div>Ngân hàng Quân đội - MBBank</div>
+            <div>Số tài khoản: 0382740405</div>
+            <div>Số tiền: <span id="total" class="price-label">{{order.total}}</span></div>
+            <div>Nội dung chuyển khoản: "{{user.phoneNumber}} - {{order._id}}"</div>
+            <img class="img-fluid mx-4" src="{{order.qrcodeUrl}}" alt="mã QR thanh toán">
+            <div id="brand-name-label" class="text-bg-success pt-0">{{shopInfo.shortName}}</div>
+        </div>
     </div>
 </div>
 <script>

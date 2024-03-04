@@ -3,10 +3,15 @@ const router = express.Router();
 const productController = require('../../public/app/viewsController/admin/ProductController');
 const categoryController = require('../../public/app/viewsController/admin/CategoryController');
 const typeController = require('../../public/app/viewsController/admin/TypeController');
+const importController = require('../../public/app/viewsController/admin/ImportController');
 const uploader = require('../middleware/uploader');
 const requireManagerLogin = require('../middleware/requireManagerLogin');
 
 
+
+router.get('/nhaphang/tim-san-pham', requireManagerLogin, importController.findProduct);
+router.get('/nhaphang/lichsu', requireManagerLogin, importController.history);
+router.get('/nhaphang', requireManagerLogin, importController.import);
 
 router.post('/chude/luu', requireManagerLogin, categoryController.saveCategory);
 router.patch('/chude/:slug/sua', requireManagerLogin, categoryController.saveModifiedCategory);

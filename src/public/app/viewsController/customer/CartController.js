@@ -217,9 +217,7 @@ class CartController {
                         });
                         return Promise.all(orders);
                     }).then(items => {
-                        console.log('items: ', items);
                         const orders0 = items.filter(order => order.status === 0);
-                        console.log('order0: ', orders0);
                         const orders1 = items.filter(order => order.status === 1);
                         const orders2 = items.filter(order => order.status === 2);
                         const orders3 = items.filter(order => order.status === 3);

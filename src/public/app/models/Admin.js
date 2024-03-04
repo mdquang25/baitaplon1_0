@@ -8,6 +8,7 @@ const Admin = new mongoose.Schema(
         initPassword: { type: String, },
         fullName: { type: String, default: function () { return this.username; } },
         dateOfBirth: { type: String, },
+        gender: { type: String, },
         phoneNumber: {
             type: String,
             validate: {

@@ -1,5 +1,9 @@
-.app {
+.app-customer {
   background-color: rgb(191, 255, 234);
+}
+
+.app-admin {
+  background-color: rgb(255, 218, 240);
 }
 
 .btn {
@@ -14,6 +18,9 @@
 @media (max-width: 780px) {
   .to-be-hidden {
     display: none;
+  }
+  .to-be-shown {
+    display: block !important;
   }
   .to-be-show-col {
     display: flex !important;
@@ -119,6 +126,10 @@
 
 .thumnail {
   width: 5rem;
+}
+
+.thumbnail-sm {
+  width: 4rem;
 }
 
 .management_description {

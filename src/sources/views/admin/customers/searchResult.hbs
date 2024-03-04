@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-end mt-4">
+    <form action="/admin/khachhang/timkiem" method="post" class="d-flex me-md-2 me-lg-4 ms-auto">
+        <input type="text" name="_method" value="GET" hidden>
+        <input class="form-control me-1" name="phoneNumber" type="search" placeholder="Nhập sđt khách hàng.."
+            aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Tìm kiếm</button>
+    </form>
+</div>
+<div class="d-flex mgx-2 mt-2 align-items-center">
+    <h2 class="col-8 text-center">Kết quả tìm kiếm: "{{keyword}}"</h2>
+</div>
+<table class="table text-center">
+    <thead>
+        <tr>
+            <th scope="col" class="table-header">Tên khách hàng</th>
+            <th scope="col" class="table-header">Số điện thoại</th>
+            <th scope="col" class="table-header to-be-hidden">Địa chỉ</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#{{this._id}}" role="button"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    {{customer.fullName}} <i class="fa-solid fa-caret-down"></i>
+                </a>
+                <div class="collapse text-start" style="width: fit-content; margin: auto" id="{{customer._id}}">
+                    <div>giới tính: {{customer.gender}}</div>
+                    <div>Ngày sinh: {{customer.dateOfBirth}}</div>
+                    <p class="to-be-shown management_description" style="display: none;">Địa chỉ: {{customer.address}}
+                    </p>
+                </div>
+            </td>
+            <td>
+                <div class="price-label outline-label">{{customer.phoneNumber}}</div>
+            </td>
+            <td class="to-be-hidden">
+                <p class="management_description">{{customer.address}}</p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+    });
+</script>

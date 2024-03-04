@@ -1,0 +1,58 @@
+<div class="d-flex justify-content-end mt-4">
+    <form action="/admin/khachhang/timkiem" method="post" class="d-flex me-md-2 me-lg-4 ms-auto">
+        <input type="text" name="_method" value="GET" hidden>
+        <input class="form-control me-1" name="phoneNumber" type="search" placeholder="Nhập sđt khách hàng.."
+            aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Tìm kiếm</button>
+    </form>
+</div>
+<div class="d-flex mgx-2 mt-2 align-items-center">
+    <b class="col-2">{{count}} <span class="mobile-hidden">khách hàng</span></b>
+    <h2 class="col-8 text-center"><span class="mobile-hidden">Danh sách</span> Khách hàng</h2>
+</div>
+<table class="table text-center">
+    <thead>
+        <tr>
+            <th scope="col" class="table-header to-be-hidden">STT</th>
+            <th scope="col" class="table-header">Tên khách hàng</th>
+            <th scope="col" class="table-header">Số điện thoại</th>
+            <th scope="col" class="table-header to-be-hidden">Địa chỉ</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each customers}}
+        <tr>
+            <th scope="row" class="to-be-hidden">{{sum @index 1}}</th>
+            <td>
+                <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#{{this._id}}" role="button"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    {{this.fullName}} <i class="fa-solid fa-caret-down"></i>
+                </a>
+                <div class="collapse text-start" style="width: fit-content; margin: auto" id="{{this._id}}">
+                    <div>giới tính: {{this.gender}}</div>
+                    <div>Ngày sinh: {{this.dateOfBirth}}</div>
+                    <p class="to-be-shown management_description" style="display: none;">Địa chỉ: {{this.address}}</p>
+                </div>
+            </td>
+            <td>
+                <div class="price-label outline-label">{{this.phoneNumber}}</div>
+            </td>
+            <td class="to-be-hidden">
+                <p class="management_description">{{this.address}}</p>
+            </td>
+            <td><a href="/admin/khachhang/{{this._id}}/don-mua" class="icon-link text-decoration-none"><i
+                        class="fa-light fa-bags-shopping fa-2x"></i> <span class="to-be-hidden">Đơn hàng</span></a>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+    });
+</script>

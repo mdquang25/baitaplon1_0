@@ -25,6 +25,7 @@ const Product = new mongoose.Schema(
     },
 );
 
+Product.index({ name: 'text' });
 Product.plugin(slug, { tmpl: '<%=name%>' });
 Product.plugin(softDelete);
 

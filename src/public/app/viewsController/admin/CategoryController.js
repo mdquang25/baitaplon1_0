@@ -36,6 +36,7 @@ class CategoryController {
                             manager: req.session.manager,
                             categories,
                             typeCount,
+                            isAdmin: req.session.isAdmin, 
                         });
                     });
             })
