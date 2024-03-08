@@ -17,8 +17,8 @@ class ProductController {
     searchProductByAJAX(req, res) {
         Product.find({ $text: { $search: req.query.query } })
             .then(docs => {
-                res.send({products: multiMongooseToObjs(docs)});
-        })
+                res.send({ products: multiMongooseToObjs(docs) });
+            })
     }
 
     searchProductByPost(req, res, next) {
@@ -43,6 +43,18 @@ class ProductController {
             }).catch(next);
     }
 
+    //[POST] /sanpham/loc
+    filter(req, res, next) {
+        console.log('products filter - customer');
+        console.log('body: ', req.body);
+        Product.find({
+            price: { $gte: req.body.minPrice[0], $lte: req.body.maxPrice[0] },
+            typesIds: { $in: req.body.typesIds }
+        }).then(products => {
+            console.log('product-server: ', products);
+            res.send(multiMongooseToObjs(products));
+        }).catch(next);
+    }
 
 }
 

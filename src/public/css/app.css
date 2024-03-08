@@ -56,7 +56,7 @@
     display: none;
   }
   .mobile-show {
-    display: flex;
+    display: flex !important;
   }
 }
 @media (max-width: 430px) {

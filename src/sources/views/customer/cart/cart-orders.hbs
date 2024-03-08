@@ -23,23 +23,44 @@
     <div class="tabs mx-lg-4 table-max-width">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" data-bs-toggle="tab" href="#tab1"><i class="fa-light fa-list-check fa-2x"></i> Chờ
-                    xác nhận({{orders.orders0.length}})</a>
+                <a class="nav-link px-1 text-center active" data-bs-toggle="tab" href="#tab1">
+                    <span>
+                        <i class="fa-light fa-box-open-full fa-2x"></i>
+                        <span class="mobile-show d-none mt-1 fa-2xs"><br>Chờ xác nhận({{orders.orders1.length}})</span>
+                    </span>
+                    <span class="mobile-hidden">Chờ xác nhận({{orders.orders1.length}})</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab5"><i class="fa-light fa-box-open-full fa-2x"></i> Đang
-                    chuẩn bị hàng({{orders.orders1.length}})</a>
+                <a class="nav-link px-1 text-center" data-bs-toggle="tab" href="#tab5">
+                    <span>
+                        <i class="fa-light fa-box-open-full fa-2x"></i>
+                        <span class="mobile-show d-none mt-1 fa-2xs"><br>Chuẩn bị hàng({{orders.orders1.length}})</span>
+                    </span>
+                    <span class="mobile-hidden"> Đang chuẩn bị hàng({{orders.orders0.length}})</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab2"><i class="fa-light fa-truck-fast fa-2x"></i> Chờ giao
-                    hàng({{orders.orders2.length}})</a>
+                <a class="nav-link px-1 text-center" data-bs-toggle="tab" href="#tab2">
+                    <span>
+                        <i class="fa-light fa-box-open-full fa-2x"></i>
+                        <span class="mobile-show d-none mt-1 fa-2xs"><br>Chờ giao hàng({{orders.orders1.length}})</span>
+                    </span>
+                    <span class="mobile-hidden">Chờ giao hàng({{orders.orders2.length}})</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab3"><i class="fa-light fa-badge-check fa-2x"></i> Hoàn
-                    thành({{orders.orders3.length}})</a>
+                <a class="nav-link px-1 text-center" data-bs-toggle="tab" href="#tab3">
+                    <span>
+                        <i class="fa-light fa-box-open-full fa-2x"></i>
+                        <span class="mobile-show d-none mt-1 fa-2xs"><br>Hoàn thành({{orders.orders1.length}})</span>
+                    </span>
+                    <span class="mobile-hidden">Hoàn thành({{orders.orders3.length}})</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab4"><i class="fa-sharp fa-light fa-align-slash fa-2x"></i> Đã hủy({{orders.orders4.length}})</a>
+                <a class="nav-link px-1 text-center" data-bs-toggle="tab" href="#tab4">
+                    <span>
+                        <i class="fa-light fa-box-open-full fa-2x"></i>
+                        <span class="mobile-show d-none mt-1 fa-2xs"><br>Đã hủy({{orders.orders4.length}})</span>
+                    </span>
+                    <span class="mobile-hidden">Đã hủy({{orders.orders4.length}})</span></a>
             </li>
         </ul>
 

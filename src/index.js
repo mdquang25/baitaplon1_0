@@ -7,6 +7,8 @@ const path = require('path');
 const methodOverride = require('method-override');
 const session = require('./config/db/mongodb-session');
 const cookieParser = require('cookie-parser');
+
+
 //const storage = require('./config/firebaseStorage');
 
 
@@ -32,6 +34,7 @@ app.use(session);
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..', 'node_modules')));
 app.engine(
     'hbs',
     handlebar.engine({

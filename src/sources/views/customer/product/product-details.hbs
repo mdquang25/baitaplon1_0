@@ -88,6 +88,10 @@
             height: 400px;
         }
     }
+
+    .nav-link.img.active {
+        background-color: red;
+    }
 </style>
 <div class="col-12 m-0 row d-flex justify-content-center">
     <div class="card p-0">
@@ -97,10 +101,17 @@
                     <div class="text-center pb-3 image-container"> <img id="main-image"
                             src="{{valueAt product.imagesUrls product.mainImageIndex}}" class="object-fit-scale" />
                     </div>
-                    <div class="thumbnail text-center">
-                        {{#each product.imagesUrls}}
-                        <img onclick="change_image(this)" class="img-thumbnail" src="{{this}}" width="70">
-                        {{/each}}
+                    <div class="tabs" style="overflow-x: scroll;">
+                        <ul class="nav nav-tabs" style="width: max-content;">
+                            {{#each product.imagesUrls}}
+                            <li class="nav-item">
+                                <a href="#" data-bs-toggle="tab" class="nav-link img"
+                                    style="border-radius: .5rem; padding: .2rem;"><img onclick="change_image(this)"
+                                        class="img-thumbnail object-fit-cover" src="{{this}}"
+                                        style="width: 4rem; height: 6rem;"></a>
+                            </li>
+                            {{/each}}
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -137,7 +148,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
-
+    document.querySelector('a[class="nav-link img"]').classList.add('active');
     function change_image(image) {
         var container = document.getElementById("main-image");
         container.src = image.src;

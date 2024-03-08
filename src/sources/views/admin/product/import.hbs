@@ -1,24 +1,29 @@
-<div class="row">
-    <div class="col-lg-6">
-        <div class=" mx-lg-1 px-2 text-bg-info py-3 mt-4">
+<div class="text-center fs-3"><b>Nhập hàng</b></div>
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class=" mx-lg-1 px-2 text-bg-info rounded-2 py-3 mt-4">
             <form id="search-form" class="d-flex me-md-2 me-lg-4 ms-auto">
                 <input id="search-input" class="form-control me-1" name="phoneNumber" type="search"
                     placeholder="Nhập tên hoặc mã sản phẩm.." aria-label="Search">
-                <button id="search-btn" class="btn btn-outline-success" type="submit">Tìm kiếm</button>
+                <button id="search-btn" class="btn btn-success" type="submit">Tìm kiếm</button>
             </form>
             <table class="table text-center m-0 table-max-width mt-2 mb-4"
                 style="border-end-end-radius: 1rem; border-top-right-radius: 1rem; overflow: hidden;">
                 <tbody id="search-results">
-                    
+
                 </tbody>
             </table>
             <div id="message" style="color: red;"></div>
         </div>
     </div>
-    <div class="col-lg-6">
-        <div class=" mx-lg-1 px-2 text-bg-warning py-3 mt-4">
-            Danh sách sản phẩm nhập
-            số lượng
+    <div class="col-lg-10">
+        <div class=" mx-lg-1 px-2 text-bg-warning rounded-2 py-3 mt-4">
+            <table class="table text-center m-0 table-max-width mt-2 mb-4"
+                style="border-end-end-radius: 1rem; border-top-right-radius: 1rem; overflow: hidden;">
+                <tbody id="order-products">
+            
+                </tbody>
+            </table>
             <div>ngày nhập</div>
             <div>nhân viên nhập</div>
         </div>
@@ -30,6 +35,9 @@
     const searchInput = document.getElementById('search-input');
     const searchResults = document.getElementById('search-results');
     const message = document.getElementById('message');
+    const orderResults = document.getElementById('order-products');
+    var searchProducts = [];
+    var orderProducts = [];
 
     searchForm.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -47,25 +55,42 @@
                 searchResults.innerHTML = '';
 
                 if (data.products && data.products.length > 0) {
-                    data.products.forEach(product => appendResult(product));
+                    searchProducts = data.products;
+                    for (i = 0; i < data.products.length; i++)
+                        appendResult(data.products[i], i);
+                    //data.products.forEach(product => appendResult(product));
                 }
                 else if (data.product) {
-                    appendResult(data.product);
+                    searchProducts = [data.product];
+                    appendResult(data.product, 0);
                 }
-                message.innerHTML =  data.message? data.message : '';
+                message.innerHTML = data.message ? data.message : '';
             })
             .catch(error => {
                 console.error('Error:', error);
             });
     }
-    
-    function appendResult(product){
-            const content = `<tr>
+
+    function appendResult(product, index) {
+        const content = `<tr>
                                 <td><img class="thumbnail-sm img-thumbnail" src="${product.imagesUrls[product.mainImageIndex]}" alt="Ảnh"></td>
                                 <td>${product.name}</td>
-                                <td>${product._id}</td>
-                                <td><button type="button" class="btn btn-primary">Thêm</button></td>
+                                <td class="mobile-hidden">${product._id}</td>
+                                <td><button onclick="addProduct(${index})" type="button" class="btn btn-primary">Thêm</button></td>
                             </tr>`;
-            searchResults.insertAdjacentHTML('beforeend', content);
-        }
+        searchResults.insertAdjacentHTML('beforeend', content);
+    }
+
+    function addProduct(index) {
+        const product = searchProducts[index];
+        orderProducts.push(product);
+
+        const content = `<tr>
+                                <td><img class="thumbnail-sm img-thumbnail" src="${product.imagesUrls[product.mainImageIndex]}" alt="Ảnh"></td>
+                                <td>${product.name}</td>
+                                <td class="mobile-hidden">${parseInt(product.price.$numberDecimal).toLocaleString('vi-VN')}đ</td>
+                                <td><input type="number" min="1" max="${product.stock}" value="1" class="form-control text-center"></td>
+                            </tr>`;
+        orderResults.insertAdjacentHTML('beforeend', content);
+    }
 </script>

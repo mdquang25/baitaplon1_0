@@ -1,4 +1,7 @@
-<div class="row col-12 mx-auto justify-content-center">
+<link rel="stylesheet" href="/nouislider/dist/nouislider.min.css">
+
+<div class="row col-12 mx-auto justify-content-center"
+    style="background-image: url('/assets/background/tree rings.png');">
     <div class="col-sm-8 col-md-6 px-0">
         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
@@ -22,16 +25,99 @@
     </div>
 </div>
 
-<div class="d-flex m-4 justify-content-center flex-wrap">
-    {{#each categories}}
-    <select class="form-select mb-2 flex-flow-1 mx-2" style="width: fit-content; background-color: rgb(255, 223, 245)"
-        name="typesId[]">
-        <option value="">--{{this.name}}--</option>
-        {{#each this.types}}
-        <option value="{{this._id}}">{{this.name}}</option>
-        {{/each}}
-    </select>
-    {{/each}}
+
+
+<div class="d-flex justify-content-end me-1 me-md-4 mt-2 gap-1">
+    <a class="btn btn-primary icon-link" data-bs-toggle="collapse" href="#filter" role="button" aria-expanded="false"
+        aria-controls="collapseExample">
+        <i class="fa-light fa-filters"></i>Bộ lọc
+    </a>
+</div>
+<div class="collapse" id="filter">
+    <form id="form-filter" action="/sanpham/loc" method="post" enctype="application/x-www-form-urlencoded"
+        class="card card-body mx-md-2" style="background-color: pink !important;">
+        <div class="mb-3 d-flex flex-wrap">
+            {{#each categories}}
+            <div class="m-1"><b>{{this.name}}</b>
+                {{#each this.types}}
+                <div class="form-check">
+                    <input class="form-check-input" name="typesIds" type="checkbox" value="{{this._id}}"
+                        id="{{this._id}}">
+                    <label class="form-check-label" for="{{this._id}}">
+                        {{this.name}}
+                    </label>
+                </div>
+                {{/each}}
+            </div>
+            {{/each}}
+        </div>
+        <style>
+            .noUi-horizontal {
+                display: flex;
+                align-items: center;
+            }
+
+            /* Adjust the width of the slider track */
+            .noUi-horizontal .noUi-base {
+                height: 4px;
+                /* Adjust the height to make it thinner */
+            }
+
+            .noUi-handle.noUi-handle-lower::before {
+                display: none;
+                background-color: black;
+                height: 90%;
+                left: 5px;
+                top: 0;
+            }
+
+            .noUi-handle.noUi-handle-lower::after {
+                display: none;
+                background-color: black;
+                height: 90%;
+                left: 7px;
+                top: 0;
+            }
+
+            .noUi-handle.noUi-handle-upper::before {
+                display: none;
+                background-color: black;
+                height: 90%;
+                left: 5px;
+                top: 0;
+            }
+
+            .noUi-handle.noUi-handle-upper::after {
+                display: none;
+                background-color: black;
+                height: 90%;
+                left: 7px;
+                top: 0;
+            }
+
+            /* Adjust the appearance of the slider handles */
+            .noUi-horizontal .noUi-handle {
+                border-radius: 50%;
+                border: 1px solid green;
+                background-color: rgb(8, 74, 255);
+                width: 14px;
+                /* Adjust the width to make them thinner */
+                height: 14px;
+                /* Adjust the height to make them thinner */
+                translate: -50% 0;
+            }
+        </style>
+        <div class="row">
+            <div class="col-1 text-end to-be-hidden">0đ</div>
+            <div id="slider" class="col-lg-10"></div>
+            <input type="number" id="startValue" name="minPrice" value="0" hidden>
+            <input type="number" id="endValue" name="maxPrice" value="50000000" hidden>
+            <div class="col-1 text-start to-be-hidden">50tr</div>
+        </div>
+        <div class="ms-lg-5 ms-md-4">Khoảng giá: <span id="slider-value"></span>đ</div>
+        <button type="submit" class="btn btn-outline-primary ms-auto" style="max-width: fit-content;"><i
+                class="fa-light fa-floppy-disk"></i> Lọc</button>
+    </form>
 </div>
 
 <div id="search-heading" class="fs-1 mx-2"></div><br>
@@ -58,6 +144,8 @@
     </div>
     {{/each}}
 </div>
+
+<script src="/nouislider/dist/nouislider.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
         const prices = document.querySelectorAll('span[class="price-label"]');
@@ -69,6 +157,37 @@
         const searchResults = document.getElementById('search-results');
         const searchHeading = document.getElementById('search-heading');
         const foundError = document.getElementById('found-0-message');
+        const formFilter = document.getElementById('form-filter');
+        // Initialize the slider
+        var slider = document.getElementById('slider');
+        var startValueInput = document.getElementById('startValue');
+        var endValueInput = document.getElementById('endValue');
+        var sliderValue = document.getElementById('slider-value');
+
+        noUiSlider.create(slider, {
+            start: [0, 50000000], // Initial start and end values
+            connect: true,
+            step: 100000,
+            range: {
+                'min': 0,
+                'max': 50000000
+            },
+            format: {
+                to: function (value) {
+                    return Math.round(value); // Convert the value to an integer
+                },
+                from: function (value) {
+                    return value; // Convert the value back to a float if needed
+                }
+            }
+        });
+        // Update the hidden inputs when the slider handles are moved
+        slider.noUiSlider.on('update', function (values) {
+            startValueInput.value = values[0];
+            endValueInput.value = values[1];
+            sliderValue.innerHTML = parseInt(values[0]).toLocaleString('vi-VN') + 'đ - ' + parseInt(values[1]).toLocaleString('vi-VN') + 'đ';
+        });
+
 
         updatePriceLabels(oldPrices, prices);
         firstCarousel.classList.add('active');
@@ -79,6 +198,42 @@
             card.addEventListener('touchend', function (e) {
                 this.classList.remove('touched');
             });
+        });
+
+
+        formFilter.addEventListener('submit', event => {
+            event.preventDefault();
+            var form = event.target;
+            var formData = new FormData(form);
+            const data = Array.from(formData.entries()).reduce((acc, [key, value]) => {
+                if (acc[key]) {
+                    acc[key].push(value);
+                } else {
+                    acc[key] = [value];
+                }
+                return acc;
+            }, {});
+            const jsonData = JSON.stringify(data);
+            fetch(form.action, {
+                method: form.method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: jsonData
+            }).then(function (response) {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Error: " + response.status);
+                }
+            })
+                .then(function (products) {
+                    searchResults.innerHTML = '';
+                    renderProducts(products);
+                })
+                .catch(function (error) {
+                    console.error(error); // Handle any errors that occurred during the request
+                });
         });
 
         formSearch.addEventListener('submit', event => {
@@ -97,13 +252,23 @@
                     // Update search results on the page
                     searchResults.innerHTML = '';
                     if (data.products && data.products.length > 0) {
-                        if (!foundError.classList.contains('d-none'))
-                            foundError.classList.add('d-none');
-                        data.products.forEach(product => {
-                            const oldPrice = product.oldPrice.$numberDecimal;
-                            const price = product.price.$numberDecimal;
-                            const content =
-                                `<div class="col-6 col-sm-4 col-md-3 col-lg-2 p-0 mb-1 mb-sm-0">
+                        renderProducts(data.products);
+                    }
+                    else
+                        foundError.classList.remove('d-none');
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function renderProducts(products) {
+            if (!foundError.classList.contains('d-none'))
+                foundError.classList.add('d-none');
+            products.forEach(product => {
+                const oldPrice = product.oldPrice.$numberDecimal;
+                const price = product.price.$numberDecimal;
+                const content =
+                    `<div class="col-6 col-sm-4 col-md-3 col-lg-2 p-0 mb-1 mb-sm-0">
         <div onclick="navigateTo('/sanpham/${product.slug}/chitiet')" data-name="cards"
             class="card product-card mb-1 mx-auto" style="height: 24rem; width: 13rem; max-width:inherit;">
             <img src="${product.imagesUrls[product.mainImageIndex]}" class="card-img-top card-image object-fit-cover"
@@ -116,22 +281,14 @@
             </div>
         </div>
     </div>`;
-                            searchResults.insertAdjacentHTML('beforeend', content);
-                        });
-                        const prices = document.querySelectorAll('span[class="price-label"]');
-                        const oldPrices = document.querySelectorAll('span[class="old-price-label"]');
-                        updatePriceLabels(oldPrices, prices);
-
-                    }
-                    else
-                        foundError.classList.remove('d-none');
-                }).catch(error => {
-                    console.error('Error:', error);
-                });
+                searchResults.insertAdjacentHTML('beforeend', content);
+            });
+            const prices = document.querySelectorAll('span[class="price-label"]');
+            const oldPrices = document.querySelectorAll('span[class="old-price-label"]');
+            updatePriceLabels(oldPrices, prices);
         }
-
-
     });
+
 
     function updatePriceLabels(oldPrices, prices) {
         oldPrices.forEach(function (oldPrice) {

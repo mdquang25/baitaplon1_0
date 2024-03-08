@@ -45,7 +45,8 @@
 
     function validateForm() {
         let isValid = true;
-
+        username.value = username.value.trim();
+        password.value = password.value.trim();
         if (password.value.length < 6) {
             errorLabel.innerHTML = 'mật khẩu phải từ 6 ký tự trở lên!';
             isValid = false;
