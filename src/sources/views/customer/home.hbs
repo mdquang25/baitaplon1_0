@@ -229,9 +229,17 @@
             })
                 .then(function (products) {
                     searchResults.innerHTML = '';
-                    renderProducts(products);
+                        searchHeading.innerHTML = '';
+                    if (products.length > 0) {
+                        if(!foundError.classList.contains('d-none'))
+                            foundError.classList.add('d-none');
+                        renderProducts(products);
+                    }
+                    else
+                        foundError.classList.remove('d-none');
                 })
                 .catch(function (error) {
+                    foundError.classList.remove('d-none');
                     console.error(error); // Handle any errors that occurred during the request
                 });
         });
@@ -252,6 +260,8 @@
                     // Update search results on the page
                     searchResults.innerHTML = '';
                     if (data.products && data.products.length > 0) {
+                        if (!foundError.classList.contains('d-none'))
+                            foundError.classList.add('d-none');
                         renderProducts(data.products);
                     }
                     else
