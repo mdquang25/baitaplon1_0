@@ -3,8 +3,8 @@ const { QRPay, BanksObject, VietQRService } = require('vietnam-qr-pay');
 module.exports = {
     qrContent: function (total, message) {
         const qrPay = QRPay.initVietQR({
-            bankBin: BanksObject.mbbank.bin,
-            bankNumber: '0382740405',
+            bankBin: BanksObject.vietinbank.bin,
+            bankNumber: '101877369079',
             amount: total,
             purpose: message,
         })

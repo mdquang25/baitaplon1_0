@@ -1,0 +1,52 @@
+<div class="row col-12 justify-content-center mx-auto">
+    <div class="text-center fs-3 mt-3 p-0"><b>Phiếu nhập hàng</b></div>
+    <div class="col-lg-10 p-0">
+        <div class=" mx-lg-1 px-2 py-3 mx-md-2 mt-2 mb-5" style="border: 1px solid black">
+            <table class="table text-center m-0 table-max-width mt-2 mb-4"
+                style="border-end-end-radius: 1rem; border-top-right-radius: 1rem; overflow: hidden;">
+                <thead>
+                    <tr>
+                        <th scope="col" class="mobile-hidden">STT</th>
+                        <th scope="col">Ảnh</th>
+                        <th scope="col" class="mobile-hidden">Mã sản phẩm</th>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col">Số lượng</th>
+                    </tr>
+                </thead>
+                <tbody id="order-products">
+                    {{#each productQs}}
+                    <tr>
+                        <td class="mobile-hidden">{{sum @index 1}}</td>
+                        <td><img class="thumbnail-sm img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh"></td>
+                        <td class="mobile-hidden">{{this.productId}}</td>
+                        <td>{{this.productName}}</td>
+                        <td>{{this.quantity}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            <div class="row mx-2">
+                <div class="col-md-6 mb-2">
+                    <div>Ghi chú</div>
+                    <textarea class="form-control" cols="15" rows="4" readonly>{{importBill.note}}</textarea>
+                </div>
+                <div class="col-md-6 mt-auto mb-2">
+                    <div>Ngày nhập: <span id="date-time">{{importBill.createdAt}}</span></div>
+                    <div>Tổng số sản phẩm: {{importBill.total}}</div>
+                    <div>Nhân viên nhập: {{importBill.managerName}}</div>
+                    <div>Mã nhân viên: {{importBill.Admin_id}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const dateTimeLabel = document.getElementById('date-time');
+
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+    const vietnameseDateTime = new Date(dateTimeLabel.innerHTML).toLocaleString('vi-VN', options);
+    dateTimeLabel.innerHTML = vietnameseDateTime;
+
+    window.print();
+</script>

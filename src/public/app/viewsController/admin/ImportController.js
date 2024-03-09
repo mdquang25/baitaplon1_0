@@ -1,14 +1,23 @@
 const { mongooseToObj, multiMongooseToObjs } = require("../../../../util/mongoose");
+const ImportBill = require("../../models/ImportBill");
+const Import = require("../../models/ImportBill");
 const Product = require("../../models/Product");
+const ProductQ = require("../../models/ProductQ");
 
 
 
 class ImportController {
     import(req, res) {
-        res.render('admin/product/import', { pageTitle: 'Nhập hàng', layout: 'admin', isAdmin: req.session.isAdmin, })
+        res.render('admin/product/import', { pageTitle: 'Nhập hàng', layout: 'admin', manager: req.session.manager, isAdmin: req.session.isAdmin, })
     }
+
+    //[GET] /admin/kho/nhaphang/lichsu?print=
     history(req, res, next) {
-        res.render('admin/product/import', { pageTitle: 'Lịch sử nhập hàng', layout: 'admin', isAdmin: req.session.isAdmin, })
+        const printId = req.query.print;
+        ImportBill.find({})
+            .then(importBills => {
+                res.render('admin/product/import-history', { pageTitle: 'Lịch sử nhập hàng', layout: 'admin', isAdmin: req.session.isAdmin, importBills: multiMongooseToObjs(importBills), printId })
+            })
 
     }
 
@@ -32,7 +41,64 @@ class ImportController {
             })
     }
 
-    
+    //[POST] /admin/nhaphang/luu-phieu-nhap
+    saveImport(req, res, next) {
+        console.log('save import bill - admin');
+        var total = 0;
+        const productQIdsPromises = req.body.productIds.map(productId => {
+            return Product.findById(productId)
+                .then(product => {
+                    const quantity = parseInt(req.body[`${productId}quantity`]);
+                    total += quantity;
+                    product.stock += quantity;
+                    product.count += quantity;
+                    const productQ = new ProductQ({
+                        productId: productId,
+                        productName: product.name,
+                        imageUrl: product.imagesUrls[product.mainImageIndex],
+                        productSlug: product.slug,
+                        price: product.price,
+                        quantity,
+                    });
+                    productQ.save();
+                    product.save();
+                    return productQ._id;
+                });
+        });
+        Promise.all(productQIdsPromises)
+            .then(productQ_ids => {
+                const importBill = new ImportBill({
+                    Admin_id: req.session.manager.id,
+                    managerName: req.session.manager.fullName,
+                    productQ_ids,
+                    note: req.body.note,
+                    total,
+                });
+                importBill.save();
+                res.redirect('/admin/kho/nhaphang/lichsu?print=' + importBill._id);
+            })
+    }
+
+    //[GET] /admin/kho/nhaphang/lichsu/:id
+    importDetails(req, res, next) {
+        ImportBill.findById(req.params.id)
+            .then(doc => {
+                ProductQ.find({ _id: { $in: doc.productQ_ids } })
+                    .then(productQs => {
+                        res.render('admin/product/import-details', { pageTitle: 'Chi tiết phiếu nhập hàng', layout: 'admin', isAdmin: req.session.isAdmin, importBill: mongooseToObj(doc), productQs: multiMongooseToObjs(productQs), })
+                    })
+            })
+    }
+    //[GET] /admin/kho/nhaphang/lichsu/:id/in-phieu
+    printImportBill(req, res, next) {
+        ImportBill.findById(req.params.id)
+            .then(doc => {
+                ProductQ.find({ _id: { $in: doc.productQ_ids } })
+                    .then(productQs => {
+                        res.render('admin/product/import-details-print', { pageTitle: 'In phiếu nhập hàng', layout: 'print', shopInfo: res.locals.shopInfo, importBill: mongooseToObj(doc), productQs: multiMongooseToObjs(productQs), })
+                    })
+            }).catch(() => res.redirect('/not-found-404'));
+    }
 }
 
 module.exports = new ImportController;

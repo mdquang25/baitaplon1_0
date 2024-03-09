@@ -3850,7 +3850,7 @@ textarea.form-control-lg {
   --bs-dropdown-color: var(--bs-body-color);
   --bs-dropdown-bg: var(--bs-body-bg);
   --bs-dropdown-border-color: #e9ecef;
-  --bs-dropdown-border-radius: 2px;
+  --bs-dropdown-border-radius: 4px;
   --bs-dropdown-border-width: 0;
   --bs-dropdown-inner-border-radius: calc($dropdown-border-radius - $dropdown-border-width);
   --bs-dropdown-divider-bg: #e8eaec;

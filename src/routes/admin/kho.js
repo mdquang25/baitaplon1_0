@@ -5,11 +5,15 @@ const categoryController = require('../../public/app/viewsController/admin/Categ
 const typeController = require('../../public/app/viewsController/admin/TypeController');
 const importController = require('../../public/app/viewsController/admin/ImportController');
 const uploader = require('../middleware/uploader');
+const getShopInfo = require('../middleware/getShopInfo');
 const requireManagerLogin = require('../middleware/requireManagerLogin');
 
 
+router.post('/nhaphang/luu-phieu-nhap', requireManagerLogin, importController.saveImport);
 
 router.get('/nhaphang/tim-san-pham', requireManagerLogin, importController.findProduct);
+router.get('/nhaphang/lichsu/:id/in-phieu', requireManagerLogin, getShopInfo, importController.printImportBill);
+router.get('/nhaphang/lichsu/:id', requireManagerLogin, importController.importDetails);
 router.get('/nhaphang/lichsu', requireManagerLogin, importController.history);
 router.get('/nhaphang', requireManagerLogin, importController.import);
 

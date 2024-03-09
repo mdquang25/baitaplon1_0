@@ -7,7 +7,8 @@
             <div class="carousel-inner">
                 {{#each carousels}}
                 <div class="carousel-item" style="max-height: 20rem;" onclick="navigateTo('{{this.link}}')">
-                    <img src="{{this.imageUrl}}" class="d-block w-100" alt="ảnh quảng cáo">
+                    <img src="{{this.imageUrl}}" style="border: .5rem ridge  rgba(0, 0, 0, 0.416);" class="d-block w-100"
+                        alt="ảnh quảng cáo">
                 </div>
                 {{/each}}
             </div>
@@ -229,9 +230,9 @@
             })
                 .then(function (products) {
                     searchResults.innerHTML = '';
-                        searchHeading.innerHTML = '';
+                    searchHeading.innerHTML = '';
                     if (products.length > 0) {
-                        if(!foundError.classList.contains('d-none'))
+                        if (!foundError.classList.contains('d-none'))
                             foundError.classList.add('d-none');
                         renderProducts(products);
                     }

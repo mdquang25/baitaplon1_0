@@ -1,0 +1,55 @@
+<div class="text-end mt-4">
+    <a href="/admin/kho/nhaphang" class="me-2 btn btn-warning">Nhập hàng</a>
+</div>
+<div class="d-flex mgx-2 mt-4">
+    <b class="col-2">{{importBills.length}} <span class="mobile-hidden">phiếu nhập</span></b>
+    <h2 class="col-8 text-center"><span class="mobile-hidden">Danh sách</span> Phiếu nhập</h2>
+</div>
+<table class="table table-hover text-center">
+    <thead>
+        <tr>
+            <th scope="col" class="table-header to-be-hidden">STT</th>
+            <th scope="col" class="table-header">Ngày nhập</th>
+            <th scope="col" class="table-header mobile-hidden">Người nhập</th>
+            <th scope="col" class="table-header">Số mã hàng</th>
+            <th scope="col" class="table-header">Tổng sản phẩm</th>
+            <th scope="col" class="table-header to-be-hidden">Ghi chú</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each importBills}}
+        <tr>
+            <th onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" scope="row" class="to-be-hidden">{{sum
+                @index
+                1}}</th>
+            <td onclick="navigateTo('/admin/kho/nhaphang/lichsu/{{this._id}}')" class="date-time">{{this.createdAt}}
+            </td>
+            <td onclick="navigateTo('/admin/kho/nhaphang/lichsu/{{this._id}}')" class="mobile-hidden">
+                {{this.managerName}}</td>
+            <td onclick="navigateTo('/admin/kho/nhaphang/lichsu/{{this._id}}')">{{this.productQ_ids.length}}</td>
+            <td onclick="navigateTo('/admin/kho/nhaphang/lichsu/{{this._id}}')">{{this.total}}</td>
+            <td onclick="navigateTo('/admin/kho/nhaphang/lichsu/{{this._id}}')" class="to-be-hidden">
+                <p class="management_description">{{this.note}}</p>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<div id="print-id" class="d-none">{{printId}}</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const printId = document.getElementById('print-id').innerHTML;
+
+        if (printId.length > 0)
+            window.open('/admin/kho/nhaphang/lichsu/' + printId + '/in-phieu', '_blank');
+        const dataTimeLabels = [...document.getElementsByClassName('date-time')];
+        dataTimeLabels.forEach(label => {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            label.innerHTML = new Date(label.innerHTML).toLocaleDateString('vi-VN', options);
+        })
+    });
+
+    function navigateTo(url) {
+        window.location.href = url;
+    }
+</script>

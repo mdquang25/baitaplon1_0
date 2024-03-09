@@ -44,6 +44,9 @@ class SiteController {
     //[POST] /dangnhap
     checkLogin(req, res, next) {
         console.log('check log in - customer');
+        if (req.session.isLoggedin)
+            res.redirect('/');
+        else{
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             // Handle validation errors, such as sending an error response
@@ -76,7 +79,8 @@ class SiteController {
                     }
                 });
             })
-            .catch(next);
+                .catch(next);
+        }
     }
 
 
