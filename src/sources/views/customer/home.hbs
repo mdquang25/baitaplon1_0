@@ -1,14 +1,13 @@
 <link rel="stylesheet" href="/nouislider/dist/nouislider.min.css">
 
-<div class="row col-12 mx-auto justify-content-center"
-    style="background-image: url('/assets/background/tree-rings.png');">
+<div class="row col-12 mx-auto justify-content-center" style="background-image: url('/assets/background/bg-1.jpg');">
     <div class="col-sm-8 col-md-6 px-0">
         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 {{#each carousels}}
                 <div class="carousel-item" style="max-height: 20rem;" onclick="navigateTo('{{this.link}}')">
-                    <img src="{{this.imageUrl}}" style="border: .5rem ridge  rgba(0, 0, 0, 0.416);" class="d-block w-100"
-                        alt="ảnh quảng cáo">
+                    <img src="{{this.imageUrl}}" style="border: .5rem ridge  rgba(0, 0, 0, 0.416);"
+                        class="d-block w-100" alt="ảnh quảng cáo">
                 </div>
                 {{/each}}
             </div>
