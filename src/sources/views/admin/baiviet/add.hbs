@@ -1,0 +1,37 @@
+<div class="row justify-content-center mt-4">
+    <div class="d-flex justify-content-end col-md-9 col-lg-6 px-0">
+        <a href="/admin/baiviet"><button class="btn btn-primary"><i
+                    class="fa-sharp fa-solid fa-house-person-return"></i> Danh sách bài viết</button></a>
+    </div>
+</div>
+<div class="row justify-content-center mt-4 mb-4">
+
+    <form action="/admin/baiviet/them" method="post" enctype="multipart/form-data" class="card col-md-9 col-lg-6"
+        style="background-color: rgb(103, 193, 185)">
+        <h1 class="text-center">Thêm bài viết</h1>
+        <div class="mb-3">
+            <label for="name" class="form-label mx-2">Tên bài viết</label>
+            <input type="text" name="name" id="name" autocomplete="cc-name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label mx-2">Tên tác giả</label>
+            <input type="text" name="author" id="name" autocomplete="cc-name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label mx-2">Mô tả</label>
+            <textarea type="text" name="description" id="description" class="form-control" cols="30"
+                rows="4"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="formMultipleFile" class="form-label mx-2">Chọn các file ảnh</label>
+            <input class="form-control" name="images" type="file" id="formMultipleFile" multiple>
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label mx-2">Nội dung</label>
+            <textarea type="text" name="content" id="content" class="form-control" cols="30"
+                rows="20"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success mb-3"><i class="fa-regular fa-floppy-disk me-1"></i>Lưu bài
+            viết</button>
+    </form>
+</div>

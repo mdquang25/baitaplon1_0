@@ -112,63 +112,69 @@ class ProductController {
         console.log('save modified product - admin');
         Product.findOne({ slug: req.params.slug })
             .then(product => {
-                product.name = req.body.name;
-                product.description = req.body.description;
-                product.stock = parseInt(product.stock) + parseInt(req.body.import);
-                product.count = parseInt(product.count) + parseInt(req.body.import);
-                product.onSale = req.body.onSale;
-                product.oldPrice = req.body.oldPrice;
-                product.price = req.body.price;
-                product.mainImageIndex = req.body.mainImageIndex;
-                product.typesIds = req.body.typesIds;
-                const oldUrls = product.imagesUrls;
-                product.imagesUrls = req.body.imagesUrls;
-                const files = req.files;
-                console.log(files);
-                if (files && files.length > 0) {
-                    const imagePaths = files.map(file => '/uploads/' + file.filename);
-                    console.log('imagePaths: ', imagePaths);
+                if (product) {
+                    product.name = req.body.name;
+                    product.description = req.body.description;
+                    product.stock = parseInt(product.stock) + parseInt(req.body.import);
+                    product.count = parseInt(product.count) + parseInt(req.body.import);
+                    product.onSale = req.body.onSale;
+                    product.oldPrice = req.body.oldPrice;
+                    product.price = req.body.price;
+                    product.mainImageIndex = req.body.mainImageIndex;
+                    product.typesIds = req.body.typesIds;
+                    const oldUrls = product.imagesUrls;
+                    product.imagesUrls = req.body.imagesUrls;
+                    const files = req.files;
+                    console.log(files);
+                    if (files && files.length > 0) {
+                        const imagePaths = files.map(file => '/uploads/' + file.filename);
+                        console.log('imagePaths: ', imagePaths);
 
-                    if (product.imagesUrls && product.imagesUrls.length > 0)
-                        product.imagesUrls.push(...imagePaths);
-                    else
-                        product.imagesUrls = imagePaths;
-                    console.log('product.imagesUrls: ', product.imagesUrls);
+                        if (product.imagesUrls && product.imagesUrls.length > 0)
+                            product.imagesUrls.push(...imagePaths);
+                        else
+                            product.imagesUrls = imagePaths;
+                        console.log('product.imagesUrls: ', product.imagesUrls);
 
-                    // files.forEach(file => {
-                    //     bucket.upload('src/public/uploads/' + file.filename, {
-                    //         gzip: true,
-                    //         destination: 'images/' + file.filename,
-                    //         metadata: {
-                    //             contentType: file.mimetype,
-                    //             cacheControl: 'public, max-age=31536000'
-                    //         }
-                    //     })
-                    //     const imageRef = bucket.ref().child('path/to/image.jpg');
-                    //     imageRef.getDownloadURL()
-                    // })
+                        // files.forEach(file => {
+                        //     bucket.upload('src/public/uploads/' + file.filename, {
+                        //         gzip: true,
+                        //         destination: 'images/' + file.filename,
+                        //         metadata: {
+                        //             contentType: file.mimetype,
+                        //             cacheControl: 'public, max-age=31536000'
+                        //         }
+                        //     })
+                        //     const imageRef = bucket.ref().child('path/to/image.jpg');
+                        //     imageRef.getDownloadURL()
+                        // })
 
-                };
-                if (oldUrls && oldUrls.length > 0) {
-                    const unwantedUrls = oldUrls.filter(element => !req.body.imagesUrls.includes(element));
-                    unwantedUrls.forEach(function (url) {
-                        fs.unlink(path.join(__dirname, '..', '..', '..', url), (err) => {
-                            if (err) {
-                                console.error(url + err);
-                                return;
-                            }
-                            console.log(url + ': deleted successfully');
+                    };
+                    if (oldUrls && oldUrls.length > 0) {
+                        var unwantedUrls;
+                        if (req.body.imagesUrls)
+                            unwantedUrls = oldUrls.filter(element => !req.body.imagesUrls.includes(element));
+                        else
+                            unwantedUrls = oldUrls;
+                        unwantedUrls.forEach(function (url) {
+                            fs.unlink(path.join(__dirname, '..', '..', '..', url), (err) => {
+                                if (err) {
+                                    console.error(url + err);
+                                    return;
+                                }
+                                console.log(url + ': deleted successfully');
+                            });
                         });
-                    });
+                    }
+                    product.save();
+                    console.log('product modify is saved!');
+                    //add some check funtion if category already exist
+                    //...
                 }
-                product.save();
-                console.log('product modify is saved!');
-                //add some check funtion if category already exist
-                //...
                 res.redirect('/admin/kho/sanpham');
             }).catch(next);
     }
-    //[PATCH] /admin/kho/sanpham/xoa/:id
+    //[PATCH] /admin/kho/sanpham/xoa
     deleteProduct(req, res, next) {
         console.log('delete product - admin');
         Product.findByIdAndDelete(req.body.deleteId)
@@ -202,7 +208,7 @@ class ProductController {
                             });
                         });
                     });
-                    Product.deleteMany({ _id: { $in: req.body.product_ids } })
+                    Product.removeMany({ _id: { $in: req.body.product_ids } })
                         .then(() => {
                             res.redirect('back');
                         });

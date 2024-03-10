@@ -19,14 +19,25 @@
         <div class="ms-2">Địa chỉ nhận hàng</div>
         <table class="table">
             <tbody>
-                <th>
-                    <input type="text" name="reciever" value="{{user.fullName}}" readonly>
-                    <input type="text" name="phoneNumber" value="{{user.phoneNumber}}" readonly>
-
-                </th>
-                <input type="text" name="address" value="{{user.address}}" readonly>
-                <td><button type="button" class="btn btn-outline-info">sửa địa
-                        chỉ</button></td>
+                <td>
+                    <div class="d-flex flex-column">
+                        <input id="name-input" type="text" name="reciever" class="form-control d-none"
+                            value="{{user.fullName}}">
+                        <input id="phone-input" type="number" name="phoneNumber" class="form-control d-none mt-2"
+                            value="{{user.phoneNumber}}">
+                    </div>
+                    <div id="name-label">{{user.fullName}}</div>
+                    <div id="phone-label">{{user.phoneNumber}}</div>
+                </td>
+                <td>
+                    <input id="address-input" type="text" name="address" class="form-control d-none"
+                        value="{{user.address}}">
+                    <div id="address-label">{{user.address}}</div>
+                </td>
+                <td>
+                    <button id="modify-address" type="button" class="btn btn-outline-info">sửa <span class="mobile-hidden">địa chỉ</span></button>
+                    <button id="save-address" type="button" class="btn btn-outline-success d-none">Xong</button>
+                </td>
             </tbody>
         </table>
     </div>
@@ -171,12 +182,46 @@
         const notShip = document.getElementById('not-ship');
         const shippingFee = document.getElementById('shipping-fee');
         const productsFee = document.getElementById('products-fee');
-        const totalLabel = document.getElementById('total-abel');
+        const totalLabel = document.getElementById('total-label');
+        const modifyAddressBtn = document.getElementById('modify-address');
+        const saveAddressBtn = document.getElementById('save-address');
+        const nameInput = document.getElementById('name-input');
+        const phoneInput = document.getElementById('phone-input');
+        const addressInput = document.getElementById('address-input');
+        const nameLabel = document.getElementById('name-label');
+        const phoneLabel = document.getElementById('phone-label');
+        const addressLabel = document.getElementById('address-label');
+
+        modifyAddressBtn.addEventListener('click', (event) => {
+            nameInput.classList.remove('d-none');
+            phoneInput.classList.remove('d-none');
+            addressInput.classList.remove('d-none');
+            saveAddressBtn.classList.remove('d-none');
+            nameLabel.classList.add('d-none');
+            phoneLabel.classList.add('d-none');
+            addressLabel.classList.add('d-none');
+            modifyAddressBtn.classList.add('d-none');
+        });
+        saveAddressBtn.addEventListener('click', (event) => {
+            nameInput.classList.add('d-none');
+            phoneInput.classList.add('d-none');
+            addressInput.classList.add('d-none');
+            saveAddressBtn.classList.add('d-none');
+            nameLabel.classList.remove('d-none');
+            phoneLabel.classList.remove('d-none');
+            addressLabel.classList.remove('d-none');
+            modifyAddressBtn.classList.remove('d-none');
+            nameLabel.innerHTML = nameInput.value;
+            phoneLabel.innerHTML = phoneInput.value;
+            addressLabel.innerHTML = addressInput.value;
+        });
+
         shipCheck.addEventListener('change', (e) => {
             if (shipCheck.checked) {
-                const t = parseInt(shippingFee.getAttribute('data-value')) + parseInt(productsFee.getAttribute('data-value'));
+                const ship = parseInt(shippingFee.getAttribute('data-value'))
+                const t = ship + parseInt(productsFee.getAttribute('data-value'));
                 totalLabel.innerHTML = (t).toLocaleString('vi-VN') + 'đ';
-                shippingFee.innerHTML = parseInt(shippingFee.getAttribute('data-value')).toLocaleString('vi-VN') + 'đ';
+                shippingFee.innerHTML = ship.toLocaleString('vi-VN') + 'đ';
             }
         });
         notShip.addEventListener('change', (e) => {

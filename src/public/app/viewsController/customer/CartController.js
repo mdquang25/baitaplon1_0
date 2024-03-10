@@ -12,7 +12,7 @@ class CartController {
         console.log('add to cart - customer');
         Cart.findById(req.session.user.cartId)
             .then(cart => {
-                ProductQ.findOne({ cartId: cart._id, productId: req.body.productId })
+                ProductQ.findOne({ cartId: cart._id, productId: req.query.productId })
                     .then(doc => {
                         if (doc) {
                             doc.quantity++;
@@ -20,23 +20,33 @@ class CartController {
                                 doc.save();
                                 resolve();
                             }))().then(() => {
-                                res.redirect('back');
+                                res.send({ message: 'exist' });
                             });
                         }
                         else {
-                            const productQ = new ProductQ({
-                                cartId: cart._id,
-                                productId: req.body.productId,
-                                quantity: 1,
-                            });
-                            productQ.save();
-                            cart.newProduct = true;
-                            cart.productQ_ids.push(productQ._id);
-                            cart.save();
-                            res.redirect('back');
-
+                            Product.exists({ _id: req.query.productId })
+                                .then(exist => {
+                                    if (exist) {
+                                        const productQ = new ProductQ({
+                                            cartId: cart._id,
+                                            productId: req.query.productId,
+                                            quantity: 1,
+                                        });
+                                        productQ.save();
+                                        cart.newProduct = true;
+                                        cart.productQ_ids.push(productQ._id);
+                                        cart.save();
+                                        res.send({ message: 'added' });
+                                    }
+                                    else
+                                        res.send({ message: 'error' });
+                                }).catch(() => {
+                                    res.send({ message: 'error' });
+                                });
                         }
-                    })
+                    }).catch(() => {
+                        res.send({ message: 'error' });
+                    });
             })
     }
     //[GET] /giohang
@@ -62,7 +72,7 @@ class CartController {
                     }).then(productQs => {
                         cart.newProduct = false;
                         cart.save();
-                        res.render('customer/cart/cart-products', { pageTitle: 'Giỏ hàng', isLoggedin: req.session.isLoggedin, productQs, cart: res.locals.cart, shopInfo: res.locals.shopInfo, })
+                        res.render('customer/cart/cart-products', { pageTitle: 'Giỏ hàng', isLoggedin: req.session.isLoggedin, productQs, shopInfo: res.locals.shopInfo, })
                     });
             });
     }
@@ -123,8 +133,8 @@ class CartController {
         //order.cart_id = req.session.user.cartId;
         order.customer_id = req.session.user.id;
         if (req.body.ship === 'true') {
-            order.shippingFee = req.locals.shopInfo.shippingFee;
-            order.total = parseInt(req.body.productFee) + parseInt(req.locals.shopInfo.shippingFee);
+            order.shippingFee = res.locals.shopInfo.shippingFee;
+            order.total = parseInt(req.body.productFee) + parseInt(res.locals.shopInfo.shippingFee);
         }
         else
             order.total = req.body.productFee;
@@ -153,6 +163,8 @@ class CartController {
                                             productQ.price = product.price;
                                             productQ.total = product.price * productQ.quantity;
                                             productQ.save();
+                                            product.stock -= productQ.quantity;
+                                            product.save();
                                             return productQ;
                                         });
                                 });
@@ -188,9 +200,9 @@ class CartController {
         console.log('remove one product - customer');
         Cart.findById(req.session.user.cartId)
             .then(cart => {
-                const index = cart.productQ_id.indexOf(req.body.deleteId);
+                const index = cart.productQ_ids.indexOf(req.body.deleteId);
                 if (index > -1) {
-                    cart.productQ_id.splice(index, 1);
+                    cart.productQ_ids.splice(index, 1);
                 }
                 cart.save();
                 ProductQ.findByIdAndDelete(req.body.deleteId)

@@ -282,9 +282,14 @@
     const newOrderUpdate = document.getElementById('newOrderUpdate').value;
     const redDot = document.getElementById('red-dot');
 
-    if (newProduct === 'true' || newOrderUpdate === 'true') {
+
+    if (newProduct !== 'true' && newProduct !== 'false') {
+        cart.classList.add('d-none');
+    }
+    else if (newProduct === 'true' || newOrderUpdate === 'true') {
         redDot.classList.remove('d-none');
     }
+
 
     logoutAlert.addEventListener('shown.bs.modal', () => {
         logoutBtn.focus()

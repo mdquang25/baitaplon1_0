@@ -133,6 +133,7 @@
 
 .thumnail {
   width: 5rem;
+  min-width: 5rem;
 }
 
 .thumbnail-sm {

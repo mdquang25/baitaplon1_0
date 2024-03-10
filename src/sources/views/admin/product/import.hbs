@@ -13,6 +13,9 @@
                 </tbody>
             </table>
             <div id="message" style="color: rgb(0, 0, 0);"></div>
+            <div class="text-end me-md-2 me-lg-4">
+                <button type="button" id="add-new-product" class="btn btn-warning">Thêm sản phẩm mới</button>
+            </div>
         </div>
     </div>
     <div class="text-center fs-3 mt-3 p-0"><b>Nhập hàng</b></div>
@@ -64,8 +67,13 @@
         const saveForm = document.getElementById('save-form');
         const printInput = document.getElementById('printInput');
         chosenResults = document.getElementById('order-products');
+        const addNewProduct = document.getElementById('add-new-product');
 
 
+        addNewProduct.addEventListener('click', event =>{
+            window.open('/admin/kho/sanpham/them', '_blank');
+        });
+        
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         const vietnameseDate = new Date().toLocaleDateString('vi-VN', options);
         document.getElementById('date-time').innerHTML = vietnameseDate;
