@@ -14,8 +14,7 @@
 
 <div id="isLoggedin" class="d-none">{{isLoggedin}}</div>
 <!--MAIN NAVBAR====================================-->
-<nav class="second-nav sticky-top navbar navbar-expand-md navbar-dark bg-dark py-0" data-bs-theme="dark"
-    >
+<nav class="second-nav sticky-top navbar navbar-expand-md navbar-dark bg-dark py-0" data-bs-theme="dark">
     <div class="second-nav-content container-fluid d-flex mx-4 justify-content-start">
         <a class="navbar-brand" href="/">
             <img src="/assets/icons/icon1.jpg" style="border-radius: 50%; border: 3px solid yellow;" alt="Logo"
@@ -67,11 +66,11 @@
                         <a class="nav-link" href="#">Bài viết</a>
                     </li>
                 </ul>
-                <form id="form-search" action="/sanpham/tim-kiem" method="post" class="d-flex mx-1">
-                    <input id="search-input" name="query" class="form-control me-2" type="search" placeholder="Nhập tên sản phẩm.."
-                        aria-label="Search">
+                {{!-- <form id="form-search" action="/sanpham/tim-kiem" method="post" class="d-flex mx-1">
+                    <input id="search-input" name="query" class="form-control me-2" type="search"
+                        placeholder="Nhập tên sản phẩm.." aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Tìm kiếm</button>
-                </form>
+                </form> --}}
             </div>
         </div>
 
@@ -103,7 +102,154 @@
     </div>
 </nav>
 
+<style>
 
+    .event__search__floater {
+        position: fixed;
+        top: 10rem;
+        /*   left:0; */
+        right: 1rem;
+        z-index: 100;
+        transition: all ease-in-out 0.3s;
+        transform: translate(-50%, -50%);
+    }
+
+    @media (max-width: 780px) {
+        .event__search__floater {
+            top: 7rem;
+            right: .5rem;
+        }
+    }
+    .search__anchor {
+        position: relative;
+        width: auto;
+        height: auto;
+        /*   TODO: Center anchor */
+    }
+
+    .search__submit {
+        opacity: 0;
+        width: 0px;
+    }
+
+    .search__bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 3rem;
+        bottom: 0;
+        outline: none;
+        border: none;
+        background: #fff;
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+        opacity: 0;
+        z-index: 5;
+        transition: all 0.2;
+        font-size: 1em;
+    }
+
+    .search__bar:hover {
+        cursor: pointer;
+    }
+
+    .search__bar:focus {
+        width: inherit;
+        left: auto;
+        opacity: 1;
+        cursor: text;
+        transition: all 0.2;
+        padding-left: 25px;
+        padding-right: 70px;
+    }
+
+    .search__toggler {
+        position: absolute;
+        width: 3.5rem;
+        height: 3.5rem;
+        background: #0062ff;
+        opacity: 1;
+        top: -4px;
+        left: -4px;
+        border-radius: 50%;
+        transition: all 0.3s;
+    }
+
+    .search__toggler:hover {
+        cursor: pointer;
+    }
+
+    .search__toggler::before {
+        content: "";
+        position: absolute;
+        margin: auto;
+        top: 22px;
+        right: 0;
+        bottom: 0;
+        left: 22px;
+        width: 12px;
+        height: 2px;
+        background: #fff;
+        transform: rotate(45deg);
+        transition: all 0.3s;
+    }
+
+    .search__toggler::after {
+        content: "";
+        position: absolute;
+        margin: auto;
+        top: -5px;
+        right: 0;
+        bottom: 0;
+        left: -5px;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        transition: all 0.3s;
+    }
+
+    .search__bar:focus~.search__toggler {
+        right: 400px;
+        background: #151515;
+        z-index: 6;
+        transition: all 0.2;
+    }
+
+    .search__bar:focus~.search__toggler::before {
+        top: 0;
+        left: 0;
+        width: 25px;
+    }
+
+    .search__bar:focus~.search__toggler::after {
+        top: 0;
+        left: 0;
+        width: 25px;
+        height: 2px;
+        border: none;
+        background: white;
+        border-radius: 0%;
+        transform: rotate(-45deg);
+    }
+</style>
+<div class="event__search__floater">
+    <div class="search__anchor">
+        {{!-- <form id="event-search-form" action="get">
+            <input type="text" class="search__bar" placeholder="Search Event">
+            <input class="search__submit" type="submit">
+            <div class="search__toggler"></div>
+        </form> --}}
+        <form id="form-search" action="/sanpham/tim-kiem" method="post" class="d-flex mx-1">
+            <input id="search-input" name="query" class="search__bar form-control me-2" type="search"
+                placeholder="Nhập tên sản phẩm.." aria-label="Search">
+            <button class="btn btn-outline-success search__submit" type="submit">Tìm kiếm</button>
+            <div class="search__toggler"></div>
+        </form>
+
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="logout-alert" tabindex="-1" aria-labelledby="signoutModal" aria-hidden="true">
