@@ -130,7 +130,9 @@ class CartController {
     saveOrder(req, res, next) {
         console.log('save order - customer');
         const order = new Order(req.body);
-        //order.cart_id = req.session.user.cartId;
+        order.cart_id = req.session.user.cartId;
+        order.orderName = req.session.user.fullName;
+        order.orderPhoneNumber = req.session.user.phoneNumber;
         order.customer_id = req.session.user.id;
         if (req.body.ship === 'true') {
             order.shippingFee = res.locals.shopInfo.shippingFee;
@@ -143,6 +145,7 @@ class CartController {
         order.save();
         Cart.findById(req.session.user.cartId)
             .then(cart => {
+                order.cart_id = cart._id;
                 cart.newOrderUpdate = true;
                 cart.order_ids.push(order._id);
                 cart.productQ_ids = cart.productQ_ids.filter((element) => {

@@ -14,10 +14,10 @@ const getShopInfo = (req, res, next) => {
                         phoneNumber: 'unknown',
                         address: 'unknown',
                         shippingFee: 30000,
-                        linkFacebook: 'unknown',
-                        linkZalo: 'unknown',
-                        linkYoutube: 'unknown',
-                        linkGoogleMap: 'unknown',
+                        linkFacebook: 'https://www.facebook.com/profile.php?id=100009440423560',
+                        linkZalo: 'https://zaloapp.com/qr/p/p7py361sf5re',
+                        linkYoutube: 'https://www.youtube.com/@mdquang25mq35',
+                        linkGoogleMap: 'https://maps.app.goo.gl/bz4kmtWGHyBNd26x5',
                         description: 'sản phẩm: bàn, ghế gỗ, tượng gỗ, bàn thờ, tượng nhỏ, bình hoa, những vật trang trí điêu khắc từ gỗ',
                     }
                 }

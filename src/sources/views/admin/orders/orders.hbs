@@ -1,0 +1,543 @@
+<div class="fs-5 text-end position-relative my-2">
+    <b style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">Đơn hàng</b>
+    <button id="refresh" class="me-md-4 me-lg-5 btn btn-success rounded-5"><i class="fa-duotone fa-arrows-rotate fa-3x"></i></button>
+</div>
+<style>
+    a.nav-link.active {
+        color: rgb(45, 135, 93) !important;
+    }
+</style>
+<!--========================================================-->
+<div class=" d-flex justify-content-center">
+    <div class="tabs mx-lg-4">
+        <ul class="nav nav-tabs sticky-top justify-content-center"
+            style="top: 4.5rem; background-color: rgb(229, 175, 184); border-radius: .5rem; border-bottom: .2rem solid rgb(110, 81, 0);">
+            <li class="nav-item">
+                <a class="nav-link px-1 text-center active" data-bs-toggle="tab" href="#tab0">
+                    <span>
+                        <i class="fa-duotone fa-clipboard-list-check fa-2x"></i>
+                        <span class="mobile-show d-none mt-1 fa-2xs"><br>Chờ xác nhận({{orders.orders0.length}})</span>
+                    </span>
+                    <span class="mobile-hidden">Chờ xác nhận({{orders.orders0.length}})</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link px-1 text-center" data-bs-toggle="tab" href="#tab1">
+                    <span>
+                        <i class="fa-duotone fa-box-open-full fa-2x"></i>
+                        <span class="mobile-show d-none mt-1 fa-2xs"><br>Chuẩn bị hàng({{orders.orders1.length}})</span>
+                    </span>
+                    <span class="mobile-hidden"> Đang chuẩn bị hàng({{orders.orders1.length}})</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link px-1 text-center" data-bs-toggle="tab" href="#tab2">
+                    <span>
+                        <i class="fa-duotone fa-truck-fast fa-2x"></i>
+                        <span class="mobile-show d-none mt-1 fa-2xs"><br>Đang giao
+                            hàng({{orders.orders2.length}})</span>
+                    </span>
+                    <span class="mobile-hidden">Đang giao hàng({{orders.orders2.length}})</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link px-1 text-center" data-bs-toggle="tab" href="#tab3">
+                    <span>
+                        <i class="fa-duotone fa-money-check-dollar-pen fa-2x"></i>
+                        <span class="mobile-show d-none mt-1 fa-2xs"><br>Chờ thanh
+                            toán({{orders.orders3.length}})</span>
+                    </span>
+                    <span class="mobile-hidden">Chờ thanh toán({{orders.orders3.length}})</span></a>
+            </li>
+        </ul>
+
+
+        <div class="tab-content">
+            {{!/////////////tab0/////////////////////////////////////////////}}
+            <div id="tab0" class="tab-pane fade show active">
+                <table class="table text-center m-0 table-max-width mt-2 mb-4"
+                    style="border-end-end-radius: .5rem; border-top-right-radius: .5rem; overflow: hidden;">
+                    <tbody>
+                        {{#each orders.orders0}}
+                        <tr id="{{this._id}}start">
+                            <th colspan="1" class="text-start">Mã đơn hàng: {{this._id}}</th>
+                            <th colspan="2" class="text-end">Tạo đơn: <span class="date-time">{{this.createdAt}}</span>
+                            </th>
+                        </tr>
+                        {{#each this.productQs}}
+                        <tr onclick="navigateTo('/giohang/don-mua/{{../_id}}/chitiet')">
+                            <td class="d-flex">
+                                <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh">
+                                <div class="text-start ms-2">
+                                    <div>{{this.productName}}</div>
+                                    <div class="to-be-show-col" style="display:none;">
+                                        <div class="text-start">
+                                            x{{this.quantity}}
+                                        </div>
+                                        <div class="price-label" style="color:black">
+                                            {{this.total}}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="to-be-hidden">
+                                <div class="text-center">
+                                    x{{this.quantity}}
+                                </div>
+                            </td>
+                            <td class="to-be-hidden text-end">
+                                <div class="price-label" style="color:black">
+                                    {{this.total}}</div>
+                            </td>
+                        </tr>
+                        {{/each}}
+                        <tr>
+                            <td colspan="3">
+                                <div class="d-flex justify-content-between">
+                                    <div class="row">
+                                        <div class="col-6 text-start">
+                                            <div><b>Người đặt:</b> {{this.orderName}}</div>
+                                            <div><b>SĐT đặt hàng:</b> {{this.orderPhoneNumber}}</div>
+                                        </div>
+                                        <div class="col-6 text-start">
+                                            <div><b>Người nhận:</b> {{this.reciever}}</div>
+                                            <div><b>SĐT nhận:</b> {{this.phoneNumber}}</div>
+                                        </div>
+                                        <div class="col-12 text-start"><b>Địa chỉ nhận:</b> {{this.address}}</div>
+                                    </div>
+                                    <div class="text-end fs-6 pb-2">
+                                        Tổng
+                                        thanh
+                                        toán: <span class="price-label fs-5" style="color:black">
+                                            {{this.total}}</span><br>
+                                        <div class="badge text-bg-danger">Chưa thanh toán</div>
+                                        <div class="paid-label badge text-bg-success" data-paid="{{this.paid}}">Đã thanh
+                                            toán</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr id="{{this._id}}end">
+                            <td colspan="3">
+                                <form action="/admin/donhang/capnhat" method="post"
+                                    class="form-update d-flex justify-content-end" data-id="{{this._id}}"
+                                    style="border-bottom: 1rem solid rgb(59, 143, 104);">
+                                    <input type="text" name="orderId" value="{{this._id}}" hidden>
+                                    <div class="text-start text-bg-warning py-2 px-4 rounded-1 mb-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input input1" type="checkbox" name="confirm"
+                                                value="1" id="{{this._id}}input1" data-id="{{this._id}}">
+                                            <label class="form-check-label" for="{{this._id}}input1">Xác nhận đơn
+                                                hàng</label>
+                                        </div>
+                                        <div class="form-check paid-checkbox" data-paid="{{this.paid}}">
+                                            <input class="form-check-input input2" type="checkbox" name="paid" value="1"
+                                                id="{{this._id}}input2" data-id="{{this._id}}">
+                                            <label class="form-check-label" for="{{this._id}}input2">Xác nhận thanh
+                                                toán</label>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-end mb-1">
+                                        <button id="{{this._id}}submit-btn" type="submit"
+                                            class="btn btn-warning ms-4 disabled" style="height: fit-content;">Xác
+                                            nhận</button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            {{!////////////////////////tab1//////////////////////////////////////////}}
+            <div id="tab1" class="tab-pane fade">
+                <table class="table text-center m-0 table-max-width mt-2 mb-4"
+                    style="border-end-end-radius: .5rem; border-top-right-radius: .5rem; overflow: hidden;">
+                    <tbody>
+                        {{#each orders.orders1}}
+                        <tr id="{{this._id}}start">
+                            <th colspan="1" class="text-start">Mã đơn hàng: {{this._id}}</th>
+                            <th colspan="2" class="text-end">Tạo đơn: <span class="date-time">{{this.createdAt}}</span>
+                            </th>
+                        </tr>
+                        {{#each this.productQs}}
+                        <tr onclick="navigateTo('/giohang/don-mua/{{../_id}}/chitiet')">
+                            <td class="d-flex">
+                                <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh">
+                                <div class="text-start ms-2">
+                                    <div>{{this.productName}}</div>
+                                    <div class="to-be-show-col" style="display:none;">
+                                        <div class="text-start">
+                                            x{{this.quantity}}
+                                        </div>
+                                        <div class="price-label" style="color:black">
+                                            {{this.total}}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="to-be-hidden">
+                                <div class="text-center">
+                                    x{{this.quantity}}
+                                </div>
+                            </td>
+                            <td class="to-be-hidden text-end">
+                                <div class="price-label" style="color:black">
+                                    {{this.total}}</div>
+                            </td>
+                        </tr>
+                        {{/each}}
+                        <tr>
+                            <td colspan="3">
+                                <div class="d-flex justify-content-between">
+                                    <div class="row">
+                                        <div class="col-6 text-start">
+                                            <div><b>Người đặt:</b> {{this.orderName}}</div>
+                                            <div><b>SĐT đặt hàng:</b> {{this.orderPhoneNumber}}</div>
+                                        </div>
+                                        <div class="col-6 text-start">
+                                            <div><b>Người nhận:</b> {{this.reciever}}</div>
+                                            <div><b>SĐT nhận:</b> {{this.phoneNumber}}</div>
+                                        </div>
+                                        <div class="col-12 text-start"><b>Địa chỉ nhận:</b> {{this.address}}</div>
+                                    </div>
+                                    <div class="text-end fs-6 pb-2">
+                                        Tổng
+                                        thanh
+                                        toán: <span class="price-label fs-5" style="color:black">
+                                            {{this.total}}</span><br>
+                                        <div class="badge text-bg-danger">Chưa thanh toán</div>
+                                        <div class="paid-label badge text-bg-success" data-paid="{{this.paid}}">Đã thanh
+                                            toán</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr id="{{this._id}}end">
+                            <td colspan="3">
+                                <form action="/admin/donhang/capnhat" method="post"
+                                    class="form-update d-flex justify-content-end" data-id="{{this._id}}"
+                                    style="border-bottom: 1rem solid rgb(59, 143, 104);">
+                                    <input type="text" name="orderId" value="{{this._id}}" hidden>
+                                    <div class="text-start text-bg-warning py-2 px-4 rounded-1 mb-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input input1" type="checkbox" name="confirm"
+                                                value="1" id="{{this._id}}input1" data-id="{{this._id}}">
+                                            <label class="form-check-label" for="{{this._id}}input1">Chuẩn bị hàng
+                                                xong</label>
+                                        </div>
+                                        <div class="form-check paid-checkbox" data-paid="{{this.paid}}">
+                                            <input class="form-check-input input2" type="checkbox" name="paid" value="1"
+                                                id="{{this._id}}input2" data-id="{{this._id}}">
+                                            <label class="form-check-label" for="{{this._id}}input2">Xác nhận thanh
+                                                toán</label>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-end mb-1">
+                                        <button id="{{this._id}}submit-btn" type="submit"
+                                            class="btn btn-warning ms-4 disabled" style="height: fit-content;">Xác
+                                            nhận</button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+
+            {{!//////////////tab2//////////////////////////////////////}}
+            <div id="tab2" class="tab-pane fade">
+                <table class="table text-center m-0 table-max-width mt-2 mb-4"
+                    style="border-end-end-radius: .5rem; border-top-right-radius: .5rem; overflow: hidden;">
+                    <tbody>
+                        {{#each orders.orders2}}
+                        <tr id="{{this._id}}start">
+                            <th colspan="1" class="text-start">Mã đơn hàng: {{this._id}}</th>
+                            <th colspan="2" class="text-end">Tạo đơn: <span class="date-time">{{this.createdAt}}</span>
+                            </th>
+                        </tr>
+                        {{#each this.productQs}}
+                        <tr onclick="navigateTo('/giohang/don-mua/{{../_id}}/chitiet')">
+                            <td class="d-flex">
+                                <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh">
+                                <div class="text-start ms-2">
+                                    <div>{{this.productName}}</div>
+                                    <div class="to-be-show-col" style="display:none;">
+                                        <div class="text-start">
+                                            x{{this.quantity}}
+                                        </div>
+                                        <div class="price-label" style="color:black">
+                                            {{this.total}}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="to-be-hidden">
+                                <div class="text-center">
+                                    x{{this.quantity}}
+                                </div>
+                            </td>
+                            <td class="to-be-hidden text-end">
+                                <div class="price-label" style="color:black">
+                                    {{this.total}}</div>
+                            </td>
+                        </tr>
+                        {{/each}}
+                        <tr>
+                            <td colspan="3">
+                                <div class="d-flex justify-content-between">
+                                    <div class="row">
+                                        <div class="col-6 text-start">
+                                            <div><b>Người đặt:</b> {{this.orderName}}</div>
+                                            <div><b>SĐT đặt hàng:</b> {{this.orderPhoneNumber}}</div>
+                                        </div>
+                                        <div class="col-6 text-start">
+                                            <div><b>Người nhận:</b> {{this.reciever}}</div>
+                                            <div><b>SĐT nhận:</b> {{this.phoneNumber}}</div>
+                                        </div>
+                                        <div class="col-12 text-start"><b>Địa chỉ nhận:</b> {{this.address}}</div>
+                                    </div>
+                                    <div class="text-end fs-6 pb-2">
+                                        Tổng
+                                        thanh
+                                        toán: <span class="price-label fs-5" style="color:black">
+                                            {{this.total}}</span><br>
+                                        <div class="badge text-bg-danger">Chưa thanh toán</div>
+                                        <div class="paid-label badge text-bg-success" data-paid="{{this.paid}}">Đã thanh
+                                            toán</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr id="{{this._id}}end">
+                            <td colspan="3">
+                                <form action="/admin/donhang/capnhat" method="post"
+                                    class="form-update d-flex justify-content-end" data-id="{{this._id}}"
+                                    style="border-bottom: 1rem solid rgb(59, 143, 104);">
+                                    <input type="text" name="orderId" value="{{this._id}}" hidden>
+                                    <div class="text-start text-bg-warning py-2 px-4 rounded-1 mb-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input input1" type="checkbox" name="confirm"
+                                                value="1" id="{{this._id}}input1" data-id="{{this._id}}">
+                                            <label class="form-check-label" for="{{this._id}}input1">Đã giao
+                                                hàng</label>
+                                        </div>
+                                        <div class="form-check paid-checkbox" data-paid="{{this.paid}}">
+                                            <input class="form-check-input input2" type="checkbox" name="paid" value="1"
+                                                id="{{this._id}}input2" data-id="{{this._id}}">
+                                            <label class="form-check-label" for="{{this._id}}input2">Xác nhận thanh
+                                                toán</label>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-end mb-1">
+                                        <button id="{{this._id}}submit-btn" type="submit"
+                                            class="btn btn-warning ms-4 disabled" style="height: fit-content;">Xác
+                                            nhận</button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+
+            {{!////////////////////////////tab3///////////////////////////}}
+            <div id="tab3" class="tab-pane fade">
+                <table class="table text-center m-0 table-max-width mt-2 mb-4"
+                    style="border-end-end-radius: .5rem; border-top-right-radius: .5rem; overflow: hidden;">
+                    <tbody>
+                        {{#each orders.orders3}}
+                        <tr id="{{this._id}}start">
+                            <th colspan="1" class="text-start">Mã đơn hàng: {{this._id}}</th>
+                            <th colspan="2" class="text-end">Tạo đơn: <span class="date-time">{{this.createdAt}}</span>
+                            </th>
+                        </tr>
+                        {{#each this.productQs}}
+                        <tr onclick="navigateTo('/giohang/don-mua/{{../_id}}/chitiet')">
+                            <td class="d-flex">
+                                <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh">
+                                <div class="text-start ms-2">
+                                    <div>{{this.productName}}</div>
+                                    <div class="to-be-show-col" style="display:none;">
+                                        <div class="text-start">
+                                            x{{this.quantity}}
+                                        </div>
+                                        <div class="price-label" style="color:black">
+                                            {{this.total}}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="to-be-hidden">
+                                <div class="text-center">
+                                    x{{this.quantity}}
+                                </div>
+                            </td>
+                            <td class="to-be-hidden text-end">
+                                <div class="price-label" style="color:black">
+                                    {{this.total}}</div>
+                            </td>
+                        </tr>
+                        {{/each}}
+                        <tr>
+                            <td colspan="3">
+                                <div class="d-flex justify-content-between">
+                                    <div class="row">
+                                        <div class="col-6 text-start">
+                                            <div><b>Người đặt:</b> {{this.orderName}}</div>
+                                            <div><b>SĐT đặt hàng:</b> {{this.orderPhoneNumber}}</div>
+                                        </div>
+                                        <div class="col-6 text-start">
+                                            <div><b>Người nhận:</b> {{this.reciever}}</div>
+                                            <div><b>SĐT nhận:</b> {{this.phoneNumber}}</div>
+                                        </div>
+                                        <div class="col-12 text-start"><b>Địa chỉ nhận:</b> {{this.address}}</div>
+                                    </div>
+                                    <div class="text-end fs-6 pb-2">
+                                        Tổng
+                                        thanh
+                                        toán: <span class="price-label fs-5" style="color:black">
+                                            {{this.total}}</span><br>
+                                        <div class="badge text-bg-danger">Chưa thanh toán</div>
+                                        <div class="badge text-bg-success">Đã giao hàng</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr id="{{this._id}}end">
+                            <td colspan="3">
+                                <form action="/admin/donhang/capnhat" method="post"
+                                    class="form-update d-flex justify-content-end" data-id="{{this._id}}"
+                                    style="border-bottom: 1rem solid rgb(59, 143, 104);">
+                                    <input type="text" name="orderId" value="{{this._id}}" hidden>
+                                    <div class="text-start text-bg-warning py-2 px-4 rounded-1 mb-1">
+                                        <div class="form-check paid-checkbox" data-paid="{{this.paid}}">
+                                            <input class="form-check-input input2" type="checkbox" name="paid" value="1"
+                                                id="{{this._id}}input2" data-id="{{this._id}}">
+                                            <label class="form-check-label" for="{{this._id}}input2">Xác nhận thanh
+                                                toán</label>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-end mb-1">
+                                        <button id="{{this._id}}submit-btn" type="submit"
+                                            class="btn btn-warning ms-4 disabled" style="height: fit-content;">Xác
+                                            nhận</button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const paidLabels = [...document.getElementsByClassName('paid-label')];
+            const paidCheckboxes = [...document.getElementsByClassName('paid-checkbox')];
+            const formsUpdate = [...document.getElementsByClassName('form-update')];
+            const input1s = [...document.getElementsByClassName('input1')];
+            const input2s = [...document.getElementsByClassName('input2')];
+            const prices = [...document.getElementsByClassName('price-label')];
+            const dateTimeLabels = [...document.getElementsByClassName('date-time')];
+            const refreshBtn = document.getElementById('refresh');
+
+            refreshBtn.addEventListener('click', ()=>{
+                location.reload();
+            });
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', };
+            dateTimeLabels.forEach(dateTimeLabel => {
+                const vietnameseDateTime = new Date(dateTimeLabel.innerHTML).toLocaleString('vi-VN', options);
+                dateTimeLabel.innerHTML = vietnameseDateTime;
+            });
+
+            paidLabels.forEach(paidLabel => {
+                if (paidLabel.getAttribute('data-paid') === 'true')
+                    paidLabel.previousElementSibling.classList.add('d-none');
+                else
+                    paidLabel.classList.add('d-none');
+
+
+            });
+
+            paidCheckboxes.forEach(function (formCheck) {
+                if (formCheck.getAttribute('data-paid') === 'true')
+                    formCheck.classList.add('d-none');
+            });
+
+            formsUpdate.forEach(form => {
+                form.addEventListener('submit', event => {
+                    event.preventDefault();
+                    form = event.target;
+                    const formData = new FormData(form);
+                    const data = Array.from(formData.entries()).reduce((acc, [key, value]) => {
+                        acc[key] = value;
+                        return acc;
+                    }, {});
+                    const jsonData = JSON.stringify(data);
+                    fetch(form.action, {
+                        method: form.method,
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: jsonData
+                    }).then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error("Error: " + response.status);
+                        }
+                    })
+                        .then(data => {
+                            console.log('data recieve: ', data);
+                            if (!data.error) {
+                                const start = document.getElementById(form.getAttribute('data-id') + 'start');
+                                const tbody = start.parentNode;
+                                const startIndex = start.rowIndex;
+                                const endIndex = document.getElementById(form.getAttribute('data-id') + 'end').rowIndex;
+
+                                for (i = endIndex; i >= startIndex; i--)
+                                    tbody.deleteRow(i);
+
+
+                            }
+                        }).catch((error) => {
+                            console.log('error', error);
+                        });
+                });
+            });
+
+            input1s.forEach(input1 => {
+                input1.addEventListener('change', event => {
+                    input1 = event.target;
+                    input2 = document.getElementById(input1.getAttribute('data-id') + 'input2');
+                    submitBtn = document.getElementById(input1.getAttribute('data-id') + 'submit-btn');
+                    if (input1.checked || input2.checked)
+                        submitBtn.classList.remove('disabled');
+                    else
+                        submitBtn.classList.add('disabled');
+                });
+            });
+            input2s.forEach(input2 => {
+                input2.addEventListener('change', event => {
+                    input2 = event.target;
+                    input1 = document.getElementById(input2.getAttribute('data-id') + 'input1');
+                    submitBtn = document.getElementById(input2.getAttribute('data-id') + 'submit-btn');
+                    if (input1.checked || input2.checked)
+                        submitBtn.classList.remove('disabled');
+                    else
+                        submitBtn.classList.add('disabled');
+                });
+            });
+
+            prices.forEach(function (price) {
+                const number = parseFloat(price.innerHTML);
+                price.innerHTML = number.toLocaleString('vi-VN') + 'đ';
+            });
+        });
+        //DOMContentLoaded end//////////////////////////////////////////////////
+
+
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+    </script>

@@ -68,6 +68,7 @@ class SiteController {
                         req.session.user = {
                             id: customer._id,
                             phoneNumber: customer.phoneNumber,
+                            fullName: customer.fullName,
                             cartId: customer.cartId,
                         };
                         req.session.isLoggedin = true;

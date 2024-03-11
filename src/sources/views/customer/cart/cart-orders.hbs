@@ -21,51 +21,52 @@
 <!--========================================================-->
 <div class=" d-flex justify-content-center">
     <div class="tabs mx-lg-4 table-max-width">
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs justify-content-center">
             <li class="nav-item">
-                <a class="nav-link px-1 text-center active" data-bs-toggle="tab" href="#tab1">
+                <a class="nav-link px-1 text-center active" data-bs-toggle="tab" href="#tab0">
                     <span>
-                        <i class="fa-light fa-box-open-full fa-2x"></i>
-                        <span class="mobile-show d-none mt-1 fa-2xs"><br>Chờ xác nhận({{orders.orders1.length}})</span>
+                        <i class="fa-duotone fa-clipboard-list-check fa-2x"></i>
+                        <span class="mobile-show d-none mt-1 fa-2xs"><br>Chờ xác nhận({{orders.orders0.length}})</span>
                     </span>
-                    <span class="mobile-hidden">Chờ xác nhận({{orders.orders1.length}})</span></a>
+                    <span class="mobile-hidden">Chờ xác nhận({{orders.orders0.length}})</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link px-1 text-center" data-bs-toggle="tab" href="#tab5">
+                <a class="nav-link px-1 text-center" data-bs-toggle="tab" href="#tab1">
                     <span>
-                        <i class="fa-light fa-box-open-full fa-2x"></i>
+                        <i class="fa-duotone fa-box-open-full fa-2x"></i>
                         <span class="mobile-show d-none mt-1 fa-2xs"><br>Chuẩn bị hàng({{orders.orders1.length}})</span>
                     </span>
-                    <span class="mobile-hidden"> Đang chuẩn bị hàng({{orders.orders0.length}})</span></a>
+                    <span class="mobile-hidden"> Đang chuẩn bị hàng({{orders.orders1.length}})</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link px-1 text-center" data-bs-toggle="tab" href="#tab2">
                     <span>
-                        <i class="fa-light fa-box-open-full fa-2x"></i>
-                        <span class="mobile-show d-none mt-1 fa-2xs"><br>Chờ giao hàng({{orders.orders1.length}})</span>
+                        <i class="fa-duotone fa-truck-fast fa-2x"></i>
+                        <span class="mobile-show d-none mt-1 fa-2xs"><br>Chờ giao hàng({{orders.orders2.length}})</span>
                     </span>
                     <span class="mobile-hidden">Chờ giao hàng({{orders.orders2.length}})</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link px-1 text-center" data-bs-toggle="tab" href="#tab3">
                     <span>
-                        <i class="fa-light fa-box-open-full fa-2x"></i>
-                        <span class="mobile-show d-none mt-1 fa-2xs"><br>Hoàn thành({{orders.orders1.length}})</span>
+                        <i class="fa-duotone fa-money-check-dollar-pen fa-2x"></i>
+                        <span class="mobile-show d-none mt-1 fa-2xs"><br>Chờ thanh
+                            toán({{orders.orders3.length}})</span>
                     </span>
-                    <span class="mobile-hidden">Hoàn thành({{orders.orders3.length}})</span></a>
+                    <span class="mobile-hidden">Chờ thanh toán({{orders.orders3.length}})</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link px-1 text-center" data-bs-toggle="tab" href="#tab4">
                     <span>
-                        <i class="fa-light fa-box-open-full fa-2x"></i>
-                        <span class="mobile-show d-none mt-1 fa-2xs"><br>Đã hủy({{orders.orders4.length}})</span>
+                        <i class="fa-duotone fa-box-check fa-2x"></i>
+                        <span class="mobile-show d-none mt-1 fa-2xs"><br>Hoàn thành({{orders.orders4.length}})</span>
                     </span>
-                    <span class="mobile-hidden">Đã hủy({{orders.orders4.length}})</span></a>
+                    <span class="mobile-hidden">Hoàn thành({{orders.orders4.length}})</span></a>
             </li>
         </ul>
 
         <div class="tab-content">
-            <div id="tab1" class="tab-pane fade show active">
+            <div id="tab0" class="tab-pane fade show active">
                 <table class="table text-center m-0 table-max-width mt-2 mb-4"
                     style="border-end-end-radius: 1rem; border-top-right-radius: 1rem; overflow: hidden;">
                     <tbody>
@@ -116,7 +117,7 @@
                     </tbody>
                 </table>
             </div>
-            <div id="tab5" class="tab-pane fade">
+            <div id="tab1" class="tab-pane fade">
                 <table class="table text-center m-0 table-max-width mt-2 mb-4"
                     style="border-end-end-radius: 1rem; border-top-right-radius: 1rem; overflow: hidden;">
                     <tbody>

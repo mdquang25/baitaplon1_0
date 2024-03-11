@@ -36,10 +36,12 @@ class CustomerAcountManagementController {
                 account.fullName = req.body.fullName;
                 account.address = req.body.address;
                 account.dateOfBirth = req.body.dateOfBirth;
-                if(isValidPhoneNumber(req.body.phoneNumber, 'VN'))
-                    account.phoneNumber = req.body.phoneNumber;
                 account.save();
-                req.session.user.fullName = account.fullName;
+                req.session.user = {
+                    id: account._id,
+                    phoneNumber: account.phoneNumber,
+                    fullName: account.fullName,
+                }
                 res.redirect('/taikhoan/xem');
             }).catch(next);
     }

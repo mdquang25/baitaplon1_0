@@ -17,12 +17,6 @@
             <input type="date" name="dateOfBirth" id="birth" autocomplete="bday-day" class="form-control" placeholder="01/11/2000" value="{{account.dateOfBirth}}">
         </div>
         <div class="mb-3">
-            <label for="phoneNumber" class="form-label mx-2">Số điện thoại</label>
-            <input type="tel" name="phoneNumber" id="phoneNumber" autocomplete="tel" class="form-control"
-                value="{{account.phoneNumber}}" placeholder="Nhập số điện thoại.." pattern="[0-9]{10}" required>
-        </div>
-
-        <div class="mb-3">
             <label for="address" class="form-label mx-2">Địa chỉ</label>
             <input type="text" name="address" id="address" autocomplete="address-level4" class="form-control"
                 value="{{account.address}}" placeholder="Nhập địa chỉ.." required>
@@ -33,12 +27,3 @@
     </form>
 
 </div>
-
-<script>
-    const phoneInput = document.getElementById('phoneNumber');
-
-    phoneInput.addEventListener('input', function (event) {
-        const isValid = /^\d{10}$/.test(event.target.value);
-        phoneInput.setCustomValidity(isValid ? '' : 'Hãy nhập đúng số điện thoại!');
-    });
-</script>

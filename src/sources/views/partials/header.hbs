@@ -1,11 +1,14 @@
-<nav class="top-nav navbar bg-body-tertiary py-0" data-bs-theme="dark">
+<nav class="navbar bg-body-tertiary py-0 to-be-hidden" data-bs-theme="dark">
     <div class=" container-fluid d-flex mx-4">
         <div class="phone navbar-text">
             <i class="fa-solid fa-phone"></i>
             Gọi ngay: {{shopInfo.phoneNumber}}
         </div>
-        <div class="fa fa-2x">
+        <div class="fa fa-2x d-flex align-items-center">
             <a href="{{shopInfo.linkFacebook}}"><i class="m-2 fa-brands fa-facebook"></i></a>
+            <a href="{{shopInfo.linkZalo}}" style="display: inline-block; vertical-align: middle;"><img
+                    src="/assets/icons/zalo1.png" alt="zalo icon"
+                    style="border-radius: 50%; width: 2rem; vertical-align: middle;"></a>
             <a href="{{shopInfo.linkYoutube}}"><i class="m-2 fa-brands fa-youtube"></i></a>
             <a href="{{shopInfo.linkGoogleMap}}"><i class="m-2 fa-solid fa-map-location-dot"></i></a>
         </div>
@@ -71,6 +74,22 @@
                         placeholder="Nhập tên sản phẩm.." aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Tìm kiếm</button>
                 </form> --}}
+            </div>
+            <div class="offcanvas-footer d-none to-be-shown">
+                <div class="d-flex flex-column px-3 my-3">
+                    <div class="phone navbar-text">
+                        <i class="fa-solid fa-phone"></i>
+                        Gọi ngay: {{shopInfo.phoneNumber}}
+                    </div>
+                    <div class="fa fa-2x d-flex align-items-center">
+                        <a href="{{shopInfo.linkFacebook}}"><i class="m-2 fa-brands fa-facebook"></i></a>
+                        <a href="{{shopInfo.linkZalo}}" style="display: inline-block; vertical-align: middle;"><img
+                                src="/assets/icons/zalo1.png" alt="zalo icon"
+                                style="border-radius: 50%; width: 2rem; vertical-align: middle;"></a>
+                        <a href="{{shopInfo.linkYoutube}}"><i class="m-2 fa-brands fa-youtube"></i></a>
+                        <a href="{{shopInfo.linkGoogleMap}}"><i class="m-2 fa-solid fa-map-location-dot"></i></a>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -168,11 +187,12 @@
         position: absolute;
         width: 3.5rem;
         height: 3.5rem;
-        background: #0062ff;
+        background: #388e61;
         opacity: 1;
         top: -4px;
         left: -4px;
         border-radius: 50%;
+        border: .2rem solid white;
         transition: all 0.3s;
     }
 
@@ -236,11 +256,6 @@
 </style>
 <div class="event__search__floater">
     <div class="search__anchor">
-        {{!-- <form id="event-search-form" action="get">
-            <input type="text" class="search__bar" placeholder="Search Event">
-            <input class="search__submit" type="submit">
-            <div class="search__toggler"></div>
-        </form> --}}
         <form id="form-search" action="/sanpham/tim-kiem" method="post" class="d-flex mx-1">
             <input id="search-input" name="query" class="search__bar form-control me-2" type="search"
                 placeholder="Nhập tên sản phẩm.." aria-label="Search">

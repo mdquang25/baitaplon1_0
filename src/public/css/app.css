@@ -15,7 +15,7 @@
     margin: 0 !important;
   }
 }
-@media (max-width: 780px) {
+@media (max-width: 767px) {
   .to-be-hidden {
     display: none;
   }
@@ -34,16 +34,6 @@
     flex-direction: column;
     align-items: flex-start !important;
   }
-}
-.offcanvas-body-responsive {
-  display: flex;
-  justify-content: space-between;
-}
-
-@media (max-width: 770px) {
-  .top-nav {
-    display: none;
-  }
   .offcanvas-body-responsive {
     display: block;
   }
@@ -51,9 +41,14 @@
     max-width: 80%;
   }
 }
+.offcanvas-body-responsive {
+  display: flex;
+  justify-content: space-between;
+}
+
 @media (max-width: 580px) {
   .mobile-hidden {
-    display: none;
+    display: none !important;
   }
   .mobile-show {
     display: flex !important;
