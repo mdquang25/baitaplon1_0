@@ -1,7 +1,8 @@
 const requireLogin = (req, res, next) => {
     if (!req.session.isLoggedin) {
-        return res.redirect('/dangnhap');
+       res.send({requireLogin: true});
     }
-    next();
+    else
+        next();
 };
 module.exports = requireLogin;

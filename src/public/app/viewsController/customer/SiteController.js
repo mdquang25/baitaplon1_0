@@ -26,7 +26,7 @@ class SiteController {
                 Promise.all(categories).then(categories => {
                     Promise.all([Product.find({}), Carousel.find({})])
                         .then(([products, carousels]) => {
-                            res.render('customer/home', { pageTitle: 'Trang chủ', isLoggedin: req.session.isLoggedin, user: req.session.user, categories, products: multiMongooseToObjs(products), carousels: multiMongooseToObjs(carousels), cart: res.locals.cart, shopInfo: res.locals.shopInfo, });
+                            res.render('customer/home', { pageTitle: 'Trang chủ', isLoggedin: req.session.isLoggedin, categories, products: multiMongooseToObjs(products), carousels: multiMongooseToObjs(carousels), });
                         }).catch(next);
                 }).catch(next);
             }).catch(next);

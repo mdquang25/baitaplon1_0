@@ -1,0 +1,108 @@
+<div class="col-lg-8 col-md-10 mx-auto">
+    <div class="mt-4 mb-2 text-center fs-5">
+        <b>Hóa đơn</b>
+    </div>
+    <table class="table text-center m-0 table-max-width mt-2 mb-4" style="border-radius: .5rem; overflow: hidden;">
+        <tbody>
+            <tr>
+                <th colspan="1" class="text-start">Mã đơn hàng: {{order._id}}</th>
+                <th colspan="2" class="text-end">Tạo đơn: <span class="date-time">{{order.createdAt}}</span>
+                </th>
+            </tr>
+            {{#each order.productQs}}
+            <tr>
+                <td class="d-flex">
+                    <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh">
+                    <div class="text-start ms-2">
+                        <div>{{this.productName}}</div>
+                        <div class="to-be-show-col" style="display:none;">
+                            <div class="text-start">
+                                x{{this.quantity}}
+                            </div>
+                            <div class="price-label" style="color:black">
+                                {{this.total}}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="text-center to-be-hidden">
+                        x{{this.quantity}}
+                    </div>
+                </td>
+                <td class="to-be-hidden text-end">
+                    <div class="price-label" style="color:black">
+                        {{this.total}}</div>
+                </td>
+            </tr>
+            {{/each}}
+            <tr>
+                <td colspan="3" class="text-start">
+                    <div><b>Phương thức thanh toán:</b> <span id="cod">{{order.cod}}</span></div>
+                    <div><b>Phương nhận hàng:</b> <span id="ship">{{order.ship}}</span></div>
+                    <div><b>Ghi chú:</b> {{order.message}}</div>
+                    <div><b>Tổng tiền hàng:</b> <span class="price-label">{{order.productFee}}</span></div>
+                    <div><b>Phí ship:</b> <span class="price-label">{{order.shippingFee}}</span></div>
+                    <div><b>Thời gian cập nhật:</b> <span class="date-time">{{order.updatedAt}}</span></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div class="d-flex justify-content-between">
+                        <div class="row">
+                            <div class="col-6 text-start">
+                                <div><b>Người đặt:</b> {{order.orderName}}</div>
+                                <div><b>SĐT đặt hàng:</b> {{order.orderPhoneNumber}}</div>
+                            </div>
+                            <div class="col-6 text-start">
+                                <div><b>Người nhận:</b> {{order.reciever}}</div>
+                                <div><b>SĐT nhận:</b> {{order.phoneNumber}}</div>
+                            </div>
+                            <div class="col-12 text-start"><b>Địa chỉ nhận:</b> {{order.address}}</div>
+                        </div>
+                        <div class="text-end fs-6 pb-2">
+                            Tổng
+                            thanh
+                            toán: <span class="price-label fs-5" style="color:black">
+                                {{order.total}}</span><br>
+                            <div>Chưa thanh toán</div>
+                            <div id="paid-badge"  data-paid="{{order.paid}}">Đã thanh
+                                toán</div><br>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const prices = [...document.getElementsByClassName('price-label')];
+        const dateTimeLabels = [...document.getElementsByClassName('date-time')];
+        const paidBadge = document.getElementById('paid-badge');
+        const codLabel = document.getElementById('cod');
+        const shipLabel = document.getElementById('ship');
+
+
+        codLabel.innerHTML = codLabel.innerHTML === 'true' ? 'Thanh toán khi nhận hàng' : 'Quét mà QR thanh toán';
+        shipLabel.innerHTML = shipLabel.innerHTML === 'true' ? 'Ship hàng tận nhà' : 'Nhận tại cửa hàng';
+
+        const status = statusBadge.getAttribute('data-value');
+        
+        if (paidBadge.getAttribute('data-paid') === 'true')
+            paidBadge.previousElementSibling.classList.add('d-none');
+        else
+            paidBadge.classList.add('d-none');
+
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', };
+        dateTimeLabels.forEach(dateTimeLabel => {
+            const vietnameseDateTime = new Date(dateTimeLabel.innerHTML).toLocaleString('vi-VN', options);
+            dateTimeLabel.innerHTML = vietnameseDateTime;
+        });
+
+        prices.forEach(function (price) {
+            const number = parseFloat(price.innerHTML);
+            price.innerHTML = number.toLocaleString('vi-VN') + 'đ';
+        });
+        window.print();
+    });
+</script>

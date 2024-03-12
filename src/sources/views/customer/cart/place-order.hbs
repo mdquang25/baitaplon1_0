@@ -32,10 +32,11 @@
                 <td>
                     <input id="address-input" type="text" name="address" class="form-control d-none"
                         value="{{user.address}}">
-                    <div id="address-label">{{user.address}}</div>
+                    <div id="address-label" data-value="{{user.address}}">{{user.address}}</div>
                 </td>
                 <td>
-                    <button id="modify-address" type="button" class="btn btn-outline-info">sửa <span class="mobile-hidden">địa chỉ</span></button>
+                    <button id="modify-address" type="button" class="btn btn-outline-info">sửa <span
+                            class="mobile-hidden">địa chỉ</span></button>
                     <button id="save-address" type="button" class="btn btn-outline-success d-none">Xong</button>
                 </td>
             </tbody>
@@ -86,31 +87,23 @@
         </tbody>
     </table>
 
-    <div class="row table-max-width mb-2 pt-3 pb-2" style="background-color: aliceblue;">
+    <div class="row col-12 table-max-width mb-2 pt-3 pb-2" style="background-color: aliceblue;">
         <div class="d-flex flex-wrap col-6 align-items-center">
-            <div class="">
-                <label for="message" class="col-form-label mx-2">Lời nhắn</label>
-            </div>
+            <label for="message" class="col-form-label mx-2">Lời nhắn</label>
             <div class="px-auto flex-lg-grow-1">
                 <input type="text" id="message" name="message" class="form-control" placeholder="Lưu ý cho người bán..">
             </div>
-            <div style="font-size: small;" class="ms-2"><b>Lưu ý:</b><i style="color: red;"> nhân viên vận chuyển sẽ thu
-                    thêm phí khuân vác
-                    dựa
-                    theo
-                    khối lượng sản
-                    phẩm và độ khó khi chuyển hàng vào vị trí theo yêu cầu( 0 - 100.000đ)</i></div>
         </div>
         <div class="col-3 ms-lg-auto">
             <div class="fs-5">Phương thức nhận hàng</div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="ship" id="ship" value="true">
+                <input class="form-check-input" type="radio" name="ship" id="ship" value="true" checked>
                 <label class="form-check-label" for="ship">
                     Ship hàng tận nhà
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="ship" id="not-ship" value="false" checked>
+                <input class="form-check-input" type="radio" name="ship" id="not-ship" value="false">
                 <label class="form-check-label" for="not-ship">
                     Nhận tại cửa hàng
                 </label>
@@ -122,7 +115,7 @@
                     data-value="{{total}}">{{total}}</span>
             </div>
             <div class="me-2">Phí vận chuyển:&nbsp;<span class="price-label fs-5" style="color:black"
-                    data-value="{{shopInfo.shippingFee}}" id="shipping-fee">0</span></div>
+                    data-value="{{shopInfo.shippingFee}}" id="shipping-fee">{{shopInfo.shippingFee}}</span></div>
         </div>
     </div>
 
@@ -155,7 +148,8 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-between col-12 table-max-width py-3 my-2" style="background-color:aliceblue;">
+    <div class="d-flex justify-content-between flex-wrap col-12 table-max-width py-3 my-2"
+        style="background-color:aliceblue;">
         <div class="d-flex justify-content-center align-items-center ms-3">
             <span></span>Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo &nbsp;<a href="#"
                 class="text-decoration-none">Điều
@@ -164,10 +158,19 @@
         <div class="d-flex">
             <div class="mobile-break d-flex align-items-center">
                 <div>Tổng <span class="to-be-hidden">thanh toán</span></div>
-                <div id="total-label" class="price-label fs-2">{{total}}</div>
+                <div id="total-label" class="price-label fs-2">{{sum shopInfo.shippingFee total}}</div>
             </div>
             <button id="place-order" class="btn btn-warning ms-1 me-2" type="submit">Đặt hàng</button>
         </div>
+        <div style="font-size: small;" class="col-12 text-start ms-3"><b>Lưu ý:</b><i style="color: red;"> nhân viên
+                vận
+                chuyển sẽ thu
+                thêm phí khuân vác
+                dựa
+                theo
+                khối lượng sản
+                phẩm và độ khó khi chuyển hàng vào vị trí theo yêu cầu( 0 - 100.000đ)</i></div>
+    </div>
     </div>
 </form>
 <script>
@@ -214,21 +217,28 @@
             nameLabel.innerHTML = nameInput.value;
             phoneLabel.innerHTML = phoneInput.value;
             addressLabel.innerHTML = addressInput.value;
+            addressLabel.setAttribute('data-value', addressInput.value);
         });
 
-        shipCheck.addEventListener('change', (e) => {
+        shipCheck.addEventListener('input', (e) => {
             if (shipCheck.checked) {
                 const ship = parseInt(shippingFee.getAttribute('data-value'))
                 const t = ship + parseInt(productsFee.getAttribute('data-value'));
                 totalLabel.innerHTML = (t).toLocaleString('vi-VN') + 'đ';
                 shippingFee.innerHTML = ship.toLocaleString('vi-VN') + 'đ';
+                addressInput.value = addressLabel.getAttribute('data-value');
+                addressLabel.innerHTML = addressLabel.getAttribute('data-value');
+                addressInput.readOnly = false;
             }
         });
-        notShip.addEventListener('change', (e) => {
+        notShip.addEventListener('input', (e) => {
             if (notShip.checked) {
                 const t = parseInt(productsFee.getAttribute('data-value'));
                 totalLabel.innerHTML = t.toLocaleString('vi-VN') + 'đ';
                 shippingFee.innerHTML = '0đ';
+                addressInput.value = 'Nhận tại cửa hàng';
+                addressLabel.innerHTML = 'Nhận tại cửa hàng';
+                addressInput.readOnly = true;
             }
         })
         placeOrderBtn.addEventListener('click', (e) => {

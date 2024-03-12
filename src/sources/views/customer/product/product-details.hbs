@@ -158,17 +158,17 @@
         const percentOff = document.getElementById('percent-off');
         const addToCartBtn = document.getElementById('add-to-cart');
         const redDot = document.getElementById('red-dot');
-        console.log('reddot: ', redDot);
 
 
         addToCartBtn.addEventListener('click', function (event) {
             const productId = event.target.getAttribute('data-product-id');
-            console.log('productId: ', productId);
 
             fetch(`/giohang/them?productId=${encodeURIComponent(productId)}`)
                 .then(response => response.json())
                 .then(data => {
-                    if (String(data.message) === 'added')
+                    if(data.requireLogin)
+                        navigateTo('/dangnhap');
+                    if (data.message === 'added')
                         if (redDot.classList.contains('d-none')) {
                             redDot.classList.remove('d-none');
                         }
@@ -192,4 +192,7 @@
         }
 
     });
+    function navigateTo(url) {
+            window.location.href = url;
+        }
 </script>

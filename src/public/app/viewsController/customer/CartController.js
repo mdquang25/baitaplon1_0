@@ -72,7 +72,7 @@ class CartController {
                     }).then(productQs => {
                         cart.newProduct = false;
                         cart.save();
-                        res.render('customer/cart/cart-products', { pageTitle: 'Giỏ hàng', isLoggedin: req.session.isLoggedin, productQs, shopInfo: res.locals.shopInfo, })
+                        res.render('customer/cart/cart-products', { pageTitle: 'Giỏ hàng', isLoggedin: req.session.isLoggedin, productQs, cart: {} });
                     });
             });
     }
@@ -120,7 +120,7 @@ class CartController {
                             productQs.forEach(productQ => {
                                 total += parseInt(productQ.quantity) * parseInt(productQ.product.price);
                             });
-                            res.render('customer/cart/place-order', { pageTitle: 'Đặt hàng', isLoggedin: req.session.isLoggedin, productQs, total, user, cart: res.locals.cart, shopInfo: res.locals.shopInfo, });
+                            res.render('customer/cart/place-order', { pageTitle: 'Đặt hàng', isLoggedin: req.session.isLoggedin, productQs, total, user, cart: {}});
                         })
                     });
             });

@@ -26,15 +26,15 @@
                 </tbody>
             </table>
             <div class="row mx-2">
-                <div class="col-md-6 mb-2">
-                    <div>Ghi chú</div>
-                    <textarea class="form-control" cols="15" rows="4" readonly>{{importBill.note}}</textarea>
+                <div class="col-md-6 mb-4">
+                    <div>Ghi chú:</div>
+                    <p>{{importBill.note}}</p>
                 </div>
-                <div class="col-md-6 mt-auto mb-2">
-                    <div>Ngày nhập: <span id="date-time">{{importBill.createdAt}}</span></div>
+                <div class="col-md-6 mt-auto mb-4">
                     <div>Tổng số sản phẩm: {{importBill.total}}</div>
                     <div>Nhân viên nhập: {{importBill.managerName}}</div>
                     <div>Mã nhân viên: {{importBill.Admin_id}}</div>
+                    <div>Ngày nhập: <span id="date-time">{{importBill.createdAt}}</span></div>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
 <script>
     const dateTimeLabel = document.getElementById('date-time');
 
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', };
     const vietnameseDateTime = new Date(dateTimeLabel.innerHTML).toLocaleString('vi-VN', options);
     dateTimeLabel.innerHTML = vietnameseDateTime;
 

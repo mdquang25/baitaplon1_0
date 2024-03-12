@@ -15,6 +15,7 @@
             <th scope="col" class="table-header">Tên khách hàng</th>
             <th scope="col" class="table-header">Số điện thoại</th>
             <th scope="col" class="table-header to-be-hidden">Địa chỉ</th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
@@ -36,6 +37,9 @@
             </td>
             <td class="to-be-hidden">
                 <p class="management_description">{{customer.address}}</p>
+            </td>
+            <td><a href="/admin/khachhang/{{customer._id}}/don-mua" class="icon-link text-decoration-none"><i
+                        class="fa-light fa-bags-shopping fa-2x"></i> <span class="to-be-hidden">Đơn hàng</span></a>
             </td>
         </tr>
     </tbody>

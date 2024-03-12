@@ -9,7 +9,7 @@ const Customer = new mongoose.Schema(
         dateOfBirth: { type: String, },
         gender: { type: String, },
         phoneNumber: {
-            type: String,
+            type: String, unique: true,
             validate: {
                 validator: (value) => {
                     const parsedNumber = PhoneNumber.parsePhoneNumberFromString(value, 'VN');
