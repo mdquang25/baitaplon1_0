@@ -86,8 +86,6 @@
         codLabel.innerHTML = codLabel.innerHTML === 'true' ? 'Thanh toán khi nhận hàng' : 'Quét mà QR thanh toán';
         shipLabel.innerHTML = shipLabel.innerHTML === 'true' ? 'Ship hàng tận nhà' : 'Nhận tại cửa hàng';
 
-        const status = statusBadge.getAttribute('data-value');
-        
         if (paidBadge.getAttribute('data-paid') === 'true')
             paidBadge.previousElementSibling.classList.add('d-none');
         else
