@@ -54,9 +54,9 @@ class TypeController {
                 }
                 else {
                     if (type.imageUrl)
-                        fs.unlink(path.join(__dirname, '..', '..', type.imageUrl), (err) => {
+                        fs.unlink(path.join(__dirname, '..', '..', '..', type.imageUrl), (err) => {
                             if (err) {
-                                console.error(url + err);
+                                console.error(type.imageUrl + err);
                                 return;
                             }
                             console.log(type.imageUrl + ': deleted successfully');
@@ -74,9 +74,9 @@ class TypeController {
         Type.findByIdAndDelete(req.body.deleteId)
             .then(type => {
                 if (type.imageUrl)
-                    fs.unlink(path.join(__dirname, '..', '..', type.imageUrl), (err) => {
+                    fs.unlink(path.join(__dirname, '..', '..', '..', type.imageUrl), (err) => {
                         if (err) {
-                            console.error(url + err);
+                            console.error(type.imageUrl + err);
                             return;
                         }
                         console.log(type.imageUrl + ': deleted successfully');

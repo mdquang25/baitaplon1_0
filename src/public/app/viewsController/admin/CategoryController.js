@@ -71,7 +71,7 @@ class CategoryController {
                             Product.updateMany({ typesIds: type._id },
                                 { $pull: { typesIds: type._id } });
                             if (type.imageUrl)
-                                fs.unlink(path.join(__dirname, '..', '..', type.imageUrl), (err) => {
+                                fs.unlink(path.join(__dirname, '..', '..', '..', type.imageUrl), (err) => {
                                     if (err) {
                                         console.error(url + err);
                                         return;
