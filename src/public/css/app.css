@@ -261,4 +261,45 @@
   margin: 0 auto;
 }
 
+.table-max-width {
+  max-width: 75rem;
+}
+
+.baiviet-header {
+  font-size: 1.5rem;
+  font-weight: 500;
+  width: 100%;
+  color: rgb(207, 207, 54);
+  background-color: rgb(110, 26, 26);
+  padding-left: 1rem;
+  box-sizing: border-box;
+  border-radius: 0.3rem;
+}
+
+.baiviet-card {
+  border: 1px solid white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1rem 2rem 0 rgba(0, 0, 0, 0.507);
+  padding: 1rem;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+}
+
+.description-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: large;
+}
+
+.photo {
+  max-width: 70%;
+  border-radius: 1px;
+  border: 0.5rem solid mintcream;
+  box-sizing: border-box;
+  box-shadow: 0 0.1rem 0.3rem 0 rgba(0, 0, 0, 0.484);
+}
+
 /*# sourceMappingURL=app.css.map */

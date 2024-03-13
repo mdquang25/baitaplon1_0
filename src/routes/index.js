@@ -11,6 +11,7 @@ const customerSiteRouter = require('./customer/site');
 const customerSurfRouter = require('./customer/surf');
 const customerCartRouter = require('./customer/cart');
 const customerAccountRouter = require('./customer/account');
+const customerBaivietRouter = require('./customer/baiviet');
 
 function router(app) {
     app.use('/admin/taikhoan-nhanvien', employeeAccountsRouter);
@@ -25,6 +26,7 @@ function router(app) {
     app.use('/sanpham', customerSurfRouter);
     app.use('/giohang', customerCartRouter);
     app.use('/taikhoan', customerAccountRouter);
+    app.use('/baiviet', customerBaivietRouter);
     app.use('/', customerSiteRouter);
 }
 

@@ -1,0 +1,41 @@
+<div class="row col-12 mx-auto mb-4 justify-content-center"
+    style="background-image: url('/assets/background/bg-1.jpg');">
+    <div class="col-sm-8 col-md-6 px-0">
+        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                {{#each carousels}}
+                <div class="carousel-item" style="max-height: 20rem;" onclick="navigateTo('{{this.link}}')">
+                    <img src="{{this.imageUrl}}" style="border: .5rem ridge  rgba(0, 0, 0, 0.416);"
+                        class="d-block w-100" alt="ảnh quảng cáo">
+                </div>
+                {{/each}}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+{{#each baiviets}}
+<div onclick="navigateTo('/baiviet/{{this.slug}}')" class="baiviet-card table-max-width d-flex mx-auto">
+    <img class="thumnail img-thumbnail" src="{{valueAt this.imagesUrls this.mainImageIndex}}" alt="Ảnh bài viết">
+    <div class="mx-2">
+        <div class="baiviet-header">{{this.name}}</div>
+        <p class="description-3">{{this.content}}</p>
+    </div>
+</div>
+{{/each}}
+<script>
+    document.querySelector('div[class="carousel-item"]').classList.add('active');
+    function navigateTo(url){
+        window.location.href = url;
+    }
+</script>
