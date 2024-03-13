@@ -37,6 +37,7 @@ class adminSiteController {
                     req.session.manager = {
                         id: admin._id,
                         fullName: admin.fullName,
+                        phoneNumber: admin.phoneNumber,
                     };
                     req.session.isAdmin = admin.isAdmin;
                     console.log('logged in - admin');

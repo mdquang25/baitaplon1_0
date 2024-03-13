@@ -431,7 +431,7 @@
 
         </div>
     </div>
-
+    <div id="printId" hidden>{{printId}}</div>
     <script>
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -443,6 +443,12 @@
             const prices = [...document.getElementsByClassName('price-label')];
             const dateTimeLabels = [...document.getElementsByClassName('date-time')];
             const refreshBtn = document.getElementById('refresh');
+            const printId = document.getElementById('printId').innerHTML;
+
+
+            if(printId.length > 0){
+                window.open('/admin/donhang/' + printId + '/in-don-hang', '_blank');
+            }
 
             refreshBtn.addEventListener('click', () => {
                 location.reload();

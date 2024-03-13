@@ -1,7 +1,6 @@
 const ShopInfo = require('../../public/app/models/ShopInfo');
 
 const getShopInfo = (req, res, next) => {
-    if (req.session.user) {
         ShopInfo.findOne({})
             .then(doc => {
                 if (doc) {
@@ -23,9 +22,6 @@ const getShopInfo = (req, res, next) => {
                 }
                 next();
             }).catch(next);
-    }
-    else
-        next();
 };
 
 module.exports = getShopInfo;

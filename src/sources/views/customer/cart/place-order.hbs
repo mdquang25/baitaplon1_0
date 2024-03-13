@@ -16,31 +16,27 @@
 <form action="/giohang/dat-hang/luu-don-hang" class="d-flex flex-wrap justify-content-center" method="post">
 
     <div class="col-12 table-max-width py-2" style="background-color: aliceblue;">
-        <div class="ms-2">Địa chỉ nhận hàng</div>
-        <table class="table">
-            <tbody>
-                <td>
-                    <div class="d-flex flex-column">
-                        <input id="name-input" type="text" name="reciever" class="form-control d-none"
-                            value="{{user.fullName}}">
-                        <input id="phone-input" type="number" name="phoneNumber" class="form-control d-none mt-2"
-                            value="{{user.phoneNumber}}">
-                    </div>
-                    <div id="name-label">{{user.fullName}}</div>
-                    <div id="phone-label">{{user.phoneNumber}}</div>
-                </td>
-                <td>
-                    <input id="address-input" type="text" name="address" class="form-control d-none"
-                        value="{{user.address}}">
-                    <div id="address-label" data-value="{{user.address}}">{{user.address}}</div>
-                </td>
-                <td>
-                    <button id="modify-address" type="button" class="btn btn-outline-info">sửa <span
-                            class="mobile-hidden">địa chỉ</span></button>
-                    <button id="save-address" type="button" class="btn btn-outline-success d-none">Xong</button>
-                </td>
-            </tbody>
-        </table>
+        <b class="ms-3">Địa chỉ nhận hàng</b>
+        <div class="d-flex justify-content-between align-items-center" style="background-color: white;">
+            <div class="ms-3" style="flex: 1;">
+                <div class="d-flex flex-column">
+                    <input id="name-input" type="text" maxlength="30" name="reciever" class="form-control d-none"
+                        value="{{user.fullName}}">
+                    <input id="phone-input" type="number" maxlength="10" name="phoneNumber"
+                        class="form-control d-none mt-2" value="{{user.phoneNumber}}">
+                    <input id="address-input" type="text" maxlength="150" name="address"
+                        class="form-control d-none mt-2" value="{{user.address}}">
+                </div>
+                <div id="name-label">{{user.fullName}}</div>
+                <div id="phone-label">{{user.phoneNumber}}</div>
+            </div>
+            <div id="address-label" class="mx-4" data-value="{{user.address}}">{{user.address}}</div>
+            <div>
+                <button id="modify-address" type="button" class="btn btn-outline-info mx-3">sửa <span
+                        class="mobile-hidden">địa chỉ</span></button>
+                <button id="save-address" type="button" class="btn btn-outline-success d-none mx-3">Xong</button>
+            </div>
+        </div>
     </div>
 
     <table class="table text-center m-0 table-max-width mt-2">
@@ -64,7 +60,7 @@
                     <a href="/sanpham/{{this.product.slug}}/chitiet"
                         style="text-decoration: none;">{{this.product.name}}</a>
                     <div class="to-be-show-col" style="display:none;">
-                        <div class="price-label">{{this.product.price}}</div>
+                        <div class="price-label" style="color: black;">{{this.product.price}}</div>
                         <div class="text-start">
                             x{{this.quantity}}
                         </div>
@@ -87,15 +83,16 @@
         </tbody>
     </table>
 
-    <div class="row col-12 table-max-width mb-2 pt-3 pb-2" style="background-color: aliceblue;">
-        <div class="d-flex flex-wrap col-6 align-items-center">
-            <label for="message" class="col-form-label mx-2">Lời nhắn</label>
+    <div class="col-mobile d-flex justify-content-between col-12 table-max-width mb-2 pt-3 pb-2"
+        style="background-color: aliceblue;">
+        <div class="flex-lg-grow-1 d-flex flex-wrap align-items-center ms-3">
+            <label for="message" class="col-form-label me-2">Lời nhắn</label>
             <div class="px-auto flex-lg-grow-1">
                 <input type="text" id="message" name="message" class="form-control" placeholder="Lưu ý cho người bán..">
             </div>
         </div>
-        <div class="col-3 ms-lg-auto">
-            <div class="fs-5">Phương thức nhận hàng</div>
+        <div class="ms-lg-auto ps-3 mt-3">
+            <b>Phương thức nhận hàng</b>
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="ship" id="ship" value="true" checked>
                 <label class="form-check-label" for="ship">
@@ -109,18 +106,23 @@
                 </label>
             </div>
         </div>
-        <div class="col-3 text-end mt-auto">
+        <div class="text-end mx-3 mt-3">
             <input type="number" name="productFee" value="{{total}}" hidden>
-            <div class="me-2">Tổng tiền hàng:&nbsp;<span class="price-label fs-4" style="color:black" id="products-fee"
-                    data-value="{{total}}">{{total}}</span>
+            <div class="d-flex justify-content-end align-items-center">
+                <div class="me-2">Tổng tiền hàng:</div>
+                <div class="price-label fs-4" style="color:black" id="products-fee" data-value="{{total}}">{{total}}
+                </div>
             </div>
-            <div class="me-2">Phí vận chuyển:&nbsp;<span class="price-label fs-5" style="color:black"
-                    data-value="{{shopInfo.shippingFee}}" id="shipping-fee">{{shopInfo.shippingFee}}</span></div>
+            <div class="d-flex justify-content-end align-items-center">
+                <div class="me-2">Phí vận chuyển:</div>
+                <div class="price-label fs-5" style="color:black" data-value="{{shopInfo.shippingFee}}"
+                    id="shipping-fee">{{shopInfo.shippingFee}}</div>
+            </div>
         </div>
     </div>
 
     <div class="table-max-width col-12 my-2 pt-3 pb-2" style="background-color: aliceblue;">
-        <div class="fs-5 ms-4">Phương thức thanh toán</div>
+        <b class="ms-4">Phương thức thanh toán</b>
         <input id="cod" type="text" name="cod" value="true" hidden>
         <div class="tabs mx-lg-4 table-max-width">
             <div class="nav nav-tabs mx-4">
@@ -148,28 +150,31 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-between flex-wrap col-12 table-max-width py-3 my-2"
-        style="background-color:aliceblue;">
-        <div class="d-flex justify-content-center align-items-center ms-3">
-            <span></span>Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo &nbsp;<a href="#"
-                class="text-decoration-none">Điều
+    <div class="col-12 table-max-width py-3 my-2" style="background-color:aliceblue;">
+        <div class="ms-3">
+            Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo &nbsp;<a href="#" class="text-decoration-none">Điều
                 khoản</a>
         </div>
-        <div class="d-flex">
-            <div class="mobile-break d-flex align-items-center">
-                <div>Tổng <span class="to-be-hidden">thanh toán</span></div>
-                <div id="total-label" class="price-label fs-2">{{sum shopInfo.shippingFee total}}</div>
-            </div>
-            <button id="place-order" class="btn btn-warning ms-1 me-2" type="submit">Đặt hàng</button>
-        </div>
-        <div style="font-size: small;" class="col-12 text-start ms-3"><b>Lưu ý:</b><i style="color: red;"> nhân viên
+        <div style="font-size: small;" class="text-start ms-3"><b>Lưu ý:</b><i style="color: red;"> nhân viên
                 vận
                 chuyển sẽ thu
                 thêm phí khuân vác
                 dựa
                 theo
                 khối lượng sản
-                phẩm và độ khó khi chuyển hàng vào vị trí theo yêu cầu( 0 - 100.000đ)</i></div>
+                phẩm và độ khó khi chuyển hàng vào vị trí theo yêu cầu( 0 - 100.000đ)</i>
+        </div>
+        <div class="d-flex align-items-end mt-3">
+            <div class="d-flex align-items-end ms-auto">
+                <div><span class="mobile-hidden">Tổng </span>Thanh toán:&nbsp;</div>
+                <div id="total-label" class="price-label" style="height: 2.6rem;font-size: 2rem;">
+                    {{sum shopInfo.shippingFee
+                    total}}
+                </div>
+            </div>
+            <button id="place-order" class="btn btn-warning ms-1 me-3" style="height: fit-content ;" type="submit">Đặt
+                hàng</button>
+        </div>
     </div>
     </div>
 </form>

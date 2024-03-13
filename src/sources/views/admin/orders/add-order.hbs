@@ -1,0 +1,291 @@
+<div class="row col-12 justify-content-center mx-auto pb-5">
+    <div class="col-lg-10 p-0">
+        <div class=" mx-lg-1 px-2 text-bg-info py-3 mx-md-2 mt-4 rounded-1">
+            <form id="search-form" class="d-flex me-md-2 me-lg-4 ms-2">
+                <input id="search-input" class="form-control me-1" name="phoneNumber" type="search"
+                    placeholder="Nhập tên hoặc mã sản phẩm.." aria-label="Search">
+                <button id="search-btn" class="btn btn-success" type="submit">Tìm kiếm</button>
+            </form>
+            <table class="table text-center m-0 table-max-width mt-2 mx mb-4"
+                style="border-radius: .5rem; overflow: hidden;">
+                <tbody id="search-results">
+
+                </tbody>
+            </table>
+            <div id="message" style="color: rgb(0, 0, 0);"></div>
+        </div>
+    </div>
+    <div class="text-center fs-3 mt-3 p-0"><b>Tạo đơn hàng</b></div>
+    <div class="col-lg-10 p-0">
+        <div class=" mx-lg-1 px-2 py-3 mx-md-2 mt-2" style="background-color: aliceblue; border-radius: .5rem;">
+            <form id="save-form" action="/admin/donhang/luu-don-hang" method="post"
+                enctype="application/x-www-form-urlencoded">
+                <table class="table text-center m-0 table-max-width mt-2 mb-4"
+                    style="border-radius: .5rem; overflow: hidden;">
+                    <tbody id="order-products">
+
+                    </tbody>
+                </table>
+
+                <div class="mt-4 mx-2 mx-md-4">
+                    <label for="reciever" class="form-label mt-2 mb-0">Họ và tên người nhận</label>
+                    <input type="text" maxlength="40" id="reciever" name="reciever" placeholder="Nhập họ và tên.."
+                        class="form-control">
+                    <label for="phoneNumber" class="form-label mt-2 mb-0">Số điện thoại nhận hàng</label>
+                    <input type="number" maxlength="10" id="phoneNumber" name="phoneNumber"
+                        placeholder="Nhập số điện thoại.." class="form-control">
+                    <label for="address" class="form-label mt-2 mb-0">Địa chỉ giao hàng</label>
+                    <input type="text" maxlength="150" id="address" name="address" placeholder="Nhập địa chỉ.."
+                        class="form-control">
+
+                </div>
+                <div class="row mx-2">
+                    <div class="col-md-6 mb-2 px-0 px-md-3">
+                        <div class="ms-lg-auto ps-3 mt-3 pb-2">
+                            <b>Phương thức nhận hàng</b>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="ship" id="ship" value="true" checked>
+                                <label class="form-check-label" for="ship">
+                                    Ship hàng tận nhà
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="ship" id="not-ship" value="false">
+                                <label class="form-check-label" for="not-ship">
+                                    Nhận tại cửa hàng
+                                </label>
+                            </div>
+                        </div>
+                        <div>Ghi chú</div>
+                        <textarea class="form-control" maxlength="200" name="message" cols="15" rows="3"
+                            placeholder="Nhập ghi chú.."></textarea>
+                    </div>
+                    <div class="col-md-6 mt-auto px-0 px-md-3">
+                        <div class="text-end mx-3 mt-3 pb-2">
+                            <input id="productFee" type="number" name="productFee" hidden>
+                            <div class="d-flex justify-content-end align-items-center">
+                                <div class="me-2">Tổng tiền hàng:</div>
+                                <div class="price-label fs-4" style="color:black" id="products-fee" data-value="0">0
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end align-items-center">
+                                <div class="me-2">Phí vận chuyển:</div>
+                                <div class="price-label fs-5" style="color:black" data-value="{{shopInfo.shippingFee}}"
+                                    id="shipping-fee">
+                                    {{shopInfo.shippingFee}}</div>
+                            </div>
+                        </div>
+                        <div>Người tạo đơn: {{manager.fullName}}</div>
+                        <div>Số điện thoại: {{manager.phoneNumber}}</div>
+                        <div>Ngày đặt hàng: <span id="date-time"></span></div>
+                    </div>
+                </div>
+
+
+                <div class="table-max-width col-12 my-2 pt-3 pb-2" style="background-color: aliceblue;">
+                    <b class="ms-4">Phương thức thanh toán</b>
+                    <input id="cod" type="text" name="cod" value="true" hidden>
+                    <div class="tabs mx-lg-4 table-max-width">
+                        <div class="nav nav-tabs mx-4">
+                            <ul class="nav nav-pills">
+                                <li onclick="changePaymentMethod('true')">
+                                    <a class="nav-link active" data-bs-toggle="tab" href="#tab1">
+                                        Thanh toán khi nhận hàng
+                                    </a>
+                                </li>
+                                <li onclick="changePaymentMethod('false')">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#tab2">
+                                        Chuyển khoản ngân hàng
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content m-4">
+                            <div id="tab1" class="tab-pane fade show active">
+                                <p>Thanh toán bằng tiền mặt hoặc chuyển khoản cho shipper</p>
+                            </div>
+                            <div id="tab2" class="tab-pane fade">
+                                <div class="fs-6">Nhấn "đặt hàng" để quét mã QR chuyển khoản</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-end mt-3">
+                    <div class="d-flex align-items-end ms-auto">
+                        <div><span class="mobile-hidden">Tổng </span>Thanh toán:&nbsp;</div>
+                        <div id="total-label" class="price-label" style="height: 2.6rem;font-size: 2rem;">
+                            0
+                        </div>
+                    </div>
+                </div>
+                <input id="printInput" type="text" name="print" value="" hidden>
+                <div class="mt-4 text-end">
+                    <button type="submit" class="btn btn-success" name="print" value="false"><i
+                            class="fa-solid fa-floppy-disk"></i> Lưu đơn hàng</button>
+                    <button type="submit" class="btn btn-success" name="print" value="true"><i
+                            class="fa-solid fa-print"></i>
+                        Lưu và in</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var chosenResults;
+    var searchProducts = [];
+    var chosenProducts = [];
+    const productsFeeLabel = document.getElementById('products-fee');
+    const shippingFeeLabel = document.getElementById('shipping-fee');
+    const shippingFee = parseInt(shippingFeeLabel.getAttribute('data-value'));
+    const totalLabel = document.getElementById('total-label');
+    const ship = document.getElementById('ship');
+    const notShip = document.getElementById('not-ship');
+    const productFee = document.getElementById('productFee');
+    
+    const cod = document.getElementById('cod');
+    function changePaymentMethod(value) {
+        cod.value = value;
+    }
+
+    ship.addEventListener('change', () => {
+
+        updatePriceLabelsOnShippingChange();
+    });
+    notShip.addEventListener('change', () => {
+
+        updatePriceLabelsOnShippingChange();
+    });
+    updatePriceLabelsOnProductsFeeChange(0);
+    updatePriceLabelsOnShippingChange();
+    function updatePriceLabelsOnProductsFeeChange(productsFee) {
+        productsFeeLabel.setAttribute('data-value', productsFee);
+        productsFeeLabel.innerHTML = productsFee.toLocaleString('vi-VN') + 'đ';
+        if (ship.checked) {
+            totalLabel.innerHTML = (productsFee + shippingFee).toLocaleString('vi-VN') + 'đ';
+        }
+        else
+            totalLabel.innerHTML = productsFee.toLocaleString('vi-VN') + 'đ';
+    }
+    function updatePriceLabelsOnShippingChange() {
+        if (ship.checked) {
+            shippingFeeLabel.innerHTML = shippingFee.toLocaleString('vi-VN') + 'đ';
+            totalLabel.innerHTML = (parseInt(productsFeeLabel.getAttribute('data-value')) + shippingFee).toLocaleString('vi-VN') + 'đ';
+        }
+        else {
+            shippingFeeLabel.innerHTML = '0đ';
+            totalLabel.innerHTML = parseInt(productsFeeLabel.getAttribute('data-value')).toLocaleString('vi-VN') + 'đ';
+        }
+    }
+
+    function addQuantityChangeEventListener(id) {
+        const input = document.getElementById(id);
+        input.addEventListener('input', function () {
+            var productsFee = 0;
+            chosenProducts.forEach(product => {
+                const quantity = document.getElementById(product._id + 'quantity').value;
+                productsFee += parseInt(product.price.$numberDecimal) * parseInt(quantity);
+            });
+            updatePriceLabelsOnProductsFeeChange(productsFee);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchForm = document.getElementById('search-form');
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+        const message = document.getElementById('message');
+        const saveForm = document.getElementById('save-form');
+        const printInput = document.getElementById('printInput');
+        chosenResults = document.getElementById('order-products');
+
+
+
+
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const vietnameseDate = new Date().toLocaleDateString('vi-VN', options);
+        document.getElementById('date-time').innerHTML = vietnameseDate;
+        searchForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const query = searchInput.value.trim();
+            if (query !== '') {
+                search(query);
+            }
+        });
+
+        saveForm.addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent the form from submitting
+
+            if (chosenProducts.length > 0) {
+                productFee.value = productsFeeLabel.getAttribute('data-value');
+                var buttonValue = event.submitter.value; // Get the value of the clicked button
+                if (buttonValue === "true") {
+                    printInput.value = 'true';
+                }
+                this.submit();
+            }
+        });
+
+        function search(query) {
+            fetch(`/admin/kho/nhaphang/tim-san-pham?query=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Update search results on the page
+                    searchResults.innerHTML = '';
+
+                    if (data.products && data.products.length > 0) {
+                        searchProducts = data.products;
+                        for (i = 0; i < data.products.length; i++)
+                            appendResult(data.products[i], i);
+                        //data.products.forEach(product => appendResult(product));
+                    }
+                    else if (data.product) {
+                        searchProducts = [data.product];
+                        appendResult(data.product, 0);
+                    }
+                    message.innerHTML = data.message ? data.message : '';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function appendResult(product, index) {
+            const content = `<tr>
+                                <td><img class="thumbnail-sm img-thumbnail" src="${product.imagesUrls[product.mainImageIndex]}" alt="Ảnh"></td>
+                                <td>${product.name}</td>
+                                <td class="mobile-hidden">${product._id}</td>
+                                <td><button onclick="addProduct(${index})" type="button" class="btn btn-primary">Thêm</button></td>
+                            </tr>`;
+            searchResults.insertAdjacentHTML('beforeend', content);
+        }
+
+    });
+
+    function addProduct(index) {
+        const product = searchProducts[index];
+        const productId = product._id;
+        var exist = false;
+        for (i = 0; i < chosenProducts.length; i++)
+            if (chosenProducts[i]._id === productId) {
+                exist = true;
+                break;
+            }
+        if (!exist) {
+            productsFee = parseInt(productsFeeLabel.getAttribute('data-value')) + parseInt(product.price.$numberDecimal);
+            updatePriceLabelsOnProductsFeeChange(productsFee);
+            chosenProducts.push(product);
+
+            const content = `<tr>
+                                <td><img class="thumbnail-sm img-thumbnail" src="${product.imagesUrls[product.mainImageIndex]}" alt="Ảnh"></td>
+                                <td>${product.name}</td>
+                                <td class="mobile-hidden">${parseInt(product.price.$numberDecimal).toLocaleString('vi-VN')}đ</td>
+                                <td><input id="${product._id}quantity" type="number" name="${product._id}quantity" min="1" max="${product.stock}" value="1" class="form-control text-center"></td>
+                                <input type="text" name="productIds[]" value="${product._id}" hidden>
+                            </tr>`;
+            chosenResults.insertAdjacentHTML('afterbegin', content);
+            addQuantityChangeEventListener(product._id + 'quantity');
+        }
+    }
+</script>

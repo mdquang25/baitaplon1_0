@@ -26,13 +26,12 @@
     display: flex !important;
     flex-direction: column !important;
   }
-  .cart-table-header {
-    position: static;
-  }
-  .mobile-break {
+  .col-mobile {
     display: flex;
     flex-direction: column;
-    align-items: flex-start !important;
+  }
+  .cart-table-header {
+    position: static;
   }
   .offcanvas-body-responsive {
     display: block;

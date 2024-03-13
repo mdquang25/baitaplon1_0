@@ -5,11 +5,13 @@ const ordersController = require('../../public/app/viewsController/admin/OrdersC
 const getShopInfo = require('../middleware/getShopInfo');
 
 
+router.post('/luu-don-hang', requireManagerLogin, getShopInfo, ordersController.saveNewOrder);
 router.post('/capnhat', requireManagerLogin, ordersController.updateOrder);
 
 
+router.get('/:id/qr-thanh-toan', requireManagerLogin, getShopInfo, ordersController.showQR);
 router.get('/:id/in-don-hang', requireManagerLogin, getShopInfo, ordersController.printOrder);
 router.get('/:id/chitiet', requireManagerLogin, ordersController.orderDetails);
-router.get('/them', requireManagerLogin, ordersController.addOrder);
+router.get('/them', requireManagerLogin, getShopInfo, ordersController.addOrder);
 router.get('/', requireManagerLogin, ordersController.index);
 module.exports = router;

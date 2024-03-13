@@ -1,12 +1,16 @@
 const Order = require('../../models/Order');
 const Cart = require('../../models/Cart');
 const ProductQ = require('../../models/ProductQ');
+const Product = require('../../models/Product');
+const Customer = require('../../models/Customer');
 const { mongooseToObj, multiMongooseToObjs } = require('../../../../util/mongoose');
-
+const { qrContent } = require('../../../../util/qrCode');
+const { generateQRCode } = require('../../../../util/qrCodeImage');
 
 class OrdersController {
     index(req, res, next) {
         console.log('orders - admin');
+        const printId = req.query.printId;
         Order.find({ status: { $ne: 4 } })
             .then(docs => {
                 const items = multiMongooseToObjs(docs);
@@ -26,7 +30,7 @@ class OrdersController {
                 const orders = {
                     orders0, orders1, orders2, orders3,
                 }
-                res.render('admin/orders/orders', { pageTitle: 'Đơn hàng', layout: 'admin', isAdmin: req.session.isAdmin, orders, });
+                res.render('admin/orders/orders', { pageTitle: 'Đơn hàng', layout: 'admin', isAdmin: req.session.isAdmin, orders, printId });
             });
     }
 
@@ -83,7 +87,82 @@ class OrdersController {
     }
 
     addOrder(req, res, next) {
+        res.render('admin/orders/add-order', { pageTitle: 'Tạo đơn hàng', layout: 'admin', isAdmin: req.session.isAdmin, manager: req.session.manager, });
+    }
 
+    saveNewOrder(req, res, next) {
+        console.log('save new order - admin');
+        console.log('body: ', req.body);
+        const order = new Order(req.body);
+        order.orderName = req.session.manager.fullName;
+        order.orderPhoneNumber = req.session.manager.phoneNumber;
+        if (req.body.ship === 'true') {
+            order.shippingFee = res.locals.shopInfo.shippingFee;
+            order.total = parseInt(req.body.productFee) + parseInt(res.locals.shopInfo.shippingFee);
+        }
+        else {
+            order.shippingFee = 0;
+            order.total = req.body.productFee;
+        }
+        order.status = 1;
+        order.paid = false;
+        Customer.findOne({ phoneNumber: req.body.phoneNumber })
+            .then(customer => {
+                if (customer) {
+                    Cart.findById(customer.cartId)
+                        .then(cart => {
+                            if (cart) {
+                                order.cart_id = cart._id;
+                                order.customer_id = customer._id;
+                                cart.order_ids.push(order._id);
+                                cart.newOrderUpdate = true;
+                                cart.save();
+                            }
+                        })
+                }
+            });
+        const productQ_ids = req.body.productIds.map(productId => {
+            const quantity = parseInt(req.body[productId + 'quantity']);
+            return Product.findById(productId)
+                .then(product => {
+                    const productQ = new ProductQ({
+                        productId,
+                        quantity,
+                        productName: product.name,
+                        imageUrl: product.imagesUrls[product.mainImageIndex],
+                        productSlug: product.slug,
+                        price: product.price,
+                        total: product.price * quantity,
+                    });
+                    product.stock -= quantity;
+                    product.save();
+                    productQ.save();
+                    return productQ._id.toString();
+                });
+        });
+        Promise.all(productQ_ids)
+            .then(ids => {
+                order.productQ_ids = ids;
+                console.log('productQ_ids: ', ids);
+                const code = qrContent(order.total.toString(), req.body.phoneNumber + ' - ' + order._id.toString());
+                generateQRCode(code, order._id.toString() + '-qrcode.png')
+                    .then(path => {
+                        order.qrcodeUrl = path;
+                        order.save();
+                        if (req.body.cod === 'true') {
+                            if (req.body.print === 'true')
+                                res.redirect('/admin/donhang?printId=' + order._id);
+                            else
+                                res.redirect('/admin/donhang');
+                        }
+                        else {
+                            if (req.body.print === 'true')
+                                res.redirect('/admin/donhang/' + order._id.toString() + '/qr-thanh-toan?printId=' + order._id);
+                            else
+                                res.redirect('/admin/donhang/' + order._id.toString() + '/qr-thanh-toan');
+                        }
+                    });
+            });
     }
 
     //[GET] /admin/donhang/:id/chitiet
@@ -120,6 +199,14 @@ class OrdersController {
                     res.redirect('/not-found-404');
                 }
             }).catch(() => res.redirect('/not-found-404'));
+    }
+
+    showQR(req, res, next) {
+        const printId = req.query.printId;
+        Order.findById(req.params.id)
+            .then(order => {
+                res.render('admin/orders/show-qrcode', { pageTitle: 'Mã QR thanh toán', layout: 'admin', order: mongooseToObj(order), isAdmin: req.session.isAdmin, printId, });
+            }).catch(() => res.render('/not-found-404'));
     }
 }
 

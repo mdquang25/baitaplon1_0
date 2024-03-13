@@ -75,7 +75,10 @@ class ImportController {
                     total,
                 });
                 importBill.save();
-                res.redirect('/admin/kho/nhaphang/lichsu?print=' + importBill._id);
+                if (req.body.print === 'true')
+                    res.redirect('/admin/kho/nhaphang/lichsu?print=' + importBill._id);
+                else
+                    res.redirect('/admin/kho/nhaphang/lichsu');
             })
     }
 
