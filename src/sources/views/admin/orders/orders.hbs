@@ -605,7 +605,7 @@
                     input2 = event.target;
                     input1 = document.getElementById(input2.getAttribute('data-id') + 'input1');
                     submitBtn = document.getElementById(input2.getAttribute('data-id') + 'submit-btn');
-                    if (input1.checked || input2.checked)
+                    if (input2.checked || input1.checked)
                         submitBtn.classList.remove('disabled');
                     else
                         submitBtn.classList.add('disabled');

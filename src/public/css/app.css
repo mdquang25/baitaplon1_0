@@ -265,6 +265,10 @@
   max-width: 75rem;
 }
 
+.max-width-2 {
+  max-width: 85rem;
+}
+
 .baiviet-header {
   font-size: 1.5rem;
   font-weight: 500;

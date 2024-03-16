@@ -1,37 +1,117 @@
-<div class="col-7 mx-auto mt-5 pb-5">
-    <canvas id="myChart" class="rounded-2" style="background-color: rgb(121, 255, 210); "></canvas>
+<div class="max-width-2 mx-auto my-5 pb-5">
+    <div class="d-flex justify-content-between col-mobile">
+        <h3 class="mb-4">Xin chào {{manager.fullName}}!</h3>
+        <div class="d-flex">
+            <div class="mx-3 text-center">
+                <h6>Đặt trong ngày</h6>
+                <h1 <span id="orders-today" class="badge text-bg-primary fs-1 px-5 py-3"
+                    style="border: .2rem solid white;">
+                    </span></h1>
+            </div>
+            <div class="mx-3 text-center">
+                <h6>Hoàn thành trong ngày</h6>
+                <h1 <span id="completed-today" class="badge text-bg-success fs-1 px-5 py-3"
+                    style="border: .2rem solid white;"></span></h1>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center flex-wrap">
+        <div class="col-lg-6 col-md-9">
+            <div class="mt-5 pb-5 rounded-2 mx-lg-2" style="background-color: rgb(121, 255, 210);">
+                <h5 class="p-2"><b>Đơn hàng trong 7 ngày qua</b></h5>
+                <canvas id="order-count-chart"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-9">
+            <div class="mt-5 pb-5 rounded-2 mx-lg-2" style="background-color: rgb(183, 224, 255);">
+                <h5 class="p-2"><b>Giá trị bán ra trong 7 ngày qua</b></h5>
+                <canvas id="total-value-chart"></canvas>
+            </div>
+        </div>
+    </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const ctx = document.getElementById('myChart');
-    const timeOptions = {  month: 'long', day: 'numeric',};
-    fetch('/admin/thongke/dem-don-hang-tuan')
-        .then(response => response.json())
-        .then(json => {
-            const labels = json.map(e => new Date(e.date).toLocaleString('vi-VN', timeOptions));
+    document.addEventListener('DOMContentLoaded', function () {
+        const orderCountChart = document.getElementById('order-count-chart');
+        const totalAmountChart = document.getElementById('total-value-chart');
+        const ordersToday = document.getElementById('orders-today');
+        const completedToday = document.getElementById('completed-today');
+
+        const timeOptions = { month: 'long', day: 'numeric', };
+        fetch('/admin/thongke/dem-don-hang-tuan')
+            .then(response => response.json())
+            .then(json => {
+                ordersToday.innerHTML = json.created[json.created.length - 1].count;
+                completedToday.innerHTML = json.done[json.done.length - 1].count;
+                generateTotalValueChart(json.done);
+                generateOrderCountChart(json.done, json.created);
+            });
+
+        function generateOrderCountChart(done, created) {
+            const labels = done.map(e => new Date(e.date).toLocaleString('vi-VN', timeOptions));
             const data = {
                 labels: labels,
                 datasets: [{
-                    label: 'Đơn hoàn thành 7 ngày qua',
-                    data: json.map(e => e.count),
+                    label: 'Đơn hoàn thành',
+                    data: done.map(e => e.count),
                     fill: false,
-                    borderColor: 'rgb(75, 192, 192)',
+                    borderColor: 'green',
+                    tension: 0.1
+                },
+                {
+                    label: 'Đơn đã tạo',
+                    data: created.map(e => e.count),
+                    fill: false,
+                    borderColor: 'red',
                     tension: 0.1
                 }]
             };
-            new Chart(ctx, {
+            new Chart(orderCountChart, {
                 type: 'line',
                 data: data,
                 options: {
                     scales: {
                         y: {
-                            beginAtZero: true
-                        }
+                            beginAtZero: true,
+                            precision: 0,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        },
                     }
                 }
             });
-        });
+        }
+        function generateTotalValueChart(done) {
+            const labels = done.map(e => new Date(e.date).toLocaleString('vi-VN', timeOptions));
+            const data = {
+                labels: labels,
+                datasets: [{
+                    label: 'Giá trị bán ra',
+                    data: done.map(e => e.total),
+                    fill: false,
+                    borderColor: 'green',
+                    tension: 0.1
+                }]
+            };
+            new Chart(totalAmountChart, {
+                type: 'line',
+                data: data,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            precision: 0,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        },
+                    }
+                }
+            });
+        }
 
 
+    });
 </script>

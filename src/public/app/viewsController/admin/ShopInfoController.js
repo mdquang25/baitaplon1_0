@@ -52,6 +52,45 @@ class ShopInfoController {
         res.redirect('back');
     }
 
+    //[POST] /admin/shop/quangcao/:id/luu
+    saveModifyCarousel(req, res, next) {
+        console.log('save modify carousel - admin');
+        Carousel.findById(req.params.id)
+            .then(carousel => {
+                if (carousel) {
+                    const file = req.file;
+                    if (!file) {
+                        console.log("no icon!");
+                    }
+                    else {
+                        fs.unlink(path.join(__dirname, '..', '..', '..', carousel.imageUrl), (err) => {
+                            if (err) {
+                                console.error(carousel.imageURl + err);
+                                return;
+                            }
+                            console.log(imageUrl + ': deleted successfully');
+                        });
+                        carousel.imageUrl = '/uploads/' + file.filename;
+                        carousel.save();
+                    }
+                }
+                res.redirect('/admin/cuahang/quangcao');
+            }).catch(() => redirect('/admin/cuahang/quangcao'));
+    }
+
+    modifyCarousel(req, res, next) {
+        console.log('modify carousel - admin');
+        Carousel.findOne({ _id: req.params.id })
+            .then(carousel => {
+                if (carousel) {
+                    res.render('admin/shop-info/modify-carousel', { pageTitle: 'Sửa quảng cáo', layout: 'admin', carousel: mongooseToObj(carousel), isAdmin: req.session.isAdmin, });
+                }
+                else
+                    res.redirect('not-found-404');
+            }).catch(() => res.redirect('not-found-404'));
+    }
+
+
     //[GET] /admin/shop/quangcao
     carousels(req, res, next) {
         console.log('carousels - admin');
