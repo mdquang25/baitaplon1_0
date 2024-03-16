@@ -17,7 +17,7 @@
 }
 @media (max-width: 767px) {
   .to-be-hidden {
-    display: none;
+    display: none !important;
   }
   .to-be-shown {
     display: block !important;
@@ -283,6 +283,7 @@
   padding: 1rem;
   box-sizing: border-box;
   margin-bottom: 1rem;
+  background-color: cadetblue;
 }
 
 .description-3 {

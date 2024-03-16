@@ -1,10 +1,24 @@
-<div class="fs-5 my-2 d-flex justify-content-between align-items-center">
-    <a href="/admin/donhang/them" class="ms-md-4 ms-lg-5 btn btn-success icon-link"
-        style="height: fit-content !important;"><i class="fa-light fa-layer-plus"></i>Tạo đơn</a>
-    <b>Đơn hàng</b>
-    <button id="refresh" class="me-md-4 me-lg-5 btn btn-success rounded-5"><i
-            class="fa-duotone fa-arrows-rotate fa-3x"></i></button>
+<div class="col-12 mt-3">
+    <div class="col-lg-9 col-md-11 mx-auto">
+        <form id="form-search" class="d-flex col-lg-6 col-md-7 ms-auto" role="search">
+            <input id="search-input" class="form-control me-2" type="search" placeholder="Nhập mã đơn hàng.."
+                aria-label="Search">
+            <button class="btn btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+        <div id="error-message" class="col-12 text-end" style="color: red;"></div>
+
+        <div class="fs-5 my-2 d-flex justify-content-between align-items-center">
+            <a href="/admin/donhang/them" class="btn btn-success icon-link" style="height: fit-content !important;"><i
+                    class="fa-light fa-layer-plus"></i>Tạo đơn</a>
+            <b>Đơn hàng</b>
+            <button id="refresh" class="btn btn-success rounded-5"><i
+                    class="fa-duotone fa-arrows-rotate fa-3x"></i></button>
+        </div>
+
+    </div>
 </div>
+
+
 <style>
     a.nav-link.active {
         color: rgb(45, 135, 93) !important;
@@ -55,43 +69,52 @@
         <div class="tab-content">
             {{!/////////////tab0/////////////////////////////////////////////}}
             <div id="tab0" class="tab-pane fade show active">
-                <table class="table text-center m-0 table-max-width mt-2 mb-4"
+                <table class="table text-center m-0 col-lg-6 col-md-9 mt-2 mb-4"
                     style="border-end-end-radius: .5rem; border-top-right-radius: .5rem; overflow: hidden;">
                     <tbody>
                         {{#each orders.orders0}}
                         <tr id="{{this._id}}start">
-                            <th colspan="1" class="text-start">Mã đơn hàng: {{this._id}}</th>
-                            <th colspan="2" class="text-end">Tạo đơn: <span class="date-time">{{this.createdAt}}</span>
+                            <th class="to-be-shown d-flex flex-wrap">
+                                <div class="text-start" style="flex-basis: 50%;">
+                                    <div>Mã đơn hàng: {{this._id}}</div>
+                                    <div class="d-none to-be-shown">Tạo đơn: <span
+                                            class="date-time">{{this.createdAt}}</span>
+                                    </div>
+                                </div>
+                                <div class="text-end to-be-hidden" style="flex-basis: 50%;">Tạo đơn: <span
+                                        class="date-time">{{this.createdAt}}</span>
+                                </div>
                             </th>
                         </tr>
                         {{#each this.productQs}}
                         <tr onclick="navigateTo('/admin/donhang/{{../_id}}/chitiet')">
                             <td class="d-flex">
-                                <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh">
-                                <div class="text-start ms-2">
-                                    <div>{{this.productName}}</div>
-                                    <div class="to-be-show-col" style="display:none;">
-                                        <div class="text-start">
-                                            x{{this.quantity}}
+                                <div class="d-flex" style="flex: 7;">
+                                    <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh">
+                                    <div class="text-start ms-2">
+                                        <div>{{this.productName}}</div>
+                                        <div class="to-be-show-col" style="display:none;">
+                                            <div class="text-start">
+                                                x{{this.quantity}}
+                                            </div>
+                                            <div class="price-label" style="color:black">
+                                                {{this.total}}</div>
                                         </div>
-                                        <div class="price-label" style="color:black">
-                                            {{this.total}}</div>
                                     </div>
                                 </div>
-                            </td>
-                            <td class="to-be-hidden">
-                                <div class="text-center">
-                                    x{{this.quantity}}
+                                <div class="to-be-hidden d-flex" style="flex: 3;">
+                                    <div>
+                                        x{{this.quantity}}
+                                    </div>
+                                    <div class="ms-auto price-label" style="color:black">
+                                        {{this.total}}
+                                    </div>
                                 </div>
-                            </td>
-                            <td class="to-be-hidden text-end">
-                                <div class="price-label" style="color:black">
-                                    {{this.total}}</div>
                             </td>
                         </tr>
                         {{/each}}
                         <tr>
-                            <td colspan="3">
+                            <td>
                                 <div class="d-flex justify-content-between">
                                     <div class="row">
                                         <div class="col-6 text-start">
@@ -117,7 +140,7 @@
                             </td>
                         </tr>
                         <tr id="{{this._id}}end">
-                            <td colspan="3">
+                            <td>
                                 <form action="/admin/donhang/capnhat" method="post"
                                     class="form-update d-flex justify-content-end" data-id="{{this._id}}"
                                     style="border-bottom: 1rem solid rgb(59, 143, 104);">
@@ -150,43 +173,52 @@
             </div>
             {{!////////////////////////tab1//////////////////////////////////////////}}
             <div id="tab1" class="tab-pane fade">
-                <table class="table text-center m-0 table-max-width mt-2 mb-4"
+                <table class="table text-center m-0 col-lg-6 col-md-9 mt-2 mb-4"
                     style="border-end-end-radius: .5rem; border-top-right-radius: .5rem; overflow: hidden;">
                     <tbody>
                         {{#each orders.orders1}}
                         <tr id="{{this._id}}start">
-                            <th colspan="1" class="text-start">Mã đơn hàng: {{this._id}}</th>
-                            <th colspan="2" class="text-end">Tạo đơn: <span class="date-time">{{this.createdAt}}</span>
+                            <th class="to-be-shown d-flex flex-wrap">
+                                <div class="text-start" style="flex-basis: 50%;">
+                                    <div>Mã đơn hàng: {{this._id}}</div>
+                                    <div class="d-none to-be-shown">Tạo đơn: <span
+                                            class="date-time">{{this.createdAt}}</span>
+                                    </div>
+                                </div>
+                                <div class="text-end to-be-hidden" style="flex-basis: 50%;">Tạo đơn: <span
+                                        class="date-time">{{this.createdAt}}</span>
+                                </div>
                             </th>
                         </tr>
                         {{#each this.productQs}}
                         <tr onclick="navigateTo('/admin/donhang/{{../_id}}/chitiet')">
                             <td class="d-flex">
-                                <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh">
-                                <div class="text-start ms-2">
-                                    <div>{{this.productName}}</div>
-                                    <div class="to-be-show-col" style="display:none;">
-                                        <div class="text-start">
-                                            x{{this.quantity}}
+                                <div class="d-flex" style="flex: 7;">
+                                    <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh">
+                                    <div class="text-start ms-2">
+                                        <div>{{this.productName}}</div>
+                                        <div class="to-be-show-col" style="display:none;">
+                                            <div class="text-start">
+                                                x{{this.quantity}}
+                                            </div>
+                                            <div class="price-label" style="color:black">
+                                                {{this.total}}</div>
                                         </div>
-                                        <div class="price-label" style="color:black">
-                                            {{this.total}}</div>
                                     </div>
                                 </div>
-                            </td>
-                            <td class="to-be-hidden">
-                                <div class="text-center">
-                                    x{{this.quantity}}
+                                <div class="to-be-hidden d-flex" style="flex: 3;">
+                                    <div>
+                                        x{{this.quantity}}
+                                    </div>
+                                    <div class="ms-auto price-label" style="color:black">
+                                        {{this.total}}
+                                    </div>
                                 </div>
-                            </td>
-                            <td class="to-be-hidden text-end">
-                                <div class="price-label" style="color:black">
-                                    {{this.total}}</div>
                             </td>
                         </tr>
                         {{/each}}
                         <tr>
-                            <td colspan="3">
+                            <td>
                                 <div class="d-flex justify-content-between">
                                     <div class="row">
                                         <div class="col-6 text-start">
@@ -212,7 +244,7 @@
                             </td>
                         </tr>
                         <tr id="{{this._id}}end">
-                            <td colspan="3">
+                            <td>
                                 <form action="/admin/donhang/capnhat" method="post"
                                     class="form-update d-flex justify-content-end" data-id="{{this._id}}"
                                     style="border-bottom: 1rem solid rgb(59, 143, 104);">
@@ -246,43 +278,52 @@
 
             {{!//////////////tab2//////////////////////////////////////}}
             <div id="tab2" class="tab-pane fade">
-                <table class="table text-center m-0 table-max-width mt-2 mb-4"
+                <table class="table text-center m-0 col-lg-6 col-md-9 mt-2 mb-4"
                     style="border-end-end-radius: .5rem; border-top-right-radius: .5rem; overflow: hidden;">
                     <tbody>
                         {{#each orders.orders2}}
                         <tr id="{{this._id}}start">
-                            <th colspan="1" class="text-start">Mã đơn hàng: {{this._id}}</th>
-                            <th colspan="2" class="text-end">Tạo đơn: <span class="date-time">{{this.createdAt}}</span>
+                            <th class="to-be-shown d-flex flex-wrap">
+                                <div class="text-start" style="flex-basis: 50%;">
+                                    <div>Mã đơn hàng: {{this._id}}</div>
+                                    <div class="d-none to-be-shown">Tạo đơn: <span
+                                            class="date-time">{{this.createdAt}}</span>
+                                    </div>
+                                </div>
+                                <div class="text-end to-be-hidden" style="flex-basis: 50%;">Tạo đơn: <span
+                                        class="date-time">{{this.createdAt}}</span>
+                                </div>
                             </th>
                         </tr>
                         {{#each this.productQs}}
                         <tr onclick="navigateTo('/admin/donhang/{{../_id}}/chitiet')">
                             <td class="d-flex">
-                                <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh">
-                                <div class="text-start ms-2">
-                                    <div>{{this.productName}}</div>
-                                    <div class="to-be-show-col" style="display:none;">
-                                        <div class="text-start">
-                                            x{{this.quantity}}
+                                <div class="d-flex" style="flex: 7;">
+                                    <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh">
+                                    <div class="text-start ms-2">
+                                        <div>{{this.productName}}</div>
+                                        <div class="to-be-show-col" style="display:none;">
+                                            <div class="text-start">
+                                                x{{this.quantity}}
+                                            </div>
+                                            <div class="price-label" style="color:black">
+                                                {{this.total}}</div>
                                         </div>
-                                        <div class="price-label" style="color:black">
-                                            {{this.total}}</div>
                                     </div>
                                 </div>
-                            </td>
-                            <td class="to-be-hidden">
-                                <div class="text-center">
-                                    x{{this.quantity}}
+                                <div class="to-be-hidden d-flex" style="flex: 3;">
+                                    <div>
+                                        x{{this.quantity}}
+                                    </div>
+                                    <div class="ms-auto price-label" style="color:black">
+                                        {{this.total}}
+                                    </div>
                                 </div>
-                            </td>
-                            <td class="to-be-hidden text-end">
-                                <div class="price-label" style="color:black">
-                                    {{this.total}}</div>
                             </td>
                         </tr>
                         {{/each}}
                         <tr>
-                            <td colspan="3">
+                            <td>
                                 <div class="d-flex justify-content-between">
                                     <div class="row">
                                         <div class="col-6 text-start">
@@ -308,7 +349,7 @@
                             </td>
                         </tr>
                         <tr id="{{this._id}}end">
-                            <td colspan="3">
+                            <td>
                                 <form action="/admin/donhang/capnhat" method="post"
                                     class="form-update d-flex justify-content-end" data-id="{{this._id}}"
                                     style="border-bottom: 1rem solid rgb(59, 143, 104);">
@@ -342,43 +383,52 @@
 
             {{!////////////////////////////tab3///////////////////////////}}
             <div id="tab3" class="tab-pane fade">
-                <table class="table text-center m-0 table-max-width mt-2 mb-4"
+                <table class="table text-center m-0 col-lg-6 col-md-9 mt-2 mb-4"
                     style="border-end-end-radius: .5rem; border-top-right-radius: .5rem; overflow: hidden;">
                     <tbody>
                         {{#each orders.orders3}}
                         <tr id="{{this._id}}start">
-                            <th colspan="1" class="text-start">Mã đơn hàng: {{this._id}}</th>
-                            <th colspan="2" class="text-end">Tạo đơn: <span class="date-time">{{this.createdAt}}</span>
+                            <th class="to-be-shown d-flex flex-wrap">
+                                <div class="text-start" style="flex-basis: 50%;">
+                                    <div>Mã đơn hàng: {{this._id}}</div>
+                                    <div class="d-none to-be-shown">Tạo đơn: <span
+                                            class="date-time">{{this.createdAt}}</span>
+                                    </div>
+                                </div>
+                                <div class="text-end to-be-hidden" style="flex-basis: 50%;">Tạo đơn: <span
+                                        class="date-time">{{this.createdAt}}</span>
+                                </div>
                             </th>
                         </tr>
                         {{#each this.productQs}}
                         <tr onclick="navigateTo('/admin/donhang/{{../_id}}/chitiet')">
                             <td class="d-flex">
-                                <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh">
-                                <div class="text-start ms-2">
-                                    <div>{{this.productName}}</div>
-                                    <div class="to-be-show-col" style="display:none;">
-                                        <div class="text-start">
-                                            x{{this.quantity}}
+                                <div class="d-flex" style="flex: 7;">
+                                    <img class="thumnail img-thumbnail" src="{{this.imageUrl}}" alt="Ảnh">
+                                    <div class="text-start ms-2">
+                                        <div>{{this.productName}}</div>
+                                        <div class="to-be-show-col" style="display:none;">
+                                            <div class="text-start">
+                                                x{{this.quantity}}
+                                            </div>
+                                            <div class="price-label" style="color:black">
+                                                {{this.total}}</div>
                                         </div>
-                                        <div class="price-label" style="color:black">
-                                            {{this.total}}</div>
                                     </div>
                                 </div>
-                            </td>
-                            <td class="to-be-hidden">
-                                <div class="text-center">
-                                    x{{this.quantity}}
+                                <div class="to-be-hidden d-flex" style="flex: 3;">
+                                    <div>
+                                        x{{this.quantity}}
+                                    </div>
+                                    <div class="ms-auto price-label" style="color:black">
+                                        {{this.total}}
+                                    </div>
                                 </div>
-                            </td>
-                            <td class="to-be-hidden text-end">
-                                <div class="price-label" style="color:black">
-                                    {{this.total}}</div>
                             </td>
                         </tr>
                         {{/each}}
                         <tr>
-                            <td colspan="3">
+                            <td>
                                 <div class="d-flex justify-content-between">
                                     <div class="row">
                                         <div class="col-6 text-start">
@@ -403,7 +453,7 @@
                             </td>
                         </tr>
                         <tr id="{{this._id}}end">
-                            <td colspan="3">
+                            <td>
                                 <form action="/admin/donhang/capnhat" method="post"
                                     class="form-update d-flex justify-content-end" data-id="{{this._id}}"
                                     style="border-bottom: 1rem solid rgb(59, 143, 104);">
@@ -444,9 +494,33 @@
             const dateTimeLabels = [...document.getElementsByClassName('date-time')];
             const refreshBtn = document.getElementById('refresh');
             const printId = document.getElementById('printId').innerHTML;
+            const formSearch = document.getElementById('form-search');
+            const searchInput = document.getElementById('search-input');
+            const errorLabel = document.getElementById('error-message');
 
 
-            if(printId.length > 0){
+            formSearch.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const input = searchInput.value.trim();
+                if (input.length > 0) {
+                    fetch(`/admin/donhang/timkiem?id=${encodeURIComponent(input)}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                errorLabel.innerHTML = 'Không tìm thấy đơn hàng: "' + input + '"';
+                            }
+                            else if (data.id) {
+                                navigateTo('/admin/donhang/' + data.id + '/chitiet');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                }
+            })
+
+
+            if (printId.length > 0) {
                 window.open('/admin/donhang/' + printId + '/in-don-hang', '_blank');
             }
 

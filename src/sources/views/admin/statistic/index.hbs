@@ -1,0 +1,37 @@
+<div class="col-7 mx-auto mt-5 pb-5">
+    <canvas id="myChart" class="rounded-2" style="background-color: rgb(121, 255, 210); "></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('myChart');
+    const timeOptions = {  month: 'long', day: 'numeric',};
+    fetch('/admin/thongke/dem-don-hang-tuan')
+        .then(response => response.json())
+        .then(json => {
+            const labels = json.map(e => new Date(e.date).toLocaleString('vi-VN', timeOptions));
+            const data = {
+                labels: labels,
+                datasets: [{
+                    label: 'Đơn hoàn thành 7 ngày qua',
+                    data: json.map(e => e.count),
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            };
+            new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+
+
+</script>

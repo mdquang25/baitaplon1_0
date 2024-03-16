@@ -29,6 +29,7 @@ const Order = new mongoose.Schema(
         shippingFee: { type: mongoose.Types.Decimal128, default: 0, },
         total: { type: mongoose.Types.Decimal128, default: 0, },
         qrcodeUrl: { type: String, },
+        bankingMessage: { type: String },
         paid: { type: Boolean, },
     },
     {

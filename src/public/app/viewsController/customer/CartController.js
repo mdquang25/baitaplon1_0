@@ -173,7 +173,9 @@ class CartController {
                                 });
                                 return Promise.all(productQs);
                             }).then(productQs => {
-                                const code = qrContent(order.total.toString(), req.session.user.phoneNumber + ' - ' + order._id.toString());
+                                const bankingMessage = req.session.user.phoneNumber + ' - ' + order._id.toString();
+                                order.bankingMessage = bankingMessage;
+                                const code = qrContent(order.total.toString(), bankingMessage );
                                 generateQRCode(code, order._id.toString() + '-qrcode.png')
                                     .then(path => {
                                         order.qrcodeUrl = path;

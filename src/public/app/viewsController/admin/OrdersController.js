@@ -60,7 +60,7 @@ class OrdersController {
                             }
                         }
                         doc.save();
-                        if (doc.cart_idd)
+                        if (doc.cart_id)
                             Cart.findById(doc.cart_id)
                                 .then(cart => {
                                     if (cart) {
@@ -68,16 +68,26 @@ class OrdersController {
                                         cart.save();
                                     }
                                 }).catch(next);
-                        // ProductQ.find({ _id: { $in: doc.productQ_ids } })
-                        //     .then(docs => {
-                        //         const productQs = multiMongooseToObjs(docs);
-                        //         const order = mongooseToObj(doc);
-                        //         order.productQs = productQs;
-                        //         res.send(order);
-                        //         res.send({ ok: true });
-                        //     }).catch((error) => {
-                        //         res.send({ error: 'error' });
-                        //     });
+                        if (doc.status === 4) {
+                            ProductQ.find({ _id: { $in: doc.productQ_ids } })
+                            .then(docs => {
+                                if (docs) {
+                                    docs.forEach(doc => {
+                                        Product.findById(doc.productId)
+                                            .then(product => {
+                                                if (product) {
+                                                    if (product.sold)
+                                                        product.sold += doc.quantity;
+                                                    else
+                                                        product.sold = doc.quantity;
+                                            }
+                                        })
+                                    })
+                                }
+                            }).catch((error) => {
+                                res.send({ error: 'error' });
+                            });
+                        }
                         res.send({ ok: 'true' });
                     }
                     else {
@@ -144,7 +154,9 @@ class OrdersController {
             .then(ids => {
                 order.productQ_ids = ids;
                 console.log('productQ_ids: ', ids);
-                const code = qrContent(order.total.toString(), req.body.phoneNumber + ' - ' + order._id.toString());
+                const bankingMessage = req.body.phoneNumber + ' - ' + order._id.toString();
+                order.bankingMessage = bankingMessage;
+                const code = qrContent(order.total.toString(), bankingMessage);
                 generateQRCode(code, order._id.toString() + '-qrcode.png')
                     .then(path => {
                         order.qrcodeUrl = path;
@@ -207,6 +219,18 @@ class OrdersController {
             .then(order => {
                 res.render('admin/orders/show-qrcode', { pageTitle: 'Mã QR thanh toán', layout: 'admin', order: mongooseToObj(order), isAdmin: req.session.isAdmin, printId, });
             }).catch(() => res.render('/not-found-404'));
+    }
+
+    search(req, res, next) {
+        Order.exists({ _id: req.query.id })
+            .then(exist => {
+                if (exist) {
+                    res.send({ id: req.query.id });
+                }
+                else {
+                    res.send({ error: true });
+                }
+            }).catch(() => res.send({ error: true }));
     }
 }
 

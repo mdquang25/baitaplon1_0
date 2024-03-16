@@ -12,6 +12,7 @@ const Product = new mongoose.Schema(
         price: { type: mongoose.Types.Decimal128, default: 0, },
         stock: { type: Number, default: 0, },
         count: { type: Number, default: function () { return this.stock; }, },
+        sold: { type: Number, default: 0, },
         imagesUrls: [{ type: String, }],
         mainImageIndex: { type: Number, default: 0, },
         typesIds: [{

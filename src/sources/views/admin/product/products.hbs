@@ -47,7 +47,7 @@
                     <div class="outline-label">{{this.stock}}</div>
                 </td>
                 <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')" class="to-be-hidden">
-                    <div class="outline-label">{{subtract this.count this.stock}}</div>
+                    <div class="outline-label">{{this.sold}}</div>
                 </td>
                 <td onclick="navigateTo('/admin/kho/sanpham/{{this.slug}}')"> <img class="thumnail img-thumbnail"
                         src="{{valueAt this.imagesUrls this.mainImageIndex}}" alt="Ảnh sản phẩm">
