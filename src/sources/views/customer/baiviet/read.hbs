@@ -30,7 +30,13 @@
     {{#each baiviet.imagesUrls}}
     <img class="m-2 photo" src="{{this}}" alt="Ảnh bài viết">
     {{/each}}
-    <p class="fs-5"style="white-space: pre-line;">{{baiviet.content}}</p>
+    <p class="fs-5" style="white-space: pre-line;">{{baiviet.content}}</p>
+    <div class="col-12 d-flex justify-content-end">
+        <div class="text-center">
+            <h6>--Tác giả--</h6>
+            <h6><b>{{baiviet.author}}</b></h6>
+        </div>
+    </div>
 </div>
 <script>
     document.querySelector('div[class="carousel-item"]').classList.add('active');

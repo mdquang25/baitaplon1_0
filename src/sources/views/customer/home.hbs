@@ -28,10 +28,10 @@
 
 
 <div class="d-flex justify-content-end me-1 me-md-4 my-2 gap-1">
-    <a class="btn btn-primary icon-link" data-bs-toggle="collapse" href="#filter" role="button" aria-expanded="false"
+    <button id="filter-triger" class="btn btn-primary icon-link" data-bs-toggle="collapse" data-bs-target="#filter" role="button" aria-expanded="false"
         aria-controls="collapseExample">
         <i class="fa-light fa-filters"></i>Bộ lọc
-    </a>
+    </button>
 </div>
 <div class="collapse" id="filter">
     <form id="form-filter" action="/sanpham/loc" method="post" enctype="application/x-www-form-urlencoded"
@@ -132,7 +132,7 @@
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 p-0 mb-1 mb-sm-0">
         <div onclick="navigateTo('/sanpham/{{this.slug}}/chitiet')" data-name="cards"
             class="card product-card mb-1 mx-auto" style="height: 24rem; width: 13rem; max-width:inherit;">
-            <img src="{{valueAt this.imagesUrls this.mainImageIndex}}" class="card-img-top card-image object-fit-cover"
+            <img data-src="{{valueAt this.imagesUrls this.mainImageIndex}}" class="product-img card-img-top card-image object-fit-cover"
                 alt="{{this.name}}">
             <div class="card-body">
                 <h6 class="card-title">{{this.name}}</h6>
@@ -159,11 +159,29 @@
         const searchHeading = document.getElementById('search-heading');
         const foundError = document.getElementById('found-0-message');
         const formFilter = document.getElementById('form-filter');
+        const filterTriger = document.getElementById('filter-triger');
         // Initialize the slider
         var slider = document.getElementById('slider');
         var startValueInput = document.getElementById('startValue');
         var endValueInput = document.getElementById('endValue');
         var sliderValue = document.getElementById('slider-value');
+        const productImgs = [...document.getElementsByClassName('product-img')];
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const image = entry.target;
+                    const src = image.getAttribute('data-src');
+                    image.setAttribute('src', src);
+
+                    observer.unobserve(image);
+                }
+            });
+        });
+
+        productImgs.forEach(image => {
+            observer.observe(image);
+        });
 
         noUiSlider.create(slider, {
             start: [0, 50000000], // Initial start and end values
@@ -204,6 +222,7 @@
 
         formFilter.addEventListener('submit', event => {
             event.preventDefault();
+            filterTriger.click();
             var form = event.target;
             var formData = new FormData(form);
             const data = Array.from(formData.entries()).reduce((acc, [key, value]) => {

@@ -54,6 +54,7 @@ class BaivietController {
                 if (baiviet) {
                     baiviet.name = req.body.name;
                     baiviet.description = req.body.description;
+                    baiviet.content = req.body.content;
                     baiviet.mainImageIndex = req.body.mainImageIndex;
                     const oldUrls = baiviet.imagesUrls;
                     baiviet.imagesUrls = req.body.imagesUrls;
