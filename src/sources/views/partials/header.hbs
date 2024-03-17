@@ -69,11 +69,6 @@
                         <a class="nav-link" href="/baiviet">Bài viết</a>
                     </li>
                 </ul>
-                {{!-- <form id="form-search" action="/sanpham/tim-kiem" method="post" class="d-flex mx-1">
-                    <input id="search-input" name="query" class="form-control me-2" type="search"
-                        placeholder="Nhập tên sản phẩm.." aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Tìm kiếm</button>
-                </form> --}}
             </div>
             <div class="offcanvas-footer d-none to-be-shown">
                 <div class="d-flex flex-column px-3 my-3">
@@ -122,6 +117,120 @@
 </nav>
 
 <style>
+    #form-search {
+        position: fixed;
+        height: 59px;
+        top: 130px;
+        right: 20px;
+        z-index: 1000;
+    }
+
+    @media (max-width: 767px) {
+        #form-search {
+            top: 85px;
+            right: 5px
+        }
+    }
+
+    #form-search input {
+        width: 0rem;
+        opacity: 0;
+        transition: all 0.5s;
+    }
+
+    #form-search button {
+        width: 59px;
+        height: 59px;
+        border-radius: 50%;
+        border: .2rem solid white;
+        transition: all 0.5s;
+        box-sizing: border-box;
+    }
+
+    #form-search button i {
+        font-size: 28px;
+        transition: all 1s;
+    }
+
+
+
+    @media (pointer: coarse) {
+
+        /* CSS rules for devices without a mouse (touchscreen devices) */
+        #toggle-search {
+            pointer-events: none;
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #form-search:focus-within #toggle-search {
+            pointer-events: none;
+            opacity: 1;
+            cursor: auto;
+        }
+
+        #form-search:focus-within #toggle-search {
+            pointer-events: all;
+            opacity: 1;
+            cursor: auto;
+        }
+
+        #form-search:hover input {
+            width: 20rem;
+            height: 2.7rem;
+            opacity: 1;
+        }
+
+        #form-search:hover button {
+            width: fit-content;
+            height: 50px;
+            padding-left: 20px;
+            padding-right: 20px;
+            border-radius: .5rem;
+            border: .2rem solid white;
+        }
+    }
+
+    @media (pointer: fine) {
+
+        /* CSS rules for devices with a mouse */
+        #toggle-search {
+            pointer-events: none;
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        #form-search:hover input {
+            width: 20rem;
+            height: 2.7rem;
+            opacity: 1;
+        }
+
+        #form-search:hover button {
+            width: fit-content;
+            height: 50px;
+            padding-left: 20px;
+            padding-right: 20px;
+            border-radius: .5rem;
+            border: .2rem solid white;
+        }
+
+        #form-search:hover #toggle-search {
+            pointer-events: all;
+            opacity: 1;
+            cursor: auto;
+        }
+    }
+</style>
+<form id="form-search" action="/sanpham/tim-kiem" method="post" class="d-flex align-items-center mx-1">
+    <input id="search-input" name="query" class="form-control me-2" style="background-color: rgb(254, 211, 218);"
+        type="search" placeholder="Nhập tên sản phẩm.." aria-label="Search" required>
+    <button id="toggle-search" class="btn btn-success" type="submit"><i
+            class="fa-solid fa-magnifying-glass p-0"></i></button>
+</form>
+
+
+{{!-- <style>
     .event__search__floater {
         position: fixed;
         top: 10rem;
@@ -264,7 +373,7 @@
         </form>
 
     </div>
-</div>
+</div> --}}
 
 <!-- Modal -->
 <div class="modal fade" id="logout-alert" tabindex="-1" aria-labelledby="signoutModal" aria-hidden="true">

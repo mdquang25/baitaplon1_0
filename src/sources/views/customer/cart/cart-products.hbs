@@ -3,7 +3,6 @@
         max-width: 12rem;
         word-break: break-word;
     }
-
 </style>
 <div class="d-flex justify-content-center">
     <div class="d-flex justify-content-start align-items-center col-12 mx-lg-4 table-max-width">
@@ -35,27 +34,14 @@
                 <th scope="col" class="to-be-hidden"></th>
             </tr>
         </thead>
-        <style>
-            .buttons-only {
-                min-width: 4rem !important;
-                max-width: 4rem !important;
-            }
-
-            .buttons-only:focus {
-                /* Override the default focus styles */
-                outline: none !important;
-                box-shadow: none !important;
-            }
-        </style>
-        <tbody class="">
+        <tbody>
             {{#each productQs}}
             <tr>
                 <th scope="row">
                     <div class="form-check d-flex justify-content-end">
-                        <input class="checkbox form-check-input fs-5" type="checkbox" value="{{this._id}}"
+                        <input class="checkbox form-check-input fs-5 off-stock-disable-input"
+                            data-stock="{{this.product.stock}}" type="checkbox" value="{{this._id}}"
                             name="productQ_ids[]" id="{{this._id}}-checkbox">
-                        <label class="form-check-label" for="{{this._id}}-checkbox">
-                        </label>
                     </div>
                 </th>
                 <td onclick="navigateTo('/sanpham/{{this.product.slug}}/chitiet')"> <img class="thumnail img-thumbnail"
@@ -71,13 +57,14 @@
                                 class="btn rounded-0 btn-outline-secondary px-1 py-0" type="button"><i
                                     class="fa-solid fa-minus"></i></button>
                             <input readonly type="number" name="{{this._id}}quantity1" min="1"
-                                max="{{this.product.stock}}" step="1" value="{{this.quantity}}" inputmode="decimal"
-                                style="text-align: center; padding: 0 !important;"
-                                class="form-control form-control-text-input" id="{{this._id}}quantity1" />
+                                max="{{this.product.stock}}" value="{{this.quantity}}"
+                                class="form-control text-center p-0 off-stock-hidden-quantity"
+                                id="{{this._id}}quantity1" />
                             <button onclick="updateQuantity('{{this._id}}', 1)"
                                 class="btn rounded-0 btn-outline-secondary px-1 py-0" type="button"><i
                                     class="fa-solid fa-plus"></i></button>
                         </div>
+                        <div class="d-none badge text-bg-danger" style="width: fit-content;">Tạm hết hàng</div>
                     </div>
                 </td>
                 <td class="to-be-hidden">
@@ -89,16 +76,18 @@
                             class="btn rounded-0 btn-outline-secondary px-1 py-0" type="button"><i
                                 class="fa-solid fa-minus"></i></button>
                         <input readonly type="number" name="{{this._id}}quantity2" min="1" max="{{this.product.stock}}"
-                            step="1" value="{{this.quantity}}" inputmode="decimal"
-                            style="text-align: center; padding: 0 !important; max-width: 4rem"
-                            class="form-control form-control-text-input" id="{{this._id}}quantity2" />
+                            value="{{this.quantity}}" style="max-width: 4rem; max-height: 1.6rem;"
+                            class="form-control text-center py-0 off-stock-hidden-quantity"
+                            id="{{this._id}}quantity2" />
                         <button onclick="updateQuantity('{{this._id}}', 1)"
                             class="btn rounded-0 btn-outline-secondary px-1 py-0" type="button"><i
                                 class="fa-solid fa-plus"></i></button>
                     </div>
+                    <div class="d-none badge text-bg-danger" style="width: fit-content;">Tạm hết hàng</div>
                 </td>
                 <td class="to-be-hidden">
-                    <div id="{{this._id}}total" data-price="{{this.product.price}}" class="price-label outline-label">
+                    <div id="{{this._id}}total" data-price="{{this.product.price}}"
+                        class="price-label outline-label off-stock-hidden-price" data-stock="{{this.product.stock}}">
                         {{mult this.quantity this.product.price}}</div>
                 </td>
                 <td class="to-be-hidden"><button class="delete-one-btn btn btn-outline-danger"
@@ -110,6 +99,11 @@
     </table>
 </form>
 
+<div class="d-none table-max-width mx-auto justify-content-center ">
+    <input id="queue-length" type="number" hidden value="{{productQs.length}}">
+    <div class="fs-3">Giỏ hàng trống! Vui lòng thêm sản phẩm vào giỏ hàng để tiến hành đặt hàng</div>
+    <img data-src="/assets/icons/empty-cart.png" style="width: 20rem;" alt="ảnh giỏ hàng rỗng">
+</div>
 <nav class="card sticky-bottom navbar-light py-2 mx-auto mt-3 mb-2 table-max-width" style="background-color: #e3f2fd;">
     <div class="d-flex justify-content-between">
         <div class="form-check d-flex justify-content-center align-items-center ms-3">
@@ -165,7 +159,40 @@
     const checkBoxes = [...document.getElementsByClassName('checkbox')];
     const selectForm = document.getElementById('select-form');
     const placeOrderBtn = document.getElementById('place-order');
+    const queueLength = document.getElementById('queue-length');
 
+    document.addEventListener('DOMContentLoaded', function () {
+        const offStockDisableInputs = [...document.getElementsByClassName('off-stock-disable-input')];
+        const offStockHiddenPrice = [...document.getElementsByClassName('off-stock-hidden-price')];
+        const offStockHiddenQuantity = [...document.getElementsByClassName('off-stock-hidden-quantity')];
+
+        offStockDisableInputs.forEach(input => {
+            if (parseInt(input.getAttribute('data-stock')) <= 0) {
+                input.disabled = true;
+            }
+        });
+        offStockHiddenPrice.forEach(label => {
+            if (parseInt(label.getAttribute('data-stock')) <= 0) {
+                label.classList.add('d-none');
+            }
+        });
+        offStockHiddenQuantity.forEach(input => {
+            if (parseInt(input.getAttribute('max')) <= 0) {
+                const parent = input.parentNode;
+                parent.nextElementSibling.classList.remove('d-none');
+                parent.classList.remove('d-flex');
+                parent.classList.add('d-none');
+            }
+        });
+    });
+
+    if (queueLength.value === '0') {
+        label = queueLength.parentNode;
+        label.classList.remove('d-none');
+        //label.classList.add('d-flex');
+        const img = label.querySelector('img');
+        img.setAttribute('src', img.getAttribute('data-src'));
+    }
     placeOrderBtn.addEventListener('click', (e) => {
         selectForm.action = '/giohang/dat-hang';
         selectForm.querySelector(':first-child').setAttribute('value', 'POST');

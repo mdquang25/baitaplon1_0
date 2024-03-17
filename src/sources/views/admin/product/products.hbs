@@ -144,6 +144,10 @@
             selectedCount.innerHTML = '(' + selectedCount.getAttribute('data-total') + ') đã chọn';
             selectedCount.setAttribute('data-value', selectedCount.getAttribute('data-total'));
         }
+        else {
+            selectedCount.innerHTML = '(0) đã chọn';
+            selectedCount.setAttribute('data-value', 0);
+        }
     });
 
     checkBoxes.forEach(checkbox => {

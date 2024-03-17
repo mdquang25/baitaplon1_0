@@ -120,7 +120,7 @@ class CartController {
                             productQs.forEach(productQ => {
                                 total += parseInt(productQ.quantity) * parseInt(productQ.product.price);
                             });
-                            res.render('customer/cart/place-order', { pageTitle: 'Đặt hàng', isLoggedin: req.session.isLoggedin, productQs, total, user, cart: {}});
+                            res.render('customer/cart/place-order', { pageTitle: 'Đặt hàng', isLoggedin: req.session.isLoggedin, productQs, total, user, cart: {} });
                         })
                     });
             });
@@ -146,7 +146,8 @@ class CartController {
         Cart.findById(req.session.user.cartId)
             .then(cart => {
                 order.cart_id = cart._id;
-                cart.newOrderUpdate = true;
+                if (req.body.cod === 'true')
+                    cart.newOrderUpdate = true;
                 cart.order_ids.push(order._id);
                 cart.productQ_ids = cart.productQ_ids.filter((element) => {
                     const elementId = element.toString();
@@ -175,7 +176,7 @@ class CartController {
                             }).then(productQs => {
                                 const bankingMessage = req.session.user.phoneNumber + ' - ' + order._id.toString();
                                 order.bankingMessage = bankingMessage;
-                                const code = qrContent(order.total.toString(), bankingMessage );
+                                const code = qrContent(order.total.toString(), bankingMessage);
                                 generateQRCode(code, order._id.toString() + '-qrcode.png')
                                     .then(path => {
                                         order.qrcodeUrl = path;
@@ -244,7 +245,7 @@ class CartController {
                         }
                         cart.newOrderUpdate = false;
                         cart.save();
-                        res.render('customer/cart/cart-orders', { pageTitle: 'Đơn mua', isLoggedin: req.session.isLoggedin, orders, cart: res.locals.cart, shopInfo: res.locals.shopInfo, })
+                        res.render('customer/cart/cart-orders', { pageTitle: 'Đơn mua', isLoggedin: req.session.isLoggedin, orders, cart: {}, shopInfo: res.locals.shopInfo, })
                     })
             });
     }

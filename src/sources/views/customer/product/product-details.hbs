@@ -176,7 +176,7 @@
                 .catch(error => {
                     console.error('Error:', error);
                 });
-        })
+        });
         const number = parseFloat(price.innerHTML);
         price.innerHTML = number.toLocaleString('vi-VN');
         const onSale = oldPrice.getAttribute('data-onsale');

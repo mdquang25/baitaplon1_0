@@ -261,6 +261,10 @@
     justify-content: end;
 }
 
+.nav-pointer {
+    cursor: pointer;
+}
+
 #offcanvasResponsive {
     flex: 100;
 }
@@ -281,6 +285,7 @@
 .table-max-width {
     max-width: 75rem;
 }
+
 .max-width-2 {
     max-width: 85rem;
 }

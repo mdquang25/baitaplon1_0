@@ -27,9 +27,10 @@
 
 
 
-<div class="d-flex justify-content-end me-1 me-md-4 my-2 gap-1">
-    <button id="filter-triger" class="btn btn-primary icon-link" data-bs-toggle="collapse" data-bs-target="#filter" role="button" aria-expanded="false"
-        aria-controls="collapseExample">
+<div class="d-flex justify-content-start mx-md-3 mx-lg-5 my-2 gap-1">
+    <button id="filter-triger" class="btn btn-primary icon-link" data-bs-toggle="collapse" data-bs-target="#filter"
+        role="button" aria-expanded="false" aria-controls="collapseExample"
+        style="box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.495)">
         <i class="fa-light fa-filters"></i>Bộ lọc
     </button>
 </div>
@@ -130,16 +131,27 @@
 <div id="search-results" class="row col-12 mx-auto">
     {{#each products}}
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 p-0 mb-1 mb-sm-0">
-        <div onclick="navigateTo('/sanpham/{{this.slug}}/chitiet')" data-name="cards"
-            class="card product-card mb-1 mx-auto" style="height: 24rem; width: 13rem; max-width:inherit;">
-            <img data-src="{{valueAt this.imagesUrls this.mainImageIndex}}" class="product-img card-img-top card-image object-fit-cover"
-                alt="{{this.name}}">
-            <div class="card-body">
-                <h6 class="card-title">{{this.name}}</h6>
-                <span class="old-price-label" data-onsale="{{this.onSale}}">{{this.oldPrice}}</span><span
-                    class="old-price-label price-label-ending">đ</span><br>
-                <span class="price-label">{{this.price}}</span><span class="price-label price-label-ending">đ</span><br>
-
+        <div data-name="cards" class="card product-card mb-1 mx-auto"
+            style="height: 24rem; width: 13rem; max-width:inherit;">
+            <img onclick="navigateTo('/sanpham/{{this.slug}}/chitiet')"
+                data-src="{{valueAt this.imagesUrls this.mainImageIndex}}"
+                class="product-img nav-pointer card-img-top card-image object-fit-cover" alt="{{this.name}}">
+            <div class="card-body px-0">
+                <h6 onclick="navigateTo('/sanpham/{{this.slug}}/chitiet')" class="card-title nav-pointer mx-2">
+                    {{this.name}}</h6>
+                <div class="d-flex">
+                    <div class="mx-2">
+                        <span class="off-stock-badge d-none badge text-bg-danger" data-stock="{{this.stock}}"
+                            style="width: fit-content;">Tạm hết hàng</span>
+                        <span><span class="old-price-label" data-onsale="{{this.onSale}}">{{this.oldPrice}}</span><span
+                                class="old-price-label price-label-ending">đ</span></span><br>
+                        <span class="price-label">{{this.price}}</span><span
+                            class="price-label price-label-ending">đ</span><br>
+                    </div>
+                    <button data-product-id="{{this._id}}" type="button"
+                        class="add-to-cart btn btn-warning ms-auto py-0 px-3 rounded-end-0"
+                        style="font-size: x-large; color:blue"><i class="fa-duotone fa-cart-plus"></i></button>
+                </div>
             </div>
         </div>
     </div>
@@ -149,8 +161,6 @@
 <script src="/nouislider/dist/nouislider.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
-        const prices = document.querySelectorAll('span[class="price-label"]');
-        const oldPrices = document.querySelectorAll('span[class="old-price-label"]');
         const cards = document.querySelectorAll('div[data-name="cards"]');
         const firstCarousel = document.querySelector('div[class="carousel-item"]');
         const formSearch = document.getElementById('form-search');
@@ -165,23 +175,7 @@
         var startValueInput = document.getElementById('startValue');
         var endValueInput = document.getElementById('endValue');
         var sliderValue = document.getElementById('slider-value');
-        const productImgs = [...document.getElementsByClassName('product-img')];
-
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const image = entry.target;
-                    const src = image.getAttribute('data-src');
-                    image.setAttribute('src', src);
-
-                    observer.unobserve(image);
-                }
-            });
-        });
-
-        productImgs.forEach(image => {
-            observer.observe(image);
-        });
+        const redDot = document.getElementById('red-dot');
 
         noUiSlider.create(slider, {
             start: [0, 50000000], // Initial start and end values
@@ -208,7 +202,6 @@
         });
 
 
-        updatePriceLabels(oldPrices, prices);
         firstCarousel.classList.add('active');
         cards.forEach(card => {
             card.addEventListener('touchstart', function (e) {
@@ -299,28 +292,41 @@
                 const price = product.price.$numberDecimal;
                 const content =
                     `<div class="col-6 col-sm-4 col-md-3 col-lg-2 p-0 mb-1 mb-sm-0">
-        <div onclick="navigateTo('/sanpham/${product.slug}/chitiet')" data-name="cards"
-            class="card product-card mb-1 mx-auto" style="height: 24rem; width: 13rem; max-width:inherit;">
-            <img src="${product.imagesUrls[product.mainImageIndex]}" class="card-img-top card-image object-fit-cover"
-                alt="${product.name}">
-            <div class="card-body">
-                <h6 class="card-title">${product.name}</h6>
-                <span class="old-price-label" data-onsale="${product.onSale}">${oldPrice}</span><span
-                    class="old-price-label price-label-ending">đ</span><br>
-                <span class="price-label">${price}</span><span class="price-label price-label-ending">đ</span><br>
+        <div data-name="cards" class="card product-card mb-1 mx-auto"
+            style="height: 24rem; width: 13rem; max-width:inherit;">
+            <img onclick="navigateTo('/sanpham/${product.slug}/chitiet')"
+                data-src="${product.imagesUrls[product.mainImageIndex]}"
+                class="product-img nav-pointer card-img-top card-image object-fit-cover" alt="${product.name}">
+            <div class="card-body px-0">
+                <h6 onclick="navigateTo('/sanpham/${product.slug}/chitiet')" class="card-title nav-pointer mx-2">
+                    ${product.name}</h6>
+                <div class="d-flex">
+                    <div class="mx-2">
+                        <span class="off-stock-badge d-none badge text-bg-danger" data-stock="${product.stock}"
+                            style="width: fit-content;">Tạm hết hàng</span>
+                        <span><span class="old-price-label" data-onsale="${product.onSale}">${oldPrice}</span><span
+                                class="old-price-label price-label-ending">đ</span></span><br>
+                        <span class="price-label">${price}</span><span
+                            class="price-label price-label-ending">đ</span><br>
+                    </div>
+                    <button data-product-id="${product._id}" type="button"
+                        class="add-to-cart btn btn-warning ms-auto py-0 px-3 rounded-end-0"
+                        style="font-size: x-large; color:blue"><i class="fa-duotone fa-cart-plus"></i></button>
+                </div>
             </div>
         </div>
     </div>`;
                 searchResults.insertAdjacentHTML('beforeend', content);
             });
-            const prices = document.querySelectorAll('span[class="price-label"]');
-            const oldPrices = document.querySelectorAll('span[class="old-price-label"]');
-            updatePriceLabels(oldPrices, prices);
+
+            updateProductCards();
         }
     });
 
-
-    function updatePriceLabels(oldPrices, prices) {
+    updateProductCards();
+    function updateProductCards() {
+        const prices = document.querySelectorAll('span[class="price-label"]');
+        const oldPrices = document.querySelectorAll('span[class="old-price-label"]');
         oldPrices.forEach(function (oldPrice) {
             const onSale = oldPrice.getAttribute('data-onsale');
             if (onSale === 'true') {
@@ -335,7 +341,54 @@
         prices.forEach(function (price) {
             const number = parseInt(price.innerHTML);
             price.innerHTML = number.toLocaleString('vi-VN');
-        })
+        });
+
+        const productImgs = [...document.getElementsByClassName('product-img')];
+        const offStockBadge = [...document.getElementsByClassName('off-stock-badge')];
+        const addToCartBtns = [...document.getElementsByClassName('add-to-cart')];
+
+        addToCartBtns.forEach(btn => {
+            btn.addEventListener('click', addToCart);
+        });
+
+        function addToCart(event) {
+            const productId = event.currentTarget.getAttribute('data-product-id');
+            fetch(`/giohang/them?productId=${encodeURIComponent(productId)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.requireLogin)
+                        navigateTo('/dangnhap');
+                    if (data.message === 'added')
+                        if (redDot.classList.contains('d-none')) {
+                            redDot.classList.remove('d-none');
+                        }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        };
+
+        offStockBadge.forEach(badge => {
+            if (parseInt(badge.getAttribute('data-stock')) <= 0) {
+                badge.classList.remove('d-none');
+                badge.nextElementSibling.classList.add('d-none');
+            }
+        });
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const image = entry.target;
+                    const src = image.getAttribute('data-src');
+                    image.setAttribute('src', src);
+
+                    observer.unobserve(image);
+                }
+            });
+        });
+
+        productImgs.forEach(image => {
+            observer.observe(image);
+        });
     }
     function navigateTo(url) {
         window.location.href = url;
