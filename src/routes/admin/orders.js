@@ -12,6 +12,7 @@ router.post('/capnhat', requireManagerLogin, ordersController.updateOrder);
 router.get('/:id/qr-thanh-toan', requireManagerLogin, getShopInfo, ordersController.showQR);
 router.get('/:id/in-don-hang', requireManagerLogin, getShopInfo, ordersController.printOrder);
 router.get('/:id/chitiet', requireManagerLogin, ordersController.orderDetails);
+router.get('/don-hoan-thanh', requireManagerLogin, ordersController.doneOrders);
 router.get('/timkiem', requireManagerLogin, ordersController.search);
 router.get('/them', requireManagerLogin, getShopInfo, ordersController.addOrder);
 router.get('/', requireManagerLogin, ordersController.index);

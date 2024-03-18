@@ -6,6 +6,35 @@ const Carousel = require('../../models/Carousel');
 const { mongooseToObj, multiMongooseToObjs } = require('../../../../util/mongoose');
 
 class ProductController {
+    searchProductByCategory(req, res, next) {
+        console.log('search category - customer');
+        Category.find({})
+            .then(docs => {
+                const objs = multiMongooseToObjs(docs);
+                var selectedCategory;
+                const categories = objs.map(category => {
+
+                    return Type.find({ categoryId: category._id })
+                        .then(types => {
+                            const tps = multiMongooseToObjs(types);
+                            if (category.slug === req.params.slug) {
+                                selectedCategory = category;
+                                selectedCategory.typesIds = tps.map(type => type._id);
+                            }
+                            category.types = tps;
+                            return category;
+                        });
+                });
+                console.log('category: ', selectedCategory);
+                Promise.all(categories).then(categories => {
+                    Promise.all([Product.find({ typesIds: { $in: selectedCategory.typesIds } }), Carousel.find({})])
+                        .then(([products, carousels]) => {
+                            res.render('customer/home', { pageTitle: selectedCategory.name, isLoggedin: req.session.isLoggedin, categories, products: multiMongooseToObjs(products), carousels: multiMongooseToObjs(carousels), });
+                        }).catch(next);
+                }).catch(next);
+            }).catch(next);
+    }
+
     productDetails(req, res, next) {
         console.log('product details - customer');
         Product.findOne({ slug: req.params.slug })

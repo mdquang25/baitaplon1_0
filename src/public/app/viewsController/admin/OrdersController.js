@@ -70,23 +70,24 @@ class OrdersController {
                                 }).catch(next);
                         if (doc.status === 4) {
                             ProductQ.find({ _id: { $in: doc.productQ_ids } })
-                            .then(docs => {
-                                if (docs) {
-                                    docs.forEach(doc => {
-                                        Product.findById(doc.productId)
-                                            .then(product => {
-                                                if (product) {
-                                                    if (product.sold)
-                                                        product.sold += doc.quantity;
-                                                    else
-                                                        product.sold = doc.quantity;
-                                            }
+                                .then(docs => {
+                                    if (docs) {
+                                        docs.forEach(doc => {
+                                            Product.findById(doc.productId)
+                                                .then(product => {
+                                                    if (product) {
+                                                        if (product.sold)
+                                                            product.sold += doc.quantity;
+                                                        else
+                                                            product.sold = doc.quantity;
+                                                        product.save();
+                                                    }
+                                                })
                                         })
-                                    })
-                                }
-                            }).catch((error) => {
-                                res.send({ error: 'error' });
-                            });
+                                    }
+                                }).catch((error) => {
+                                    res.send({ error: 'error' });
+                                });
                         }
                         res.send({ ok: 'true' });
                     }
@@ -94,6 +95,13 @@ class OrdersController {
                         res.send({ error: 'invaid id' });
                     }
                 }).catch((error) => res.send({ error: 'invaid id' }));
+    }
+
+    doneOrders(req, res, next) {
+        Order.find({ status: 4 })
+            .then(orders => {
+            res.render('admin/orders/done-orders', {pageTitle: 'Đơn đã hoàn thành', layout: 'admin', isAdmin: req.session.isAdmin, orders: multiMongooseToObjs(orders), })
+        })
     }
 
     addOrder(req, res, next) {

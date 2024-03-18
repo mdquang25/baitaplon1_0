@@ -1,0 +1,114 @@
+<div class="col-12 mt-3">
+    <div class="col-lg-9 col-md-11 mx-auto">
+        <form id="form-search" class="d-flex col-lg-6 col-md-7 ms-auto" role="search">
+            <input id="search-input" class="form-control me-2" type="search" placeholder="Nhập mã đơn hàng.."
+                aria-label="Search">
+            <button class="btn btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+        <div id="error-message" class="col-12 text-end" style="color: red;"></div>
+
+        <div class="fs-5 my-2 d-flex align-items-center">
+            <a href="/admin/donhang/them" class="btn btn-success icon-link" style="height: fit-content !important;"><i
+                    class="fa-light fa-layer-plus"></i>Quản lý cập nhật</a>
+            <b class="mobile-hidden mx-4">Đơn hàng đã hoàn thành</b>
+        </div>
+
+    </div>
+</div>
+<!--========================================================-->
+
+<table class="table text-center m-0 col-lg-6 col-md-9 mt-2 mb-4"
+    style="border-end-end-radius: .5rem; border-top-right-radius: .5rem; overflow: hidden;">
+    <tbody>
+        {{#each orders}}
+        <tr onclick="navigateTo('/admin/donhang/{{this._id}}/chitiet')">
+            <th class="to-be-shown d-flex flex-wrap">
+                <div class="text-start" style="flex-basis: 50%;">
+                    <div>Mã đơn hàng: {{this._id}}</div>
+                    <div class="d-none to-be-shown">Tạo đơn: <span class="date-time">{{this.createdAt}}</span>
+                    </div>
+                </div>
+                <div class="text-end to-be-hidden" style="flex-basis: 50%;">Tạo đơn: <span
+                        class="date-time">{{this.createdAt}}</span>
+                </div>
+            </th>
+        </tr>
+        <tr onclick="navigateTo('/admin/donhang/{{this._id}}/chitiet')">
+            <td style="border-bottom: 1rem solid orange;">
+                <div class="d-flex justify-content-between">
+                    <div class="row">
+                        <div class="col-6 text-start">
+                            <div><b>Người đặt:</b> {{this.orderName}}</div>
+                            <div><b>SĐT đặt hàng:</b> {{this.orderPhoneNumber}}</div>
+                        </div>
+                        <div class="col-6 text-start">
+                            <div><b>Người nhận:</b> {{this.reciever}}</div>
+                            <div><b>SĐT nhận:</b> {{this.phoneNumber}}</div>
+                        </div>
+                        <div class="col-12 text-start"><b>Địa chỉ nhận:</b> {{this.address}}</div>
+                    </div>
+                    <div class="text-end fs-6 pb-2">
+                        Tổng
+                        thanh
+                        toán: <span class="price-label fs-5" style="color:black">
+                            {{this.total}}</span><br>
+                        <div class="badge text-bg-success">Đã thanh
+                            toán</div><br>
+                        <div class="badge text-bg-success">Đã giao hàng</div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const prices = [...document.getElementsByClassName('price-label')];
+        const dateTimeLabels = [...document.getElementsByClassName('date-time')];
+        const formSearch = document.getElementById('form-search');
+        const searchInput = document.getElementById('search-input');
+        const errorLabel = document.getElementById('error-message');
+
+
+        formSearch.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const input = searchInput.value.trim();
+            if (input.length > 0) {
+                fetch(`/admin/donhang/timkiem?id=${encodeURIComponent(input)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            errorLabel.innerHTML = 'Không tìm thấy đơn hàng: "' + input + '"';
+                        }
+                        else if (data.id) {
+                            navigateTo('/admin/donhang/' + data.id + '/chitiet');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        })
+
+
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', };
+        dateTimeLabels.forEach(dateTimeLabel => {
+            const vietnameseDateTime = new Date(dateTimeLabel.innerHTML).toLocaleString('vi-VN', options);
+            dateTimeLabel.innerHTML = vietnameseDateTime;
+        });
+
+
+        prices.forEach(function (price) {
+            const number = parseFloat(price.innerHTML);
+            price.innerHTML = number.toLocaleString('vi-VN') + 'đ';
+        });
+    });
+    //DOMContentLoaded end//////////////////////////////////////////////////
+
+
+    function navigateTo(url) {
+        window.location.href = url;
+    }
+</script>

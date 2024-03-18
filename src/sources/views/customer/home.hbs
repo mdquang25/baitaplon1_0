@@ -148,7 +148,7 @@
                         <span class="price-label">{{this.price}}</span><span
                             class="price-label price-label-ending">đ</span><br>
                     </div>
-                    <button data-product-id="{{this._id}}" type="button"
+                    <button data-product-id="{{this._id}}" data-stock="{{this.stock}}" type="button"
                         class="add-to-cart btn btn-warning ms-auto py-0 px-3 rounded-end-0"
                         style="font-size: x-large; color:blue"><i class="fa-duotone fa-cart-plus"></i></button>
                 </div>
@@ -309,7 +309,7 @@
                         <span class="price-label">${price}</span><span
                             class="price-label price-label-ending">đ</span><br>
                     </div>
-                    <button data-product-id="${product._id}" type="button"
+                    <button data-product-id="${product._id}" data-stock="${product.stock}" type="button"
                         class="add-to-cart btn btn-warning ms-auto py-0 px-3 rounded-end-0"
                         style="font-size: x-large; color:blue"><i class="fa-duotone fa-cart-plus"></i></button>
                 </div>
@@ -348,7 +348,10 @@
         const addToCartBtns = [...document.getElementsByClassName('add-to-cart')];
 
         addToCartBtns.forEach(btn => {
-            btn.addEventListener('click', addToCart);
+            if (parseInt(btn.getAttribute('data-stock')) <= 0)
+                btn.classList.add('d-none');
+            else
+                btn.addEventListener('click', addToCart);
         });
 
         function addToCart(event) {

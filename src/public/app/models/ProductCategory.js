@@ -6,6 +6,10 @@ const Category = new mongoose.Schema(
         name: { type: String, require: true },
         description: { type: String },
         slug: { type: String, unique: true },
+        typesIds: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'ProductType',
+        }
     },
     {
         timestamps: true,

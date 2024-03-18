@@ -55,15 +55,19 @@
                             Danh mục
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Bàn ghế phòng khách</a></li>
-                            <li><a class="dropdown-item" href="#">Tượng thần tài</a></li>
-                            <li><a class="dropdown-item" href="#">Tượng phật</a></li>
-                            <li><a class="dropdown-item" href="#">Bàn thờ</a></li>
+                            {{#each categories}}
                             <li>
-                                <hr class="dropdown-divider">
+                                <form class="dropdown-item" action="/sanpham/tim-kiem/chude/{{this.slug}}"><button
+                                        type="submit"
+                                        style="background-color: transparent; border: 0;">{{this.name}}</button>
+                                </form>
                             </li>
-                            <li><a class="dropdown-item" href="#">Điêu khắc nghệ thuật</a></li>
+                            {{/each}}
                         </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link icon-link" href="/baiviet"><i class="fa-light fa-circle-info"></i>Đặt theo
+                            yêu cầu</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/baiviet">Bài viết</a>

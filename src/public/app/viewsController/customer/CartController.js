@@ -249,6 +249,12 @@ class CartController {
                     })
             });
     }
+
+    updateProductQQuantity(req, res, next) {
+        console.log('update productQ quantity - admin');
+        ProductQ.findByIdAndUpdate(req.query.id, { quantity: req.query.quantity })
+            .catch(next);
+    }
 }
 
 module.exports = new CartController();

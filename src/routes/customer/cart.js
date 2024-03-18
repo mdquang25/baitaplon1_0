@@ -5,14 +5,16 @@ const { body } = require('express-validator');
 const cartController = require('../../public/app/viewsController/customer/CartController');
 const requireLogin = require('../middleware/requireLogin');
 const userInterfaceObjects = require('../middleware/userInterfaceObjects.js');
+const getCategories = require('../middleware/getCategories.js');
 
 router.delete('/sanpham/xoa', requireLogin, cartController.removeProduct);
 router.delete('/xoa-chon', requireLogin, cartController.deleteSelected);
-router.post('/dat-hang/luu-don-hang', requireLogin, userInterfaceObjects, cartController.saveOrder);
-router.post('/dat-hang', requireLogin, userInterfaceObjects, cartController.placeOrder);
+router.post('/dat-hang/luu-don-hang', requireLogin, cartController.saveOrder);
+router.post('/dat-hang', requireLogin, userInterfaceObjects, getCategories, cartController.placeOrder);
 router.get('/them', requiredLogin, cartController.addProduct);
-router.get('/don-mua/:id/qr-thanh-toan', requireLogin, userInterfaceObjects, cartController.showQRCode);
-router.get('/don-mua', requireLogin, userInterfaceObjects, cartController.orders);
-router.get('/', requireLogin, userInterfaceObjects, cartController.products);
+router.get('/update-productq-quantity', requireLogin, cartController.updateProductQQuantity);
+router.get('/don-mua/:id/qr-thanh-toan', requireLogin, userInterfaceObjects, getCategories, cartController.showQRCode);
+router.get('/don-mua', requireLogin, userInterfaceObjects, getCategories, cartController.orders);
+router.get('/', requireLogin, userInterfaceObjects, getCategories, cartController.products);
 
 module.exports = router;

@@ -10,14 +10,17 @@
         <div class="fs-5 my-2 d-flex justify-content-between align-items-center">
             <a href="/admin/donhang/them" class="btn btn-success icon-link" style="height: fit-content !important;"><i
                     class="fa-light fa-layer-plus"></i>Tạo đơn</a>
-            <b>Đơn hàng</b>
-            <button id="refresh" class="btn btn-success rounded-5"><i
-                    class="fa-duotone fa-arrows-rotate fa-3x"></i></button>
+            <b class="mobile-hidden">Đơn hàng</b>
+            <a href="/admin/donhang/don-hoan-thanh" class="btn btn-success icon-link"
+                style="height: fit-content !important;">
+                <i class="fa-light fa-box-check"></i>Đơn hoàn thành</a>
+
         </div>
 
     </div>
 </div>
-
+<button id="refresh" class="position-fixed left-0 bottom-0 btn btn-success rounded-5"
+    style="transform:translate(50%, -50%);"><i class="fa-duotone fa-arrows-rotate fa-3x"></i></button>
 
 <style>
     a.nav-link.active {

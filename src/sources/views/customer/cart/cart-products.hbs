@@ -87,7 +87,8 @@
                 </td>
                 <td class="to-be-hidden">
                     <div id="{{this._id}}total" data-price="{{this.product.price}}"
-                        class="price-label outline-label off-stock-hidden-price" data-stock="{{this.product.stock}}">
+                        class="price-label outline-label off-stock-hidden-price" style="color: black"
+                        data-stock="{{this.product.stock}}">
                         {{mult this.quantity this.product.price}}</div>
                 </td>
                 <td class="to-be-hidden"><button class="delete-one-btn btn btn-outline-danger"
@@ -109,7 +110,8 @@
         <div class="form-check d-flex justify-content-center align-items-center ms-3">
             <input class="form-check-input fs-5 my-auto" type="checkbox" id="check-all-2">
             <label class="form-check-label d-flex align-items-center" for="check-all-2">&nbsp;<span
-                    class="to-be-hidden">Chọn&nbsp;</span>tất cả<span class="to-be-hidden">({{productQs.length}})</span>
+                    class="to-be-hidden">Chọn&nbsp;</span>tất cả
+                    {{!-- <span class="to-be-hidden">({{productQs.length}})</span> --}}
                 <button class="btn btn-outline-danger mx-2" data-bs-toggle="modal"
                     data-bs-target="#confirmDeleteModal">Xóa</button>
             </label>
@@ -168,7 +170,9 @@
 
         offStockDisableInputs.forEach(input => {
             if (parseInt(input.getAttribute('data-stock')) <= 0) {
-                input.disabled = true;
+                const index = checkBoxes.indexOf(input);
+                checkBoxes.splice(index, 1);
+                input.remove();
             }
         });
         offStockHiddenPrice.forEach(label => {
@@ -320,6 +324,8 @@
         input1.value = newValue;
         input2.value = newValue;
 
+        fetch(`/giohang/update-productq-quantity?id=${encodeURIComponent(id)}&quantity=${encodeURIComponent(newValue)}`)
+        .catch(error=> console.log(`/sanpham/giohang/update-productq-quantity?id=${encodeURIComponent(id)}&value=${encodeURIComponent(newValue)}`, ': error ocurred!'));
         const total = document.getElementById(id + 'total');
         total.innerHTML = (newValue * parseInt(total.getAttribute('data-price'))).toLocaleString('vi-VN') + 'đ';
 
