@@ -151,6 +151,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
+    const addToCartBtn = document.getElementById('add-to-cart');
     document.querySelector('a[class="nav-link img"]').classList.add('active');
     function change_image(image) {
         var container = document.getElementById("main-image");
@@ -161,7 +162,6 @@
         const price = document.getElementById('price');
         const oldPrice = document.getElementById('old-price');
         const percentOff = document.getElementById('percent-off');
-        const addToCartBtn = document.getElementById('add-to-cart');
         const redDot = document.getElementById('red-dot');
         const offStock = document.getElementById('off-stock');
         const shareFb = document.getElementById('share-fb');
@@ -178,23 +178,6 @@
             addToCartBtn.classList.add('d-none');
         }
 
-        addToCartBtn.addEventListener('click', function (event) {
-            const productId = event.target.getAttribute('data-product-id');
-
-            fetch(`/giohang/them?productId=${encodeURIComponent(productId)}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.requireLogin)
-                        navigateTo('/dangnhap');
-                    if (data.message === 'added')
-                        if (redDot.classList.contains('d-none')) {
-                            redDot.classList.remove('d-none');
-                        }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        });
         const number = parseFloat(price.innerHTML);
         price.innerHTML = number.toLocaleString('vi-VN');
         const onSale = oldPrice.getAttribute('data-onsale');
@@ -210,6 +193,32 @@
         }
 
     });
+    //done DOM///////////////////////////
+
+    addToCartBtn.addEventListener('click', function (event) {
+        const productId = event.target.getAttribute('data-product-id');
+
+        fetch(`/giohang/them?productId=${encodeURIComponent(productId)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.requireLogin)
+                    navigateTo('/dangnhap');
+                if (data.message === 'added') {
+                    toastSuccessElement.firstElementChild.innerHTML = 'Đã Thêm vào giỏ hàng';
+                    toastSuccess.show();
+                    redDot.classList.remove('d-none');
+                }
+                else if (data.message === 'exist') {
+                    toastDangerElement.firstElementChild.innerHTML = 'Đã có trong giỏ hàng!';
+                    toastDanger.show();
+                }
+            })
+            .catch(error => {
+                toastDangerElement.firstElementChild.innerHTML = 'Đã xảy ra lỗi! Xin vui lòng thử lại';
+                toastDanger.show();
+            });
+    });
+
     function navigateTo(url) {
         window.location.href = url;
     }

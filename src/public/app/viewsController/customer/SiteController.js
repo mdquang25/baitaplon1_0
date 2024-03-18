@@ -146,7 +146,7 @@ class SiteController {
     logout(req, res) {
         console.log('log out - customer');
         req.session.destroy();
-        res.redirect('/');
+        res.send({});
     }
 
     notFound(req, res) {

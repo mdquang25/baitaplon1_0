@@ -331,9 +331,7 @@
 
         const sumTotalLabel = document.getElementById('total-label');
         const sumTotalTag = document.getElementById('total');
-        console.log('value: ', preValue, ' new: ', newValue);
         if (newValue !== preValue && document.getElementById(id + '-checkbox').checked) {
-            console.log('!=');
             const k = parseInt(sumTotalLabel.getAttribute('data-value')) + num;
             sumTotalLabel.innerHTML = k;
             sumTotalLabel.setAttribute('data-value', k);

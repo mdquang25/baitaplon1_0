@@ -176,7 +176,8 @@
         var endValueInput = document.getElementById('endValue');
         var sliderValue = document.getElementById('slider-value');
         const redDot = document.getElementById('red-dot');
-
+        
+        
         noUiSlider.create(slider, {
             start: [0, 50000000], // Initial start and end values
             connect: true,
@@ -322,6 +323,9 @@
             updateProductCards();
         }
     });
+//DOM DONE//////////////////////////////////////
+
+
 
     updateProductCards();
     function updateProductCards() {
@@ -361,13 +365,19 @@
                 .then(data => {
                     if (data.requireLogin)
                         navigateTo('/dangnhap');
-                    if (data.message === 'added')
-                        if (redDot.classList.contains('d-none')) {
-                            redDot.classList.remove('d-none');
-                        }
+                    if (data.message === 'added') {
+                        toastSuccessElement.firstElementChild.innerHTML = 'Đã Thêm vào giỏ hàng';
+                        toastSuccess.show();
+                        redDot.classList.remove('d-none');
+                    }
+                    else if (data.message === 'exist') {
+                       toastDangerElement.firstElementChild.innerHTML = 'Đã có trong giỏ hàng!';
+                      toastDanger.show();
+                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
+                    toastDangerElement.firstElementChild.innerHTML = 'Đã xảy ra lỗi! Xin vui lòng thử lại';
+                    toastDanger.show();
                 });
         };
 
@@ -393,7 +403,5 @@
             observer.observe(image);
         });
     }
-    function navigateTo(url) {
-        window.location.href = url;
-    }
+
 </script>

@@ -234,151 +234,6 @@
 </form>
 
 
-{{!-- <style>
-    .event__search__floater {
-        position: fixed;
-        top: 10rem;
-        /*   left:0; */
-        right: 1rem;
-        z-index: 10000;
-        transition: all ease-in-out 0.3s;
-        transform: translate(-50%, -50%);
-    }
-
-    @media (max-width: 780px) {
-        .event__search__floater {
-            top: 7rem;
-            right: .5rem;
-        }
-    }
-
-    .search__anchor {
-        position: relative;
-        width: auto;
-        height: auto;
-        /*   TODO: Center anchor */
-    }
-
-    .search__submit {
-        opacity: 0;
-        width: 0px;
-    }
-
-    .search__bar {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 3rem;
-        bottom: 0;
-        outline: none;
-        border: none;
-        background: #fff;
-        width: 50px;
-        height: 50px;
-        border-radius: 25px;
-        opacity: 0;
-        z-index: 5;
-        transition: all 0.2;
-        font-size: 1em;
-    }
-
-    .search__bar:hover {
-        cursor: pointer;
-    }
-
-    .search__bar:focus {
-        width: inherit;
-        left: auto;
-        opacity: 1;
-        cursor: text;
-        transition: all 0.2;
-        padding-left: 25px;
-        padding-right: 70px;
-    }
-
-    .search__toggler {
-        position: absolute;
-        width: 3.5rem;
-        height: 3.5rem;
-        background: #388e61;
-        opacity: 1;
-        top: -4px;
-        left: -4px;
-        border-radius: 50%;
-        border: .2rem solid white;
-        transition: all 0.3s;
-    }
-
-    .search__toggler:hover {
-        cursor: pointer;
-    }
-
-    .search__toggler::before {
-        content: "";
-        position: absolute;
-        margin: auto;
-        top: 22px;
-        right: 0;
-        bottom: 0;
-        left: 22px;
-        width: 12px;
-        height: 2px;
-        background: #fff;
-        transform: rotate(45deg);
-        transition: all 0.3s;
-    }
-
-    .search__toggler::after {
-        content: "";
-        position: absolute;
-        margin: auto;
-        top: -5px;
-        right: 0;
-        bottom: 0;
-        left: -5px;
-        width: 25px;
-        height: 25px;
-        border-radius: 50%;
-        border: 2px solid #fff;
-        transition: all 0.3s;
-    }
-
-    .search__bar:focus~.search__toggler {
-        right: 400px;
-        background: #151515;
-        z-index: 6;
-        transition: all 0.2;
-    }
-
-    .search__bar:focus~.search__toggler::before {
-        top: 0;
-        left: 0;
-        width: 25px;
-    }
-
-    .search__bar:focus~.search__toggler::after {
-        top: 0;
-        left: 0;
-        width: 25px;
-        height: 2px;
-        border: none;
-        background: white;
-        border-radius: 0%;
-        transform: rotate(-45deg);
-    }
-</style>
-<div class="event__search__floater">
-    <div class="search__anchor">
-        <form id="form-search" action="/sanpham/tim-kiem" method="post" class="d-flex mx-1">
-            <input id="search-input" name="query" class="search__bar form-control me-2" type="search"
-                placeholder="Nhập tên sản phẩm.." aria-label="Search" maxlength="50">
-            <button class="btn btn-outline-success search__submit" type="submit">Tìm kiếm</button>
-            <div class="search__toggler"></div>
-        </form>
-
-    </div>
-</div> --}}
-
 <!-- Modal -->
 <div class="modal fade" id="logout-alert" tabindex="-1" aria-labelledby="signoutModal" aria-hidden="true">
     <div class="modal-dialog">
@@ -392,13 +247,32 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <form action="/dangxuat" method="get">
-                    <button type="submit" class="btn btn-primary">Đăng xuất ngay</button>
-                </form>
+                <button id="sign-out-btn" type="button" class="btn btn-primary">Đăng xuất ngay</button>
             </div>
         </div>
     </div>
 </div>
+
+{{!//////////toast//////////////////////////////}}
+<div class="toast-container position-fixed top-0 start-50 translate-middle-x" style="width: fit-content;">
+    <div id="toast1" class="toast p-0 m-0 text-bg-success text-center" role="alert" aria-live="assertive"
+        aria-atomic="true">
+        <div class="toast-body fs-5">
+
+        </div>
+    </div>
+</div>
+<div class="toast-container position-fixed top-0 start-50 translate-middle-x" style="width: fit-content;">
+    <div id="toast2" class="toast p-0 m-0 text-bg-danger text-center" role="alert" aria-live="assertive"
+        aria-atomic="true">
+        <div class="toast-body fs-5">
+
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
 <script>
     const isLoggedin = document.getElementById('isLoggedin').innerHTML;
     const signBtn = document.getElementById('sign-btn');
@@ -409,7 +283,31 @@
     const newProduct = document.getElementById('newProduct').value;
     const newOrderUpdate = document.getElementById('newOrderUpdate').value;
     const redDot = document.getElementById('red-dot');
+    const signOutBtn = document.getElementById('sign-out-btn');
+    const toastSuccessElement = document.getElementById('toast1')
+    const toastDangerElement = document.getElementById('toast2')
+    const toastSuccess = bootstrap.Toast.getOrCreateInstance(toastSuccessElement);
+    const toastDanger = bootstrap.Toast.getOrCreateInstance(toastDangerElement);
 
+
+    signOutBtn.addEventListener('click', function (e) {
+        logoutAlert.classList.remove('show');
+        fetch('/dangxuat')
+            .then(response => {
+                if (response.ok)
+                    return response.json();
+                else {
+                    throw new Error('Request failed');
+                }
+            }).then(data => {
+                toastSuccessElement.firstElementChild.innerHTML = 'Đã đăng xuất';
+                toastSuccess.show();
+                setTimeout(() => location.reload(), 2000);
+            }).catch(error => {
+                toastDangerElement.firstElementChild.innerHTML = 'Đã xảy ra lỗi';
+                toastDanger.show();
+            });
+    })
 
     if (newProduct !== 'true' && newProduct !== 'false') {
         cart.classList.add('d-none');
@@ -420,13 +318,18 @@
 
 
     logoutAlert.addEventListener('shown.bs.modal', () => {
-        logoutBtn.focus()
-    })
+        logoutBtn.focus();
+    });
+
     if (isLoggedin) {
         signBtn.classList.add('d-none');
     }
     else {
         cart.classList.add('d-none');
         myAccountDropdown.classList.add('d-none');
+    }
+
+    function navigateTo(url) {
+        window.location.href = url;
     }
 </script>

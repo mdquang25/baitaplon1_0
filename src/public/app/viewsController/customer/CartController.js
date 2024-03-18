@@ -14,14 +14,8 @@ class CartController {
             .then(cart => {
                 ProductQ.findOne({ cartId: cart._id, productId: req.query.productId })
                     .then(doc => {
-                        if (doc) {
-                            doc.quantity++;
-                            (() => new Promise((resolve, reject) => {
-                                doc.save();
-                                resolve();
-                            }))().then(() => {
+                        if (doc) {                       
                                 res.send({ message: 'exist' });
-                            });
                         }
                         else {
                             Product.exists({ _id: req.query.productId })
