@@ -48,6 +48,12 @@
     }
 }
 
+.map-frame {
+    border: .2rem solid black;
+    border-radius: 1rem;
+    margin-top: 2rem;
+}
+
 .offcanvas-body-responsive {
     display: flex;
     justify-content: space-between;
@@ -61,6 +67,11 @@
 
     .mobile-show {
         display: flex !important;
+    }
+
+    .map-frame {
+        width: 100%;
+        height: auto;
     }
 }
 
@@ -326,4 +337,19 @@
     border: .5rem solid mintcream;
     box-sizing: border-box;
     box-shadow: 0 .1rem .3rem 0 rgba(0, 0, 0, 0.484);
+}
+
+.big-label {
+    color: whitesmoke;
+    font-weight: 700;
+    font-size: x-large;
+    background-color: orange;
+    border-radius: .7rem;
+    margin: .2rem;
+    padding: 1rem;
+
+    width: 10rem;
+    border: .2rem solid white;
+    box-sizing: border-box;
+    box-shadow: 0 .2rem 1rem .5rem rgba(0, 0, 0, .4);
 }

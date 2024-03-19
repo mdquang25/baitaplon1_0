@@ -206,16 +206,25 @@
                 if (data.message === 'added') {
                     toastSuccessElement.firstElementChild.innerHTML = 'Đã Thêm vào giỏ hàng';
                     toastSuccess.show();
+                    setTimeout(() => {
+                        toastSuccess.hide();
+                    }, 1000);
                     redDot.classList.remove('d-none');
                 }
                 else if (data.message === 'exist') {
                     toastDangerElement.firstElementChild.innerHTML = 'Đã có trong giỏ hàng!';
                     toastDanger.show();
+                    setTimeout(() => {
+                        toastDanger.hide();
+                    }, 1000);
                 }
             })
             .catch(error => {
                 toastDangerElement.firstElementChild.innerHTML = 'Đã xảy ra lỗi! Xin vui lòng thử lại';
                 toastDanger.show();
+                setTimeout(() => {
+                    toastDanger.hide();
+                }, 1000);
             });
     });
 

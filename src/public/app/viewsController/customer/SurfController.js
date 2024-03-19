@@ -66,7 +66,8 @@ class ProductController {
                 Promise.all(categories).then(categories => {
                     Promise.all([Product.find({ $text: { $search: req.body.query } }), Carousel.find({})])
                         .then(([products, carousels]) => {
-                            res.render('customer/home', { pageTitle: 'Tìm kiếm', isLoggedin: req.session.isLoggedin, user: req.session.user, categories, products: multiMongooseToObjs(products), carousels: multiMongooseToObjs(carousels), cart: res.locals.cart, shopInfo: res.locals.shopInfo, });
+                            const searchHeading = 'Kết quả tìm kiếm với từ khóa "' + req.body.query + '":';
+                            res.render('customer/home', { pageTitle: 'Tìm kiếm', isLoggedin: req.session.isLoggedin, user: req.session.user, categories, products: multiMongooseToObjs(products), carousels: multiMongooseToObjs(carousels), searchHeading, });
                         }).catch(next);
                 }).catch(next);
             }).catch(next);

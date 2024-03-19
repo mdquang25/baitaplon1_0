@@ -122,13 +122,14 @@
     </form>
 </div>
 
-<div id="search-heading" class="fs-1 mx-2"></div><br>
+<div id="search-heading" class="fs-2 mx-2">{{searchHeading}}</div><br>
 <div id="found-0-message" class="d-none fs-3 text-center"><i
         class="fa-solid fa-truck-container-empty fa-4x"></i>&nbsp;Không tìm
     thấy sản
     phẩm
     phù hợp&nbsp;<i class="fa-solid fa-face-sad-sweat fa-4x"></i></div>
 <div id="search-results" class="row col-12 mx-auto">
+    <input id="products-length" type="text" value="{{products.length}}" hidden>
     {{#each products}}
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 p-0 mb-1 mb-sm-0">
         <div data-name="cards" class="card product-card mb-1 mx-auto"
@@ -176,8 +177,11 @@
         var endValueInput = document.getElementById('endValue');
         var sliderValue = document.getElementById('slider-value');
         const redDot = document.getElementById('red-dot');
-        
-        
+
+
+        if (!parseInt(document.getElementById('products-length').value) > 0)
+            foundError.classList.remove('d-none');
+
         noUiSlider.create(slider, {
             start: [0, 50000000], // Initial start and end values
             connect: true,
@@ -323,7 +327,7 @@
             updateProductCards();
         }
     });
-//DOM DONE//////////////////////////////////////
+    //DOM DONE//////////////////////////////////////
 
 
 
@@ -371,9 +375,9 @@
                         redDot.classList.remove('d-none');
                     }
                     else if (data.message === 'exist') {
-                       toastDangerElement.firstElementChild.innerHTML = 'Đã có trong giỏ hàng!';
-                      toastDanger.show();
-                     }
+                        toastDangerElement.firstElementChild.innerHTML = 'Đã có trong giỏ hàng!';
+                        toastDanger.show();
+                    }
                 })
                 .catch(error => {
                     toastDangerElement.firstElementChild.innerHTML = 'Đã xảy ra lỗi! Xin vui lòng thử lại';

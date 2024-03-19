@@ -252,11 +252,14 @@
         }
 
         function appendResult(product, index) {
+            const addBtnClass = parseInt(product.stock) <= 0? 'd-none' : '';
+            const offStockBageClass = parseInt(product.stock) <= 0? '' : 'd-none';
             const content = `<tr>
                                 <td><img class="thumbnail-sm img-thumbnail" src="${product.imagesUrls[product.mainImageIndex]}" alt="Ảnh"></td>
                                 <td>${product.name}</td>
                                 <td class="mobile-hidden">${product._id}</td>
-                                <td><button onclick="addProduct(${index})" type="button" class="btn btn-primary">Thêm</button></td>
+                                <td><button onclick="addProduct(${index})" type="button" class="btn btn-primary ${addBtnClass}">Thêm</button>
+                                    <div class="badge text-bg-danger ${offStockBageClass}">Tạm hết hàng</div></td>
                             </tr>`;
             searchResults.insertAdjacentHTML('beforeend', content);
         }

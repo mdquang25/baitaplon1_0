@@ -36,7 +36,7 @@
         </thead>
         <tbody>
             {{#each productQs}}
-            <tr>
+            <tr id="{{this._id}}row">
                 <th scope="row">
                     <div class="form-check d-flex justify-content-end">
                         <input class="checkbox form-check-input fs-5 off-stock-disable-input"
@@ -111,7 +111,7 @@
             <input class="form-check-input fs-5 my-auto" type="checkbox" id="check-all-2">
             <label class="form-check-label d-flex align-items-center" for="check-all-2">&nbsp;<span
                     class="to-be-hidden">Chọn&nbsp;</span>tất cả
-                    {{!-- <span class="to-be-hidden">({{productQs.length}})</span> --}}
+                {{!-- <span class="to-be-hidden">({{productQs.length}})</span> --}}
                 <button class="btn btn-outline-danger mx-2" data-bs-toggle="modal"
                     data-bs-target="#confirmDeleteModal">Xóa</button>
             </label>
@@ -144,15 +144,8 @@
         </div>
     </div>
 </div>
-<form id="delete-form" action="/giohang/sanpham/xoa" method="post" style="display: none;">
-
-    <input name="_method" value="DELETE">
-    <input type="text" name="deleteId" id="delete-id">
-</form>
 
 <script>
-    const deleteForm = document.getElementById('delete-form');
-    const deleteId = document.getElementById('delete-id');
     const deleteOneBtns = [...document.getElementsByClassName('delete-one-btn')];
     const deleteModal = document.getElementById('confirmDeleteModal');
     const deleteBtn = document.getElementById('delete-btn');
@@ -167,6 +160,7 @@
         const offStockDisableInputs = [...document.getElementsByClassName('off-stock-disable-input')];
         const offStockHiddenPrice = [...document.getElementsByClassName('off-stock-hidden-price')];
         const offStockHiddenQuantity = [...document.getElementsByClassName('off-stock-hidden-quantity')];
+
 
         offStockDisableInputs.forEach(input => {
             if (parseInt(input.getAttribute('data-stock')) <= 0) {
@@ -300,8 +294,53 @@
     deleteOneBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
-            deleteId.value = e.target.getAttribute('data-delete-id');
-            deleteForm.submit();
+            const deleteId = e.target.getAttribute('data-delete-id');
+            fetch(`/giohang/sanpham/xoa`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ deleteId: deleteId }),
+            }).then(response => {
+                console.log('recieved response');
+                if (response.ok)
+                    return response.json();
+                else {
+                    throw new Error('Request failed');
+                }
+            }).then(data => {
+                console.log('data: ', data);
+                if (data.message === 'deleted') {
+                    toastSuccessElement.firstElementChild.innerHTML = 'Đã xoá 1 sản phẩm';
+                    toastSuccess.show();
+                    const showTime = new Date();
+                    toastSuccessShowTime = showTime;
+                    setTimeout(() => {
+                        if (toastSuccessShowTime === showTime)
+                            toastSuccess.hide();
+                    }, 1000);
+                    document.getElementById(deleteId + 'row').remove();
+                }
+                else {
+                    toastDangerElement.firstElementChild.innerHTML = 'Đã xảy ra lỗi';
+                    toastDanger.show();
+                    const showTime = new Date();
+                    toastDangerShowTime = showTime;
+                    setTimeout(() => {
+                        if (toastDangerShowTime === showTime)
+                            toastDanger.hide();
+                    }, 1000);
+                }
+            }).catch(error => {
+                toastDangerElement.firstElementChild.innerHTML = 'Đã xảy ra lỗi';
+                toastDanger.show();
+                const showTime = new Date();
+                toastDangerShowTime = showTime;
+                setTimeout(() => {
+                    if (toastDangerShowTime === showTime)
+                        toastDanger.hide();
+                }, 1000);
+            });
         });
     })
     const prices = [...document.getElementsByClassName('price-label')];
@@ -325,7 +364,7 @@
         input2.value = newValue;
 
         fetch(`/giohang/update-productq-quantity?id=${encodeURIComponent(id)}&quantity=${encodeURIComponent(newValue)}`)
-        .catch(error=> console.log(`/sanpham/giohang/update-productq-quantity?id=${encodeURIComponent(id)}&value=${encodeURIComponent(newValue)}`, ': error ocurred!'));
+            .catch(error => console.log(`/sanpham/giohang/update-productq-quantity?id=${encodeURIComponent(id)}&value=${encodeURIComponent(newValue)}`, ': error ocurred!'));
         const total = document.getElementById(id + 'total');
         total.innerHTML = (newValue * parseInt(total.getAttribute('data-price'))).toLocaleString('vi-VN') + 'đ';
 

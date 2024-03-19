@@ -14,8 +14,8 @@ class CartController {
             .then(cart => {
                 ProductQ.findOne({ cartId: cart._id, productId: req.query.productId })
                     .then(doc => {
-                        if (doc) {                       
-                                res.send({ message: 'exist' });
+                        if (doc) {
+                            res.send({ message: 'exist' });
                         }
                         else {
                             Product.exists({ _id: req.query.productId })
@@ -197,6 +197,7 @@ class CartController {
     }
     //[DELETE] /giohang/sanpham/xoa
     removeProduct(req, res, next) {
+        console.log('body: ', req.body);
         console.log('remove one product - customer');
         Cart.findById(req.session.user.cartId)
             .then(cart => {
@@ -206,10 +207,13 @@ class CartController {
                 }
                 cart.save();
                 ProductQ.findByIdAndDelete(req.body.deleteId)
-                    .then(() => {
-                        res.redirect('back');
-                    }).catch(next);
-            }).catch(next);
+                    .then(response => {
+                        if (response)
+                            res.send({ message: 'deleted' });
+                        else
+                            res.send({ message: 'error' });
+                    }).catch(()=> res.send({message: 'error'}));
+            }).catch(() => res.send({ message: 'error' }));
     }
 
     //[GET] /giohang/don-mua

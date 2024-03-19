@@ -17,6 +17,7 @@ router.post('/dangky', [
 router.get('/dangnhap', userInterfaceObjects, siteController.login);
 router.get('/dangxuat', siteController.logout);
 router.get('/dangky', userInterfaceObjects, siteController.signUp);
+router.get('/lien-he', userInterfaceObjects, siteController.contactUs);
 router.get('/not-found-404', siteController.notFound);
 router.get('/', userInterfaceObjects, siteController.index);
 

@@ -46,40 +46,40 @@ class SiteController {
         console.log('check log in - customer');
         if (req.session.isLoggedin)
             res.redirect('/');
-        else{
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            // Handle validation errors, such as sending an error response
-            return res.status(400).json({ errors: errors.array() });
-        }
-        Customer.findOne({ phoneNumber: req.body.phoneNumber })
-            .then((customer) => {
-                if (!customer) {
-                    console.log('User not found');
-                    res.render('customer/login', { pageTitle: 'Đăng nhập', layout: 'no-header', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body });
-                    return;
-                }
-                bcrypt.compare(req.body.password, customer.password, function (err, isMatch) {
-                    if (err) {
-                        console.error(err);
-                        return res.status(400).json({ errors: errors.array() });
+        else {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                // Handle validation errors, such as sending an error response
+                return res.status(400).json({ errors: errors.array() });
+            }
+            Customer.findOne({ phoneNumber: req.body.phoneNumber })
+                .then((customer) => {
+                    if (!customer) {
+                        console.log('User not found');
+                        res.render('customer/login', { pageTitle: 'Đăng nhập', layout: 'no-header', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body });
+                        return;
                     }
-                    if (isMatch) {
-                        req.session.user = {
-                            id: customer._id,
-                            phoneNumber: customer.phoneNumber,
-                            fullName: customer.fullName,
-                            cartId: customer.cartId,
-                        };
-                        req.session.isLoggedin = true;
-                        console.log('logged in - customer');
-                        res.redirect('/');
-                    } else {
-                        console.log('Invalid password');
-                        res.render('customer/login', { pageTitle: 'Đăng nhập', layout: 'no-header', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body, shopInfo: res.locals.shopInfo, })
-                    }
-                });
-            })
+                    bcrypt.compare(req.body.password, customer.password, function (err, isMatch) {
+                        if (err) {
+                            console.error(err);
+                            return res.status(400).json({ errors: errors.array() });
+                        }
+                        if (isMatch) {
+                            req.session.user = {
+                                id: customer._id,
+                                phoneNumber: customer.phoneNumber,
+                                fullName: customer.fullName,
+                                cartId: customer.cartId,
+                            };
+                            req.session.isLoggedin = true;
+                            console.log('logged in - customer');
+                            res.redirect('/');
+                        } else {
+                            console.log('Invalid password');
+                            res.render('customer/login', { pageTitle: 'Đăng nhập', layout: 'no-header', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body, shopInfo: res.locals.shopInfo, })
+                        }
+                    });
+                })
                 .catch(next);
         }
     }
@@ -149,6 +149,9 @@ class SiteController {
         res.send({});
     }
 
+    contactUs(req, res, next) {
+        res.render('customer/contact', { pageTitle: 'Liên hệ đặt mẫu theo yêu cầu', isLoggedin: req.session.isLoggedin, })
+    }
     notFound(req, res) {
         console.log('not found page?? - customer');
         res.render('not-found', { pageTitle: 'Không tìm thấy trang', layout: 'no-header-footer', });

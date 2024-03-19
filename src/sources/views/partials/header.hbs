@@ -66,7 +66,7 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link icon-link" href="/baiviet"><i class="fa-light fa-circle-info"></i>Đặt theo
+                        <a class="nav-link icon-link" href="/lien-he"><i class="fa-light fa-circle-info"></i>Đặt theo
                             yêu cầu</a>
                     </li>
                     <li class="nav-item">
@@ -288,7 +288,8 @@
     const toastDangerElement = document.getElementById('toast2')
     const toastSuccess = bootstrap.Toast.getOrCreateInstance(toastSuccessElement);
     const toastDanger = bootstrap.Toast.getOrCreateInstance(toastDangerElement);
-
+    var toastSuccessShowTime = new Date();
+    var toastDangerShowTime = new Date();
 
     signOutBtn.addEventListener('click', function (e) {
         logoutAlert.classList.remove('show');
