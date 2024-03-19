@@ -23,11 +23,7 @@
             <i class="fa-regular fa-eye-slash"></i>
         </button>
         <label for="floatingPassword">Xác nhận mật khẩu</label>
-        <div id="error-message" class="form-text text-secondary text-danger">
-        </div>
-        <div id="error-message" class="form-text text-secondary text-danger">
-            {{error}}
-        </div>
+        <div id="error-message" class="form-text text-danger" style="height: 1rem"></div>
     </div>
     <div class="form-check d-flex align-items-center">
         <input class="form-check-input me-2" style=" border-color: blue" type="checkbox" value="đồng ý" required
@@ -36,7 +32,11 @@
             Tôi đồng ý với các <a href="#">điều khoản và điều kiện</a> khi đăng ký và sử dụng tài khoản
         </label>
     </div>
-    <button type="submit" class="btn btn-success p-3">Đăng ký</button>
+    <div class="d-flex justify-content-center">
+        <div id="spinner" class="spinner-border text-primary mt-4 mb-2" role="status">
+        </div>
+    </div>
+    <button id="submit-btn" type="submit" class="btn btn-success p-3">Đăng ký</button>
     <a class="no-decor-link" href="/dangnhap">Đã có tài khoản: đăng nhập</a>
 </form>
 <script>
@@ -47,6 +47,18 @@
     const errorLabel = document.getElementById('error-message');
     const togglePasswordButton1 = document.getElementById('togglePasswordButton1');
     const togglePasswordButton2 = document.getElementById('togglePasswordButton2');
+    const sp = document.getElementById('spinner');
+    const submitBtn = document.getElementById('submit-btn');
+
+    spinner.classList.add('d-none');
+    function showSpinner() {
+        spinner.classList.remove('d-none');
+        submitBtn.classList.add('d-none');
+    }
+    function hideSpinner() {
+        spinner.classList.add('d-none');
+        submitBtn.classList.remove('d-none');
+    }
 
     togglePasswordButton1.addEventListener('click', togglePassword);
     togglePasswordButton2.addEventListener('click', togglePassword);
@@ -59,13 +71,58 @@
 
     form.addEventListener('submit', (event) => {
         event.preventDefault();
-
         if (validateForm()) {
-
-            form.submit();
+            errorLabel.innerHTML = '';
+            showSpinner();
+            submitForm();
+            hideSpinner();
         }
-
     });
+
+    function submitForm() {
+        const formData = new FormData(form);
+        const data = Array.from(formData.entries()).reduce((acc, [key, value]) => {
+            acc[key] = value;
+            return acc;
+        }, {});
+        const json = JSON.stringify(data);
+        fetch(form.action, {
+            method: form.method,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: json
+        })
+            .then(response => {
+                if (response.ok)
+                    return response.json();
+                else
+                    throw new Error('error');
+            }).then(data => {
+                if (data.created) {
+                    toastSuccessElement.firstElementChild.innerHTML = 'Tạo tài khoản thành công';
+                    toastSuccess.show();
+                    setTimeout(() => {
+                        window.location.href = '/dangnhap';
+                    }, 1000);
+                }
+                else if (data.error === 'input') {
+                    errorLabel.innerHTML = 'Thông tin nhập không hợp lệ!';
+                }
+                else if (data.error === 'exist') {
+                    errorLabel.innerHTML = 'Số điện thoại đã tồn tại!';
+                }
+                else if (data.error === 'phone') {
+                    errorLabel.innerHTML = 'Số điện thoại không hợp lệ!';
+                }
+                else if (data.error === 'system') {
+                    throw new Error('error');
+                }
+            }).catch((error) => {
+                toastDangerElement.firstElementChild.innerHTML = 'Lỗi hệ thống! vui lòng thử lại sau';
+                toastDanger.show();
+            });
+    }
 
     function validateForm() {
         let isValid = true;
@@ -79,7 +136,7 @@
             errorLabel.innerHTML = 'mật khẩu phải từ 6 ký tự trở lên!';
             isValid = false;
         }
-        else if (password1.value.length>32) {
+        else if (password1.value.length > 32) {
             errorLabel.innerHTML = 'mật khẩu tối đa 32 kí tự!';
             isValid = false;
         }

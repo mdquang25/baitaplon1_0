@@ -97,28 +97,27 @@ class SiteController {
     checkCreateAccount(req, res) {
         console.log('check create new account - customer');
         const errors = validationResult(req);
-
         if (!errors.isEmpty()) {
             console.log('validation error!');
-            return res.status(400).json({ errors: errors.array() });
+            return res.send({ error: 'input' });
         }
 
         Customer.findOne({ phoneNumber: req.body.phoneNumber })
             .then(doc => {
                 if (doc) {
-                    res.render('customer/sign-up', { pageTitle: 'Đăng ký', layout: 'no-header', error: 'Tài khoản đã tồn tại!', shopInfo: res.locals.shopInfo, })
+                    res.send({ error: 'exist' })
                 }
                 else if (isValidPhoneNumber(req.body.phoneNumber, 'VN')) {
                     const password = req.body.password;
                     bcrypt.genSalt(10, function (err, salt) {
                         if (err) {
                             console.error(err);
-                            return res.status(400).json({ errors: errors.array() });
+                            return res.send({ error: 'system' });
                         }
                         bcrypt.hash(password, salt, function (err, hash) {
                             if (err) {
                                 console.error(err);
-                                return res.status(400).json({ errors: errors.array() });
+                                return res.send({ error: 'system' });
                             }
                             req.body.password = hash;
                             const cart = new Cart({
@@ -134,10 +133,10 @@ class SiteController {
                             console.log('created new account - customer');
                         });
                     });
-                    res.redirect('/dangnhap');
+                    res.send({ created: 1 });
                 }
                 else
-                    res.render('customer/sign-up', { pageTitle: 'Đăng ký', layout: 'no-header', error: 'Số điện thoại không hợp lệ!', shopInfo: res.locals.shopInfo, })
+                    res.send({ error: 'phone' });
 
             })
     }
