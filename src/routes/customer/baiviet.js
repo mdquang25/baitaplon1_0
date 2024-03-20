@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const baivietController = require('../../public/app/viewsController/customer/BaivietController');
-const userInterfaceObjects = require('../middleware/userInterfaceObjects.js');
-const getCategories = require('../middleware/getCategories.js');
+const userInterfaceObjects = require('../../public/middlewares/userInterfaceObjects.js');
+const getCategories = require('../../public/middlewares/getCategories.js');
+const initSortable = require('../../public/middlewares/initSortable');
 
 
 router.get('/:slug', userInterfaceObjects, getCategories, baivietController.read);
-router.get('/', userInterfaceObjects, getCategories, baivietController.index);
+router.get('/', userInterfaceObjects, getCategories, initSortable, baivietController.index);
 
 module.exports = router;

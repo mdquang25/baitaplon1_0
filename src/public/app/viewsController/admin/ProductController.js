@@ -11,7 +11,7 @@ const path = require('path');
 class ProductController {
     productManagement(req, res, next) {
         console.log('products - admin');
-        Product.find({})
+        Product.find({}).sortList(req)
             .then(products => {
                 res.render('admin/product/products', { pageTitle: 'Quản lý sản phẩm', layout: 'admin', isAdmin: req.session.isAdmin, products: multiMongooseToObjs(products), });
             }).catch(next);

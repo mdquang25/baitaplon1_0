@@ -14,7 +14,7 @@ class ImportController {
     //[GET] /admin/kho/nhaphang/lichsu?print=
     history(req, res, next) {
         const printId = req.query.print;
-        ImportBill.find({})
+        ImportBill.find({}).sortList(req)
             .then(importBills => {
                 res.render('admin/product/import-history', { pageTitle: 'Lịch sử nhập hàng', layout: 'admin', isAdmin: req.session.isAdmin, importBills: multiMongooseToObjs(importBills), printId })
             })

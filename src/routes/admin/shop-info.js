@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const shopInfoController = require('../../public/app/viewsController/admin/ShopInfoController');
-const uploader = require('../middleware/uploader');
-const requireManagerLogin = require('../middleware/requireManagerLogin');
+const uploader = require('../../public/middlewares/uploader');
+const requireManagerLogin = require('../../public/middlewares/requireManagerLogin');
 
 router.post('/quangcao/luu', requireManagerLogin,uploader.single('image'), shopInfoController.saveCarousel);
 router.put('/thongtin/luu', requireManagerLogin, shopInfoController.saveInfo);

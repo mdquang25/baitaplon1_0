@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
 const siteController = require('../../public/app/viewsController/customer/SiteController');
-const userInterfaceObjects = require('../middleware/userInterfaceObjects.js');
+const userInterfaceObjects = require('../../public/middlewares/userInterfaceObjects.js');
+const initSortable = require('../../public/middlewares/initSortable');
 
 
 router.post('/dangnhap', userInterfaceObjects, [
@@ -19,6 +20,6 @@ router.get('/dangxuat', siteController.logout);
 router.get('/dangky', userInterfaceObjects, siteController.signUp);
 router.get('/lien-he', userInterfaceObjects, siteController.contactUs);
 router.get('/not-found-404', siteController.notFound);
-router.get('/', userInterfaceObjects, siteController.index);
+router.get('/', userInterfaceObjects, initSortable, siteController.index);
 
 module.exports = router;

@@ -37,7 +37,7 @@ class SiteController {
         if (req.session.isLoggedin)
             res.redirect('/');
         else {
-            res.render('customer/login', { pageTitle: 'Đăng nhập', layout: 'no-header', shopInfo: res.locals.shopInfo, });
+            res.render('customer/login', { pageTitle: 'Đăng nhập',});
         }
     }
 
@@ -56,7 +56,7 @@ class SiteController {
                 .then((customer) => {
                     if (!customer) {
                         console.log('User not found');
-                        res.render('customer/login', { pageTitle: 'Đăng nhập', layout: 'no-header', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body });
+                        res.render('customer/login', { pageTitle: 'Đăng nhập', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body });
                         return;
                     }
                     bcrypt.compare(req.body.password, customer.password, function (err, isMatch) {
@@ -76,7 +76,7 @@ class SiteController {
                             res.redirect('/');
                         } else {
                             console.log('Invalid password');
-                            res.render('customer/login', { pageTitle: 'Đăng nhập', layout: 'no-header', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body, shopInfo: res.locals.shopInfo, })
+                            res.render('customer/login', { pageTitle: 'Đăng nhập', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body,})
                         }
                     });
                 })
@@ -90,7 +90,7 @@ class SiteController {
         if (req.session.isLoggedin)
             res.redirect('/');
         else
-            res.render('customer/sign-up', { pageTitle: 'Đăng ký', layout: 'no-header', shopInfo: res.locals.shopInfo, })
+            res.render('customer/sign-up', { pageTitle: 'Đăng ký',})
     }
 
     //[POST] /dangky
@@ -149,7 +149,7 @@ class SiteController {
     }
 
     contactUs(req, res, next) {
-        res.render('customer/contact', { pageTitle: 'Liên hệ đặt mẫu theo yêu cầu', isLoggedin: req.session.isLoggedin, })
+        res.render('customer/contact', { pageTitle: 'Liên hệ đặt mẫu theo yêu cầu', })
     }
     notFound(req, res) {
         console.log('not found page?? - customer');

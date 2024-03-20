@@ -13,10 +13,10 @@
         <tr>
             <th scope="col" class="table-header"></th>
             <th scope="col" class="table-header to-be-hidden">STT</th>
-            <th scope="col" class="table-header">Tên sản phẩm</th>
-            <th scope="col" class="table-header mobile-hidden">Đơn giá</th>
-            <th scope="col" class="table-header mobile-hidden">Kho</th>
-            <th scope="col" class="table-header to-be-hidden">Đã bán</th>
+            <th scope="col" class="table-header">Tên sản phẩm {{{sortable sort 'name'}}}</th>
+            <th scope="col" class="table-header mobile-hidden">Đơn giá {{{sortable sort 'price'}}}</th>
+            <th scope="col" class="table-header mobile-hidden">Kho {{{sortable sort 'stock'}}}</th>
+            <th scope="col" class="table-header to-be-hidden">Đã bán {{{sortable sort 'sold'}}}</th>
             <th scope="col" class="table-header">Ảnh</th>
             <th scope="col" class="table-header to-be-hidden">Mô tả</th>
             <th scope="col"></th>
@@ -56,8 +56,9 @@
                     <p class="management_description">{{this.description}}</p>
                 </td>
                 <td><a href="/admin/kho/sanpham/{{this.slug}}/sua" class="btn btn-info">Sửa</a></td>
-                <td class=" mobile-hidden"><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"
-                        data-delete-id="{{this._id}}" data-product-name="{{this.name}}">Xóa</button>
+                <td class=" mobile-hidden"><button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#confirmDeleteModal" data-delete-id="{{this._id}}"
+                        data-product-name="{{this.name}}">Xóa</button>
                 </td>
             </tr>
             {{/each}}

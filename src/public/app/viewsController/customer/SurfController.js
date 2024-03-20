@@ -25,11 +25,11 @@ class ProductController {
                             return category;
                         });
                 });
-                console.log('category: ', selectedCategory);
                 Promise.all(categories).then(categories => {
                     Promise.all([Product.find({ typesIds: { $in: selectedCategory.typesIds } }), Carousel.find({})])
                         .then(([products, carousels]) => {
-                            res.render('customer/home', { pageTitle: selectedCategory.name, isLoggedin: req.session.isLoggedin, categories, products: multiMongooseToObjs(products), carousels: multiMongooseToObjs(carousels), });
+                            const searchHeading = 'Danh mục ' + selectedCategory.name.toUpperCase() + ':';
+                            res.render('customer/home', { pageTitle: selectedCategory.name, isLoggedin: req.session.isLoggedin, categories, products: multiMongooseToObjs(products), searchHeading, carousels: multiMongooseToObjs(carousels), });
                         }).catch(next);
                 }).catch(next);
             }).catch(next);

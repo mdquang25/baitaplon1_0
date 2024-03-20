@@ -4,9 +4,10 @@ const productController = require('../../public/app/viewsController/admin/Produc
 const categoryController = require('../../public/app/viewsController/admin/CategoryController');
 const typeController = require('../../public/app/viewsController/admin/TypeController');
 const importController = require('../../public/app/viewsController/admin/ImportController');
-const uploader = require('../middleware/uploader');
-const getShopInfo = require('../middleware/getShopInfo');
-const requireManagerLogin = require('../middleware/requireManagerLogin');
+const uploader = require('../../public/middlewares/uploader');
+const getShopInfo = require('../../public/middlewares/getShopInfo');
+const requireManagerLogin = require('../../public/middlewares/requireManagerLogin');
+const initSortable = require('../../public/middlewares/initSortable');
 
 
 router.post('/nhaphang/luu-phieu-nhap', requireManagerLogin, importController.saveImport);
@@ -14,17 +15,17 @@ router.post('/nhaphang/luu-phieu-nhap', requireManagerLogin, importController.sa
 router.get('/nhaphang/tim-san-pham', requireManagerLogin, importController.findProduct);
 router.get('/nhaphang/lichsu/:id/in-phieu', requireManagerLogin, getShopInfo, importController.printImportBill);
 router.get('/nhaphang/lichsu/:id', requireManagerLogin, importController.importDetails);
-router.get('/nhaphang/lichsu', requireManagerLogin, importController.history);
+router.get('/nhaphang/lichsu', requireManagerLogin, initSortable, importController.history);
 router.get('/nhaphang', requireManagerLogin, importController.import);
 
 router.post('/chude/luu', requireManagerLogin, categoryController.saveCategory);
 router.patch('/chude/:slug/sua', requireManagerLogin, categoryController.saveModifiedCategory);
 router.delete('/chude/xoa', requireManagerLogin, categoryController.deleteCategory);
 
-router.get('/chude-phanloai', requireManagerLogin, categoryController.index);
+router.get('/chude-phanloai', requireManagerLogin, initSortable, categoryController.index);
 router.get('/chude/them', requireManagerLogin, categoryController.addCategory);
 router.get('/chude/:slug/sua', requireManagerLogin, categoryController.modifyCategory);
-router.get('/chude/:slug', requireManagerLogin, categoryController.categoryDetails);
+router.get('/chude/:slug', requireManagerLogin, initSortable, categoryController.categoryDetails);
 
 
 router.post('/chude/:slug/them-phanloai/luu', requireManagerLogin, uploader.single('icon'), typeController.saveType);
@@ -42,7 +43,7 @@ router.patch('/sanpham/xoachon', requireManagerLogin, productController.deleteMa
 router.get('/sanpham/:slug/sua', requireManagerLogin, productController.modifyProduct);
 router.get('/sanpham/them', requireManagerLogin, productController.addProduct);
 router.get('/sanpham/:slug', requireManagerLogin, productController.productDetails);
-router.get('/sanpham', requireManagerLogin, productController.productManagement);
+router.get('/sanpham', requireManagerLogin, initSortable, productController.productManagement);
 router.get('/', requireManagerLogin, productController.productManagement);
 
 

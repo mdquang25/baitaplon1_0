@@ -1,6 +1,6 @@
 const requireLogin = (req, res, next) => {
     if (!req.session.isLoggedin) {
-       res.send({requireLogin: true});
+        res.send({requireLogin: true});
     }
     else
         next();

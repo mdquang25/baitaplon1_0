@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const adminMyAccountController = require('../../public/app/viewsController/admin/AdminMyAccountController');
-const requireManagerLogin = require('../middleware/requireManagerLogin');
-
+const requireManagerLogin = require('../../public/middlewares/requireManagerLogin');
 
 router.patch('/sua', requireManagerLogin, adminMyAccountController.saveModify);
 router.patch('/doimatkhau', requireManagerLogin, adminMyAccountController.saveChangePassword);

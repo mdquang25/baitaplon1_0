@@ -1,7 +1,8 @@
-const Cart = require('../../public/app/models/Cart');
-const ShopInfo = require('../../public/app/models/ShopInfo');
+const Cart = require('../app/models/Cart');
+const ShopInfo = require('../app/models/ShopInfo');
 
 const userHeaderObjects = (req, res, next) => {
+    console.log('userHeaderObjects');
     ShopInfo.findOne({})
         .then(doc => {
             if (doc) {

@@ -7,7 +7,7 @@ const Product = new mongoose.Schema(
     {
         name: { type: String, require: true },
         description: { type: String },
-        onSale: { type: Boolean, default: false},
+        onSale: { type: Boolean, default: false },
         oldPrice: { type: mongoose.Types.Decimal128, default: 0, },
         price: { type: mongoose.Types.Decimal128, default: 0, },
         stock: { type: Number, default: 0, },
@@ -26,6 +26,14 @@ const Product = new mongoose.Schema(
     },
 );
 
+//custom function
+Product.query.sortList = function (req) {
+    if (req.query.hasOwnProperty('sort')) {
+        const isValidType = ['asc', 'desc'].includes(req.query.type);
+        return this.sort({ [req.query.field]: isValidType? req.query.type : 'asc', });
+    }
+    return this;
+}
 Product.index({ name: 'text' });
 Product.plugin(slug, { tmpl: '<%=name%>' });
 Product.plugin(softDelete);

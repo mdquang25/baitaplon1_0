@@ -14,7 +14,7 @@ class AdminAcountManagementController {
                     address: user.address,
                     dateOfBirth: user.dateOfBirth,
                 }
-                res.render('admin/account/info', { pageTitle: 'Tài khoản của tôi', layout: 'admin', account, isAdmin: req.session.isAdmin, })
+                res.render('admin/account/info', { pageTitle: 'Tài khoản của tôi', layout: 'admin', account, })
             }).catch(next);
     }
 
@@ -24,7 +24,7 @@ class AdminAcountManagementController {
             .then((user) => {
                 const account = mongooseToObj(user);
                 account.password = null;
-                res.render('admin/account/modify-profile', { pageTitle: 'Sửa tài khoản của tôi', layout: 'admin', account, isAdmin: req.session.isAdmin, })
+                res.render('admin/account/modify-profile', { pageTitle: 'Sửa tài khoản của tôi', layout: 'admin', account, })
             }).catch(next);
     }
 
@@ -47,7 +47,7 @@ class AdminAcountManagementController {
 
     changePassword(req, res, next) {
         console.log('change password - admin');
-        res.render('admin/account/change-password', { pageTitle: 'Đổi mật khẩu', layout: 'no-header-footer', isAdmin: req.session.isAdmin, });
+        res.render('admin/account/change-password', { pageTitle: 'Đổi mật khẩu', layout: 'no-header-footer',});
     }
 
     //[PATCH] /admin/taikhoancuatoi/doimatkhau

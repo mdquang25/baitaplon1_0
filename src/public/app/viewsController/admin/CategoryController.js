@@ -8,44 +8,51 @@ const path = require('path');
 class CategoryController {
     index(req, res, next) {
         console.log('categories - admin');
-        Category.find({})
+        Category.find({}).sortList(req)
             .then((docs) => {
                 const categories = multiMongooseToObjs(docs);
-                const promises = [];
-
-                categories.forEach((category) => {
-                    const typePromise = Type.find({ categoryId: category._id })
+                const promises = categories.map((category) => {
+                    return Type.find({ categoryId: category._id })
                         .then((types) => {
                             const type_ids = types.map(type => type._id);
                             category.typeCount = types.length;
-                            return Product.find({ typesIds: { $in: type_ids } })
-                                .then((products) => {
-                                    category.productCount = products.length;
+                            return Product.countDocuments({ typesIds: { $in: type_ids } })
+                                .then((count) => {
+                                    category.productCount = count;
+                                    return category;
                                 });
                         });
-
-                    promises.push(typePromise);
                 });
+                Promise.all(promises)
+                    .then(categories => {
+                        Type.countDocuments({})
+                            .then((typeCount) => {
+                                if (req.query.hasOwnProperty('sort')) {
+                                    const sortList = {
+                                        asc: (a, b) => b[req.query.field] - a[req.query.field],
+                                        desc: (a, b) => a[req.query.field] - b[req.query.field]
+                                    }
+                                    const isValidType = ['asc', 'desc'].includes(req.query.type);
+                                    if (['typeCount', 'productCount'].includes(req.query.field)) {
+                                        categories.sort(sortList[isValidType? req.query.type : 'desc']);
+                                    }
+                                }
+                                res.render('admin/product/categories-types', {
+                                    pageTitle: 'Quản lý phân loại',
+                                    layout: 'admin',
+                                    categories,
+                                    typeCount,
+                                });
+                            });
+                    })
 
-                return Promise.all(promises)
-                    .then(() => Type.countDocuments({}))
-                    .then((typeCount) => {
-                        res.render('admin/product/categories-types', {
-                            pageTitle: 'Quản lý phân loại',
-                            layout: 'admin',
-                            manager: req.session.manager,
-                            categories,
-                            typeCount,
-                            isAdmin: req.session.isAdmin, 
-                        });
-                    });
             })
             .catch(next);
     }
 
     addCategory(req, res) {
         console.log('add category- admin');
-        res.render('admin/product/add-category', { pageTitle: 'Thêm phân chủ đề', layout: 'admin', isAdmin: req.session.isAdmin, });
+        res.render('admin/product/add-category', { pageTitle: 'Thêm phân chủ đề', layout: 'admin', });
     }
 
     //[POST] /admin/kho/chude/luu

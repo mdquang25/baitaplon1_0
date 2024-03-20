@@ -28,6 +28,8 @@ class adminSiteController {
             if (!errors.isEmpty()) {
                 console.log('validation error');
             }
+            else {
+                const errorMessage = 'tài khoản hoặc mật khẩu không đúng!';
             const checkPassword = (admin) => {
                 bcrypt.compare(req.body.password, admin.password, function (err, isMatch) {
                     if (err) {
@@ -45,7 +47,7 @@ class adminSiteController {
                         res.redirect('/admin');
                     } else {
                         console.log('Invalid admin password');
-                        res.render('admin/admin-login', { pageTitle: 'Admin đăng nhập', layout: 'no-header-footer', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body });
+                        res.render('admin/admin-login', { pageTitle: 'Admin đăng nhập', layout: 'no-header-footer', error: errorMessage, preInput: req.body });
                     }
                 });
             }
@@ -54,7 +56,7 @@ class adminSiteController {
                     if (admin)
                         checkPassword(admin);
                     else
-                        res.render('admin/admin-login', { pageTitle: 'Admin đăng nhập', layout: 'no-header-footer', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body });
+                        res.render('admin/admin-login', { pageTitle: 'Admin đăng nhập', layout: 'no-header-footer', error: errorMessage, preInput: req.body });
                 }).catch(() => {
                     Admin.findOne({ phoneNumber: req.body.username })
                         .then(admin => {
@@ -62,11 +64,12 @@ class adminSiteController {
                                 checkPassword(admin);
                             }
                             else
-                                res.render('admin/admin-login', { pageTitle: 'Admin đăng nhập', layout: 'no-header-footer', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body });
+                                res.render('admin/admin-login', { pageTitle: 'Admin đăng nhập', layout: 'no-header-footer', error: errorMessage, preInput: req.body });
                         }).catch(() => {
-                            res.render('admin/admin-login', { pageTitle: 'Admin đăng nhập', layout: 'no-header-footer', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body });
+                            res.render('admin/admin-login', { pageTitle: 'Admin đăng nhập', layout: 'no-header-footer', error: errorMessage, preInput: req.body });
                         });
                 });
+            }
         }
     }
 

@@ -20,7 +20,14 @@ const ImportBill = new mongoose.Schema(
         timestamps: true,
     },
 );
-
+//custom function
+ImportBill.query.sortList = function (req) {
+    if (req.query.hasOwnProperty('sort')) {
+        const isValidType = ['asc', 'desc'].includes(req.query.type);
+        return this.sort({ [req.query.field]: isValidType ? req.query.type : 'asc', });
+    }
+    return this;
+}
 ImportBill.plugin(softDelete);
 
 module.exports = mongoose.model('ImportBill', ImportBill);

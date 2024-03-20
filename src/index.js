@@ -7,7 +7,7 @@ const path = require('path');
 const methodOverride = require('method-override');
 const session = require('./config/db/mongodb-session');
 const cookieParser = require('cookie-parser');
-
+const getSessionInfo = require('./public/middlewares/getSessionInfo');
 
 //const storage = require('./config/firebaseStorage');
 
@@ -31,19 +31,14 @@ app.use(methodOverride(function (req, res) {
 
 app.use(cookieParser());
 app.use(session);
-
+app.use(getSessionInfo);
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, '..', 'node_modules')));
 app.engine(
     'hbs',
     handlebar.engine({
-        helpers: {
-            sum: (a, b) => a + b,
-            subtract: (a, b) => a - b,
-            valueAt: (a, b) => a[b],
-            mult: (a, b) => a*b,
-        },
+        helpers: require('./helpers/handlebars'),
         extname: 'hbs',
     }),
 );

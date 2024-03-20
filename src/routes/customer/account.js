@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const customerMyAccountController = require('../../public/app/viewsController/customer/CustomerMyAccountController.js');
-const requireLogin = require('../middleware/requireLogin');
-const userInterfaceObjects = require('../middleware/userInterfaceObjects.js');
-const getCategories = require('../middleware/getCategories.js');
+const requireLogin = require('../../public/middlewares/requireLogin');
+const userInterfaceObjects = require('../../public/middlewares/userInterfaceObjects.js');
+const getCategories = require('../../public/middlewares/getCategories.js');
 
 router.patch('/sua', requireLogin, customerMyAccountController.saveModify);
 router.patch('/doimatkhau', requireLogin, customerMyAccountController.saveChangePassword);

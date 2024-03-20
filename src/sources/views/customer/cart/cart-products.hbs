@@ -110,11 +110,11 @@
         <div class="form-check d-flex justify-content-center align-items-center ms-3">
             <input class="form-check-input fs-5 my-auto" type="checkbox" id="check-all-2">
             <label class="form-check-label d-flex align-items-center" for="check-all-2">&nbsp;<span
-                    class="to-be-hidden">Chọn&nbsp;</span>tất cả
+                    class="to-be-hidden">Chọn&nbsp;</span>tất cả</label>
                 {{!-- <span class="to-be-hidden">({{productQs.length}})</span> --}}
-                <button class="btn btn-outline-danger mx-2" data-bs-toggle="modal"
+                <button id="delete-selected-btn" class="disabled btn btn-outline-danger mx-2" data-bs-toggle="modal"
                     data-bs-target="#confirmDeleteModal">Xóa</button>
-            </label>
+            
         </div>
         <div class="d-flex">
             <div class="mobile-break d-flex align-items-center">
@@ -154,6 +154,7 @@
     const checkBoxes = [...document.getElementsByClassName('checkbox')];
     const selectForm = document.getElementById('select-form');
     const placeOrderBtn = document.getElementById('place-order');
+    const deleteSelectedBtn = document.getElementById('delete-selected-btn');
     const queueLength = document.getElementById('queue-length');
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -192,9 +193,10 @@
         img.setAttribute('src', img.getAttribute('data-src'));
     }
     placeOrderBtn.addEventListener('click', (e) => {
-        if(parseInt(document.getElementById('total').getAttribute('data-value'))>0){selectForm.action = '/giohang/dat-hang';
-        selectForm.querySelector(':first-child').setAttribute('value', 'POST');
-        selectForm.submit();
+        if (parseInt(document.getElementById('total').getAttribute('data-value')) > 0) {
+            selectForm.action = '/giohang/dat-hang';
+            selectForm.querySelector(':first-child').setAttribute('value', 'POST');
+            selectForm.submit();
         }
     });
 
@@ -230,8 +232,9 @@
             sumTotalLabel.setAttribute('data-value', count);
             sumTotalTag.innerHTML = total.toLocaleString('vi-VN') + 'đ';
             sumTotalTag.setAttribute('data-value', total);
-            if (count>0)
+            if (count > 0)
                 placeOrderBtn.classList.remove('disabled');
+            deleteSelectedBtn.classList.remove('disabled');
         }
         else {
             const sumTotalLabel = document.getElementById('total-label');
@@ -241,6 +244,7 @@
             sumTotalTag.innerHTML = '0đ';
             sumTotalTag.setAttribute('data-value', 0);
             placeOrderBtn.classList.add('disabled');
+            deleteSelectedBtn.classList.add('disabled');
         }
     }
     checkBoxes.forEach(checkbox => {
@@ -268,10 +272,14 @@
             checkAll_1.checked = allChecked;
             checkAll_2.checked = allChecked;
 
-            if (count === 0 && !placeOrderBtn.classList.contains('disabled'))
+            if (count === 0 && !placeOrderBtn.classList.contains('disabled')) {
                 placeOrderBtn.classList.add('disabled');
-            else if (count > 0 && placeOrderBtn.classList.contains('disabled'))
+                deleteSelectedBtn.classList.add('disabled');
+            }
+            else if (count > 0 && placeOrderBtn.classList.contains('disabled')) {
                 placeOrderBtn.classList.remove('disabled');
+                deleteSelectedBtn.classList.remove('disabled');
+            }
         })
     });
 

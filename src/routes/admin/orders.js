@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const requireManagerLogin = require('../middleware/requireManagerLogin');
+const requireManagerLogin = require('../../public/middlewares/requireManagerLogin');
 const ordersController = require('../../public/app/viewsController/admin/OrdersController');
-const getShopInfo = require('../middleware/getShopInfo');
+const getShopInfo = require('../../public/middlewares/getShopInfo');
+const initSortable = require('../../public/middlewares/initSortable');
 
 
 router.post('/luu-don-hang', requireManagerLogin, getShopInfo, ordersController.saveNewOrder);
@@ -15,5 +16,5 @@ router.get('/:id/chitiet', requireManagerLogin, ordersController.orderDetails);
 router.get('/don-hoan-thanh', requireManagerLogin, ordersController.doneOrders);
 router.get('/timkiem', requireManagerLogin, ordersController.search);
 router.get('/them', requireManagerLogin, getShopInfo, ordersController.addOrder);
-router.get('/', requireManagerLogin, ordersController.index);
+router.get('/', requireManagerLogin, initSortable, ordersController.index);
 module.exports = router;
