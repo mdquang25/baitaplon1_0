@@ -1,32 +1,33 @@
 <div class="text-center mb-5">
-<h1 id="brand-name-label">Việt Tuấn Trung</h1>
-<form action="/dangnhap" method="post" class="floating-label vstack gap-2 col-md-5 mx-auto">
-    <h1 id="sign-label">Đăng nhập</h1>
-    <div class="row align-items-center form-floating mb-3">
-        <input type="tel" autocomplete="tel" name="phoneNumber" class="form-control" id="phoneNumber"
-            placeholder="Tên đăng nhập" value="{{preInput.phoneNumber}}" required>
-        <label for="phoneNumber">Số điện thoại</label>
-    </div>
-    <div class="row align-items-center form-floating mb-3">
-        <input type="password" autocomplete="current-password" name="password" class="form-control psition-relative"
-            id="floatingPassword" placeholder="Mật khẩu" value="{{preInput.password}}" required>
-        <button class=" position-absolute top-50 end-0 translate-middle-y eye-icon-btn" type="button"
-            id="togglePasswordButton">
-            <i class="fa-regular fa-eye-slash"></i>
-        </button>
-        <label for="floatingPassword">Mật khẩu</label>
-        <div id="error-message" class="form-text text-secondary text-danger">
-            {{error}}
+    <h1 id="brand-name-label">Việt Tuấn Trung</h1>
+    <form id="form" action="/dangnhap" method="post" class="floating-label vstack gap-2 col-md-5 mx-auto">
+        <h1 id="sign-label">Đăng nhập</h1>
+        <div class="row align-items-center form-floating mb-3">
+            <input id="phoneNumber" maxlength="32" type="tel" autocomplete="tel" name="phoneNumber" class="form-control"
+                id="phoneNumber" placeholder="Số điện thoại.." value="{{preInput.phoneNumber}}" required>
+            <label for="phoneNumber">Số điện thoại đăng nhập</label>
         </div>
-    </div>
-    <button id="submit-btn" type="submit" class="btn btn-primary p-3">Đăng nhập</button>
-    <a class="no-decor-link" href="/dangky">Đăng ký tài khoản</a>
-</form>
+        <div class="row align-items-center form-floating mb-3">
+            <input type="password" maxlength="32" autocomplete="current-password" name="password"
+                class="form-control psition-relative" id="password" placeholder="Mật khẩu" value="{{preInput.password}}"
+                required>
+            <button class=" position-absolute top-50 end-0 translate-middle-y eye-icon-btn" type="button"
+                id="togglePasswordButton">
+                <i class="fa-regular fa-eye-slash"></i>
+            </button>
+            <label for="password">Mật khẩu</label>
+            <div id="error-message" class="form-text text-secondary text-danger">
+                {{error}}
+            </div>
+        </div>
+        <button id="submit-btn" type="submit" class="btn btn-primary p-3">Đăng nhập</button>
+        <a class="no-decor-link" href="/dangky">Đăng ký tài khoản</a>
+    </form>
 </div>
 <script>
-    const form = document.querySelector('form');
-    const phoneNumber = document.querySelector('input[name="phoneNumber"]');
-    const password = document.querySelector('input[name="password"]');
+    const form = document.getElementById('form');
+    const phoneNumber = document.getElementById('phoneNumber');
+    const password = document.getElementById('password');
     const errorLabel = document.getElementById('error-message');
     const togglePasswordButton = document.getElementById('togglePasswordButton');
 
@@ -47,6 +48,25 @@
         }
     });
 
+    phoneNumber.addEventListener('input', (e) => {
+        if (phoneNumber.value.length >= 32) {
+            errorLabel.innerHTML = 'Tên đăng nhập tối đa 32 kí tự!';
+        } else if (password.value.length >= 32) {
+            errorLabel.innerHTML = 'Mật khẩu tối đa 32 kí tự!';
+        } else{
+            errorLabel.innerHTML = '';
+        }
+    });
+
+    password.addEventListener('input', (e) => {
+        if (password.value.length >= 32) {
+            errorLabel.innerHTML = 'Mật khẩu tối đa 32 kí tự!';
+        } else if (phoneNumber.value.length >= 32) {
+            errorLabel.innerHTML = 'Tên đăng nhập tối đa 32 kí tự!';
+        } else {
+            errorLabel.innerHTML = '';
+        }
+    });
     function validateForm() {
         let isValid = true;
         phoneNumber.value = phoneNumber.value.trim();
@@ -54,8 +74,7 @@
         if (password.value.length < 6) {
             errorLabel.innerHTML = 'mật khẩu phải từ 6 ký tự trở lên!';
             isValid = false;
-        }else if (password.value.length > 32) {
-            errorLabel.innerHTML = 'mật khẩu tối đa 32 kí tự!';
+        } else if (password.value.length > 32) {
             isValid = false;
         }
 

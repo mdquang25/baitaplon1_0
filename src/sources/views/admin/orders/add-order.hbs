@@ -2,7 +2,7 @@
     <div class="col-lg-10 p-0">
         <div class=" mx-lg-1 px-2 text-bg-info py-3 mx-md-2 mt-4 rounded-1">
             <form id="search-form" class="d-flex me-md-2 me-lg-4 ms-2">
-                <input id="search-input" class="form-control me-1" name="phoneNumber" type="search"
+                <input id="search-input" maxlength="100" class="form-control me-1" type="search"
                     placeholder="Nhập tên hoặc mã sản phẩm.." aria-label="Search">
                 <button id="search-btn" class="btn btn-success" type="submit">Tìm kiếm</button>
             </form>
@@ -32,7 +32,7 @@
                     <input type="text" maxlength="40" id="reciever" name="reciever" placeholder="Nhập họ và tên.."
                         class="form-control">
                     <label for="phoneNumber" class="form-label mt-2 mb-0">Số điện thoại nhận hàng</label>
-                    <input type="number" maxlength="10" id="phoneNumber" name="phoneNumber"
+                    <input type="number" pattern="[0-9]{10}" maxlength="10" id="phoneNumber" name="phoneNumber"
                         placeholder="Nhập số điện thoại.." class="form-control">
                     <label for="address" class="form-label mt-2 mb-0">Địa chỉ giao hàng</label>
                     <input type="text" maxlength="150" id="address" name="address" placeholder="Nhập địa chỉ.."

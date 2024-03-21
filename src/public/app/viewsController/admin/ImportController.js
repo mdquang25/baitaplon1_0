@@ -16,7 +16,7 @@ class ImportController {
         const printId = req.query.print;
         ImportBill.find({}).sortList(req)
             .then(importBills => {
-                res.render('admin/product/import-history', { pageTitle: 'Lịch sử nhập hàng', layout: 'admin', isAdmin: req.session.isAdmin, importBills: multiMongooseToObjs(importBills), printId })
+                res.render('admin/product/import-history', { pageTitle: 'Lịch sử nhập hàng', layout: 'admin', importBills: multiMongooseToObjs(importBills), printId })
             })
 
     }
@@ -88,7 +88,7 @@ class ImportController {
             .then(doc => {
                 ProductQ.find({ _id: { $in: doc.productQ_ids } })
                     .then(productQs => {
-                        res.render('admin/product/import-details', { pageTitle: 'Chi tiết phiếu nhập hàng', layout: 'admin', isAdmin: req.session.isAdmin, importBill: mongooseToObj(doc), productQs: multiMongooseToObjs(productQs), })
+                        res.render('admin/product/import-details', { pageTitle: 'Chi tiết phiếu nhập hàng', layout: 'admin', importBill: mongooseToObj(doc), productQs: multiMongooseToObjs(productQs), })
                     })
             })
     }
@@ -98,7 +98,7 @@ class ImportController {
             .then(doc => {
                 ProductQ.find({ _id: { $in: doc.productQ_ids } })
                     .then(productQs => {
-                        res.render('admin/product/import-details-print', { pageTitle: 'In phiếu nhập hàng', layout: 'print', shopInfo: res.locals.shopInfo, importBill: mongooseToObj(doc), productQs: multiMongooseToObjs(productQs), })
+                        res.render('admin/product/import-details-print', { pageTitle: 'In phiếu nhập hàng', layout: 'print', importBill: mongooseToObj(doc), productQs: multiMongooseToObjs(productQs), })
                     })
             }).catch(() => res.redirect('/not-found-404'));
     }

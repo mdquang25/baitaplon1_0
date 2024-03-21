@@ -15,6 +15,10 @@
         {
             "folderPath": "baitaplon1_0\\src\\routes\\",
             "color": "foldercolorizer.pink"
+        },
+        {
+            "folderPath": "baitaplon1_0\\src\\public\\middlewares\\",
+            "color": "foldercolorizer.SeaGreenMedium"
         }
     ]
 }

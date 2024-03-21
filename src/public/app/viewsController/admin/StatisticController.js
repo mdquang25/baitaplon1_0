@@ -4,7 +4,7 @@ moment.tz.setDefault('Asia/Ho_Chi_Minh');
 
 class StatisticController {
     index(req, res, next) {
-        res.render('admin/statistic/index', { pageTitle: 'Thống kê', layout: 'admin', isAdmin: req.session.isAdmin, manager: req.session.manager });
+        res.render('admin/statistic/index', { pageTitle: 'Thống kê', layout: 'admin', });
     }
 
     countOrdersOfWeek(req, res, next) {

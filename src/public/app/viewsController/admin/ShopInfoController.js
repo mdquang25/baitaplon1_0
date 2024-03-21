@@ -19,7 +19,7 @@ class ShopInfoController {
                 let info;
                 if (doc)
                     info = mongooseToObj(doc);
-                res.render('admin/shop-info/info', { pageTitle: 'Quản lý thông tin cửa hàng', layout: 'admin', info, isAdmin: req.session.isAdmin, });
+                res.render('admin/shop-info/info', { pageTitle: 'Quản lý thông tin cửa hàng', layout: 'admin', info, });
             })
     }
 
@@ -83,7 +83,7 @@ class ShopInfoController {
         Carousel.findOne({ _id: req.params.id })
             .then(carousel => {
                 if (carousel) {
-                    res.render('admin/shop-info/modify-carousel', { pageTitle: 'Sửa quảng cáo', layout: 'admin', carousel: mongooseToObj(carousel), isAdmin: req.session.isAdmin, });
+                    res.render('admin/shop-info/modify-carousel', { pageTitle: 'Sửa quảng cáo', layout: 'admin', carousel: mongooseToObj(carousel), });
                 }
                 else
                     res.redirect('not-found-404');
@@ -100,13 +100,13 @@ class ShopInfoController {
                 if (docs) {
                     carousels = multiMongooseToObjs(docs);
                 }
-                res.render('admin/shop-info/carousels', { pageTitle: 'Tin quảng cáo', layout: 'admin', carousels, isAdmin: req.session.isAdmin, });
+                res.render('admin/shop-info/carousels', { pageTitle: 'Tin quảng cáo', layout: 'admin', carousels, });
             }).catch(next);
     }
     //[GET] /admin/shop/quangcao/them
     addCarousel(req, res, next) {
         console.log('add carousel - admin');
-        res.render('admin/shop-info/add-carousel', { pageTitle: 'Thêm tin quảng cáo', layout: 'admin', isAdmin: req.session.isAdmin, });
+        res.render('admin/shop-info/add-carousel', { pageTitle: 'Thêm tin quảng cáo', layout: 'admin', });
     }
 }
 

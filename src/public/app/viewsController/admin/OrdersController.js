@@ -30,7 +30,7 @@ class OrdersController {
                 const orders = {
                     orders0, orders1, orders2, orders3,
                 }
-                res.render('admin/orders/orders', { pageTitle: 'Đơn hàng', layout: 'admin', isAdmin: req.session.isAdmin, orders, printId });
+                res.render('admin/orders/orders', { pageTitle: 'Đơn hàng', layout: 'admin', orders, printId });
             });
     }
 
@@ -98,14 +98,14 @@ class OrdersController {
     }
 
     doneOrders(req, res, next) {
-        Order.find({ status: 4 })
+        Order.find({ status: 4 }).sort({ updatedAt: 'desc' })
             .then(orders => {
-            res.render('admin/orders/done-orders', {pageTitle: 'Đơn đã hoàn thành', layout: 'admin', isAdmin: req.session.isAdmin, orders: multiMongooseToObjs(orders), })
+            res.render('admin/orders/done-orders', {pageTitle: 'Đơn đã hoàn thành', layout: 'admin', orders: multiMongooseToObjs(orders), })
         })
     }
 
     addOrder(req, res, next) {
-        res.render('admin/orders/add-order', { pageTitle: 'Tạo đơn hàng', layout: 'admin', isAdmin: req.session.isAdmin, manager: req.session.manager, });
+        res.render('admin/orders/add-order', { pageTitle: 'Tạo đơn hàng', layout: 'admin', });
     }
 
     saveNewOrder(req, res, next) {
@@ -194,7 +194,7 @@ class OrdersController {
                     ProductQ.find({ _id: { $in: doc.productQ_ids } })
                         .then(docs => {
                             order.productQs = multiMongooseToObjs(docs);
-                            res.render('admin/orders/order-details', { pageTitle: 'Chi tiết đơn hàng', layout: 'admin', isAdmin: req.session.isAdmin, order, });
+                            res.render('admin/orders/order-details', { pageTitle: 'Chi tiết đơn hàng', layout: 'admin', order, });
                         }).catch(next);
                 }
                 else {

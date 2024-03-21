@@ -1,19 +1,19 @@
 <h1 id="brand-name-label">Việt Tuấn Trung</h1>
-<form action="/admin/dangnhap" method="post" class="floating-label vstack gap-2 col-md-5 mx-auto">
+<form id="form" action="/admin/dangnhap" method="post" class="floating-label vstack gap-2 col-md-5 mx-auto">
     <h1 id="sign-label">Đăng nhập vào admin</h1>
     <div class="row align-items-center form-floating mb-3">
-        <input type="text" autocomplete="username" name="username" class="form-control" id="floatingInput"
-            placeholder="Tên đăng nhập" value="{{preInput.username}}" required>
+        <input id="username" maxlength="32" type="text" autocomplete="username" name="username" class="form-control" id="floatingInput"
+            placeholder="Số điện thoại hoặc id.." value="{{preInput.username}}" required>
         <label for="floatingInput">Tài khoản</label>
     </div>
     <div class="row align-items-center form-floating mb-3">
-        <input type="password" autocomplete="current-password" name="password" class="form-control psition-relative"
-            id="floatingPassword" placeholder="Mật khẩu" value="{{preInput.password}}" required>
+        <input type="password" maxlength="32" autocomplete="current-password" name="password" class="form-control psition-relative"
+            id="password" placeholder="Mật khẩu" value="{{preInput.password}}" required>
         <button class=" position-absolute top-50 end-0 translate-middle-y eye-icon-btn" type="button"
             id="togglePasswordButton">
             <i class="fa-regular fa-eye-slash"></i>
         </button>
-        <label for="floatingPassword">Mật khẩu</label>
+        <label for="password">Mật khẩu</label>
         <div id="error-message" class="form-text text-secondary text-danger">
             {{error}}
         </div>
@@ -22,9 +22,9 @@
 </form>
 
 <script>
-    const form = document.querySelector('form');
-    const username = document.querySelector('input[name="username"]');
-    const password = document.querySelector('input[name="password"]');
+    const form = document.getElementById('form');
+    const username = document.getElementById('username');
+    const password = document.getElementById('password');
     const errorLabel = document.getElementById('error-message');
     const togglePasswordButton = document.getElementById('togglePasswordButton');
 
@@ -43,12 +43,34 @@
         }
     });
 
+    username.addEventListener('input', (e) => {
+            if (username.value.length >= 32) {
+                errorLabel.innerHTML = 'Tên đăng nhập tối đa 32 kí tự!';
+            } else if (password.value.length >= 32) {
+                errorLabel.innerHTML = 'Mật khẩu tối đa 32 kí tự!';
+            } else {
+                errorLabel.innerHTML = '';
+            }
+        });
+
+        password.addEventListener('input', (e) => {
+            if (password.value.length >= 32) {
+                errorLabel.innerHTML = 'Mật khẩu tối đa 32 kí tự!';
+            } else if (username.value.length >= 32) {
+                errorLabel.innerHTML = 'Tên đăng nhập tối đa 32 kí tự!';
+            } else {
+                errorLabel.innerHTML = '';
+            }
+        });
+    
     function validateForm() {
         let isValid = true;
         username.value = username.value.trim();
         password.value = password.value.trim();
         if (password.value.length < 6) {
             errorLabel.innerHTML = 'mật khẩu phải từ 6 ký tự trở lên!';
+            isValid = false;
+        } else if (password.value.length > 32) {
             isValid = false;
         }
 

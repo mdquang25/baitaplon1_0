@@ -14,7 +14,7 @@ class CustomerAcountManagementController {
                     address: user.address,
                     dateOfBirth: user.dateOfBirth,
                 }
-                res.render('customer/account/info', { pageTitle: 'Tài khoản của tôi', account, isLoggedin: req.session.isLoggedin, cart: res.locals.cart, shopInfo: res.locals.shopInfo, })
+                res.render('customer/account/info', { pageTitle: 'Tài khoản của tôi', account, cart: res.locals.cart, })
             }).catch(next);
     }
 
@@ -24,7 +24,7 @@ class CustomerAcountManagementController {
             .then((user) => {
                 const account = mongooseToObj(user);
                 account.password = null;
-                res.render('customer/account/modify-profile', { pageTitle: 'Sửa tài khoản của tôi', account, isLoggedin: req.session.isLoggedin, cart: res.locals.cart, shopInfo: res.locals.shopInfo, })
+                res.render('customer/account/modify-profile', { pageTitle: 'Sửa tài khoản của tôi', account, cart: res.locals.cart, })
             }).catch(next);
     }
 
@@ -48,7 +48,7 @@ class CustomerAcountManagementController {
 
     changePassword(req, res, next) {
         console.log('change password - customer');
-        res.render('customer/account/change-password', { pageTitle: 'Đổi mật khẩu', layout: 'no-header', isLoggedin: req.session.isLoggedin, shopInfo: res.locals.shopInfo, });
+        res.render('customer/account/change-password', { pageTitle: 'Đổi mật khẩu', layout: 'no-header', });
     }
 
     //[PATCH] /customer/taikhoancuatoi/doimatkhau

@@ -11,11 +11,11 @@
         <h1 class="text-center">Thêm sản phẩm</h1>
         <div class="mb-3">
             <label for="name" class="form-label mx-2">Tên sản phẩm</label>
-            <input type="text" name="name" id="name" autocomplete="cc-name" class="form-control" required>
+            <input type="text" maxlength="70" name="name" id="name" autocomplete="cc-name" class="form-control" required>
         </div>
         <div class="mb-3">
             <label for="stock" class="form-label mx-2">Số lượng</label>
-            <input type="number" name="stock" id="stock" class="form-control" required>
+            <input type="number" min="0" max="10000" name="stock" id="stock" class="form-control" required>
         </div>
         <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" role="switch" name="onSale" id="onSale" value="true">
@@ -24,7 +24,7 @@
         <div class="mb-3">
             <label for="oldPrice" class="form-label mx-2">Giá cũ</label>
             <div class="input-group">
-                <input type="number" name="oldPrice" id="oldPrice" autocomplete="transaction-amount"
+                <input type="number" min="0" max="10000000000" name="oldPrice" id="oldPrice" autocomplete="transaction-amount"
                     class="form-control" value="0" required>
                 <span class="input-group-text">đ</span>
             </div>
@@ -32,18 +32,18 @@
         <div class="mb-3">
             <label for="price" class="form-label mx-2">Giá hiện tại</label>
             <div class="input-group">
-                <input type="number" name="price" id="price" autocomplete="transaction-amount" class="form-control" required>
+                <input type="number" min="0" max="10000000000" name="price" id="price" autocomplete="transaction-amount" class="form-control" required>
                 <span class="input-group-text">đ</span>
             </div>
         </div>
         <div class="mb-3">
             <label for="description" class="form-label mx-2">Mô tả</label>
-            <textarea type="text" name="description" id="description" class="form-control" cols="30"
+            <textarea type="text" maxlength="200" name="description" id="description" class="form-control" cols="30"
                 rows="8"></textarea>
         </div>
         <div class="mb-3">
             <label for="formMultipleFile" class="form-label mx-2">Chọn các file ảnh</label>
-            <input class="form-control" name="images" type="file" id="formMultipleFile" multiple>
+            <input class="form-control" name="images" type="file" accept="image/*" id="formMultipleFile" multiple>
         </div>
 
         <label class="form-label mx-2">Chọn các phân loại</label>

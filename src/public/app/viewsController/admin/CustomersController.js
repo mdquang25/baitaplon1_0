@@ -9,7 +9,7 @@ class CustomersController{
     index(req, res, next) {
         Promise.all([Customer.countDocuments(), Customer.find().limit(25)])
             .then(([count, customers]) => {
-                res.render('admin/customers/list', { pageTitle: 'Khách hàng', layout: 'admin',count, customers: multiMongooseToObjs(customers), isAdmin: req.session.isAdmin, });
+                res.render('admin/customers/list', { pageTitle: 'Khách hàng', layout: 'admin',count, customers: multiMongooseToObjs(customers),});
             }).catch(next);
     }
 
@@ -17,11 +17,11 @@ class CustomersController{
         Customer.findOne({ phoneNumber: req.body.phoneNumber })
             .then(doc => {
                 if (doc)
-                    res.render('admin/customers/searchResult', { pageTitle: 'Tìm kiếm khách hàng', layout: 'admin', keyword: req.body.phoneNumber, customer: mongooseToObj(doc), isAdmin: req.session.isAdmin, });
+                    res.render('admin/customers/searchResult', { pageTitle: 'Tìm kiếm khách hàng', layout: 'admin', keyword: req.body.phoneNumber, customer: mongooseToObj(doc),});
                 else
-                    res.render('admin/customers/searchFailed', { pageTitle: 'Tìm kiếm khách hàng', layout: 'admin', keyword: req.body.phoneNumber, isAdmin: req.session.isAdmin, });
+                    res.render('admin/customers/searchFailed', { pageTitle: 'Tìm kiếm khách hàng', layout: 'admin', keyword: req.body.phoneNumber, });
             }).catch(() =>
-                res.render('admin/customers/searchFailed', { pageTitle: 'Tìm kiếm khách hàng', layout: 'admin', keyword: req.body.phoneNumber, isAdmin: req.session.isAdmin, })
+                res.render('admin/customers/searchFailed', { pageTitle: 'Tìm kiếm khách hàng', layout: 'admin', keyword: req.body.phoneNumber, })
         );
     }
 
@@ -58,7 +58,7 @@ class CustomersController{
                                     const orders = {
                                         orders0, orders1, orders2, orders3, orders4,
                                     }
-                                    res.render('admin/customers/orders', { pageTitle: 'Đơn mua của khách hàng', layout: 'admin', orders,customer, isAdmin: req.session.isAdmin, })
+                                    res.render('admin/orders/orders', { pageTitle: 'Đơn mua của khách hàng', layout: 'admin', orders,customer, })
                                 })
                         });
                 }

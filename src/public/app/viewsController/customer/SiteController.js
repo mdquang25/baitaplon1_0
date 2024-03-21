@@ -37,7 +37,7 @@ class SiteController {
         if (req.session.isLoggedin)
             res.redirect('/');
         else {
-            res.render('customer/login', { pageTitle: 'Đăng nhập',});
+            res.render('customer/login', { pageTitle: 'Đăng nhập', });
         }
     }
 
@@ -72,11 +72,19 @@ class SiteController {
                                 cartId: customer.cartId,
                             };
                             req.session.isLoggedin = true;
-                            console.log('logged in - customer');
-                            res.redirect('/');
+                            req.session.save(function (err) {
+                                if (err) {
+                                    console.log('Session saving error!');
+                                    res.redirect('back');
+                                } else {
+                                    console.log('logged in - customer');
+                                    res.redirect('/');
+                                }
+                            });
+
                         } else {
                             console.log('Invalid password');
-                            res.render('customer/login', { pageTitle: 'Đăng nhập', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body,})
+                            res.render('customer/login', { pageTitle: 'Đăng nhập', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body, })
                         }
                     });
                 })
@@ -90,7 +98,7 @@ class SiteController {
         if (req.session.isLoggedin)
             res.redirect('/');
         else
-            res.render('customer/sign-up', { pageTitle: 'Đăng ký',})
+            res.render('customer/sign-up', { pageTitle: 'Đăng ký', })
     }
 
     //[POST] /dangky

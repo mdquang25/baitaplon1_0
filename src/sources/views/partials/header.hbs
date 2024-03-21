@@ -15,7 +15,7 @@
     </div>
 </nav>
 
-<div id="isLoggedin" class="d-none">{{isLoggedin}}</div>
+<input id="isLoggedin" hidden value="{{isLoggedin}}">
 <!--MAIN NAVBAR====================================-->
 <nav class="second-nav sticky-top navbar navbar-expand-md navbar-dark bg-dark py-0" data-bs-theme="dark">
     <div class="second-nav-content container-fluid d-flex mx-4 justify-content-start">
@@ -134,6 +134,7 @@
             top: 85px;
             right: 5px
         }
+
     }
 
     #form-search input {
@@ -180,7 +181,7 @@
         }
 
         #form-search:hover input {
-            width: 20rem;
+            width: 18rem;
             height: 2.7rem;
             opacity: 1;
         }
@@ -227,8 +228,9 @@
     }
 </style>
 <form id="form-search" action="/sanpham/tim-kiem" method="post" class="d-flex align-items-center mx-1">
-    <input id="search-input" name="query" class="form-control me-2" style="background-color: rgb(254, 211, 218);"
-        type="search" placeholder="Nhập tên sản phẩm.." aria-label="Search" required>
+    <input id="search-input" maxlength="150" name="query" class="form-control me-2"
+        style="background-color: rgb(254, 211, 218);" type="search" placeholder="Nhập tên sản phẩm.."
+        aria-label="Search" required>
     <button id="toggle-search" class="btn btn-success" type="submit"><i
             class="fa-solid fa-magnifying-glass p-0"></i></button>
 </form>
@@ -274,15 +276,9 @@
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
     crossorigin="anonymous"></script>
 <script>
-    const isLoggedin = document.getElementById('isLoggedin').innerHTML;
-    const signBtn = document.getElementById('sign-btn');
-    const cart = document.getElementById('cart');
     const myAccountDropdown = document.getElementById('my-account-dropdown');
     const logoutAlert = document.getElementById('logout-alert')
     const logoutBtn = document.getElementById('logout-btn')
-    const newProduct = document.getElementById('newProduct').value;
-    const newOrderUpdate = document.getElementById('newOrderUpdate').value;
-    const redDot = document.getElementById('red-dot');
     const signOutBtn = document.getElementById('sign-out-btn');
     const toastSuccessElement = document.getElementById('toast1')
     const toastDangerElement = document.getElementById('toast2')
@@ -310,25 +306,38 @@
             });
     })
 
-    if (newProduct !== 'true' && newProduct !== 'false') {
-        cart.classList.add('d-none');
-    }
-    else if (newProduct === 'true' || newOrderUpdate === 'true') {
-        redDot.classList.remove('d-none');
-    }
-
 
     logoutAlert.addEventListener('shown.bs.modal', () => {
         logoutBtn.focus();
     });
 
-    if (isLoggedin) {
-        signBtn.classList.add('d-none');
-    }
-    else {
-        cart.classList.add('d-none');
-        myAccountDropdown.classList.add('d-none');
-    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const newProduct = document.getElementById('newProduct').value;
+        const newOrderUpdate = document.getElementById('newOrderUpdate').value;
+        const redDot = document.getElementById('red-dot');
+        const isLoggedin = document.getElementById('isLoggedin');
+        const signBtn = document.getElementById('sign-btn');
+        const cart = document.getElementById('cart');
+
+
+        if (newProduct !== 'true' && newProduct !== 'false') {
+            cart.classList.add('d-none');
+        }
+        else if (newProduct === 'true' || newOrderUpdate === 'true') {
+            redDot.classList.remove('d-none');
+        }
+
+        console.log('isLoggedin: ', isLoggedin.value);
+        if (isLoggedin.value==='true') {
+            signBtn.classList.add('d-none');
+        }
+        else {
+            cart.classList.add('d-none');
+            myAccountDropdown.classList.add('d-none');
+        }
+    });
+    //DOMCONTENTLOADED END////////////
 
     function navigateTo(url) {
         window.location.href = url;

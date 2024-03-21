@@ -29,7 +29,7 @@ class ProductController {
                     Promise.all([Product.find({ typesIds: { $in: selectedCategory.typesIds } }), Carousel.find({})])
                         .then(([products, carousels]) => {
                             const searchHeading = 'Danh mục ' + selectedCategory.name.toUpperCase() + ':';
-                            res.render('customer/home', { pageTitle: selectedCategory.name, isLoggedin: req.session.isLoggedin, categories, products: multiMongooseToObjs(products), searchHeading, carousels: multiMongooseToObjs(carousels), });
+                            res.render('customer/home', { pageTitle: selectedCategory.name, categories, products: multiMongooseToObjs(products), searchHeading, carousels: multiMongooseToObjs(carousels), });
                         }).catch(next);
                 }).catch(next);
             }).catch(next);
@@ -39,7 +39,7 @@ class ProductController {
         console.log('product details - customer');
         Product.findOne({ slug: req.params.slug })
             .then(product => {
-                res.render('customer/product/product-details', { pageTitle: product.name, product: mongooseToObj(product), isLoggedin: req.session.isLoggedin, })
+                res.render('customer/product/product-details', { pageTitle: product.name, product: mongooseToObj(product), })
             })
     }
 
@@ -67,7 +67,7 @@ class ProductController {
                     Promise.all([Product.find({ $text: { $search: req.body.query } }), Carousel.find({})])
                         .then(([products, carousels]) => {
                             const searchHeading = 'Kết quả tìm kiếm với từ khóa "' + req.body.query + '":';
-                            res.render('customer/home', { pageTitle: 'Tìm kiếm', isLoggedin: req.session.isLoggedin, user: req.session.user, categories, products: multiMongooseToObjs(products), carousels: multiMongooseToObjs(carousels), searchHeading, });
+                            res.render('customer/home', { pageTitle: 'Tìm kiếm', categories, products: multiMongooseToObjs(products), carousels: multiMongooseToObjs(carousels), searchHeading, });
                         }).catch(next);
                 }).catch(next);
             }).catch(next);

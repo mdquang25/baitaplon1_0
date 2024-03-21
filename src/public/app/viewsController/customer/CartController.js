@@ -66,7 +66,7 @@ class CartController {
                     }).then(productQs => {
                         cart.newProduct = false;
                         cart.save();
-                        res.render('customer/cart/cart-products', { pageTitle: 'Giỏ hàng', isLoggedin: req.session.isLoggedin, productQs, cart: {} });
+                        res.render('customer/cart/cart-products', { pageTitle: 'Giỏ hàng', productQs, cart: {} });
                     });
             });
     }
@@ -114,7 +114,7 @@ class CartController {
                             productQs.forEach(productQ => {
                                 total += parseInt(productQ.quantity) * parseInt(productQ.product.price);
                             });
-                            res.render('customer/cart/place-order', { pageTitle: 'Đặt hàng', isLoggedin: req.session.isLoggedin, productQs, total, user, cart: {} });
+                            res.render('customer/cart/place-order', { pageTitle: 'Đặt hàng', productQs, total, user, cart: {} });
                         })
                     });
             });
@@ -192,7 +192,7 @@ class CartController {
     showQRCode(req, res, next) {
         Order.findById(req.params.id)
             .then(order => {
-                res.render('customer/cart/show-qrcode', { pageTitle: 'Quét mã QR thanh toán', order: mongooseToObj(order), user: req.session.user, isLoggedin: req.session.isLoggedin, cart: res.locals.cart, shopInfo: res.locals.shopInfo, });
+                res.render('customer/cart/show-qrcode', { pageTitle: 'Quét mã QR thanh toán', order: mongooseToObj(order), user: req.session.user, cart: res.locals.cart, });
             }).catch(next);
     }
     //[DELETE] /giohang/sanpham/xoa
@@ -243,7 +243,7 @@ class CartController {
                         }
                         cart.newOrderUpdate = false;
                         cart.save();
-                        res.render('customer/cart/cart-orders', { pageTitle: 'Đơn mua', isLoggedin: req.session.isLoggedin, orders, cart: {}, shopInfo: res.locals.shopInfo, })
+                        res.render('customer/cart/cart-orders', { pageTitle: 'Đơn mua', orders, cart: {}, })
                     })
             });
     }

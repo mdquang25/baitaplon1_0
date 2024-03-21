@@ -13,7 +13,7 @@ class ProductController {
         console.log('products - admin');
         Product.find({}).sortList(req)
             .then(products => {
-                res.render('admin/product/products', { pageTitle: 'Quản lý sản phẩm', layout: 'admin', isAdmin: req.session.isAdmin, products: multiMongooseToObjs(products), });
+                res.render('admin/product/products', { pageTitle: 'Quản lý sản phẩm', layout: 'admin', products: multiMongooseToObjs(products), });
             }).catch(next);
     }
 
@@ -35,7 +35,7 @@ class ProductController {
                 return Promise.all(categories);
             })
             .then(categories => {
-                res.render('admin/product/add-product', { pageTitle: 'Thêm sản phẩm', layout: 'admin', isAdmin: req.session.isAdmin, categories });
+                res.render('admin/product/add-product', { pageTitle: 'Thêm sản phẩm', layout: 'admin', categories });
             })
             .catch(next);
     }
@@ -80,7 +80,7 @@ class ProductController {
             .then(product => {
                 if (product) Type.find({ _id: { $in: product.typesIds } })
                     .then(types => {
-                        res.render('admin/product/product-details', { pageTitle: 'Sửa sản phẩm', layout: 'admin', isAdmin: req.session.isAdmin, product: mongooseToObj(product), types: multiMongooseToObjs(types), })
+                        res.render('admin/product/product-details', { pageTitle: 'Sửa sản phẩm', layout: 'admin', product: mongooseToObj(product), types: multiMongooseToObjs(types), })
                     }).catch(next);
                 return;
             }).catch(next);
@@ -103,7 +103,7 @@ class ProductController {
                 Product.findOne({ slug: req.params.slug })
                     .then(obj => {
                         const product = mongooseToObj(obj);
-                        res.render('admin/product/modify-product', { pageTitle: 'Sửa sản phẩm', layout: 'admin', isAdmin: req.session.isAdmin, categories, product, })
+                        res.render('admin/product/modify-product', { pageTitle: 'Sửa sản phẩm', layout: 'admin', categories, product, })
                     }).catch(next);
             })
     }

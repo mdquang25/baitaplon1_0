@@ -12,13 +12,13 @@
         <h1 class="text-center mt-4">Sửa sản phẩm</h1>
         <div class="mb-3">
             <label for="name" class="form-label mx-2">Tên sản phẩm</label>
-            <input type="text" name="name" id="name" autocomplete="cc-name" class="form-control"
+            <input type="text" maxlength="70" name="name" id="name" autocomplete="cc-name" class="form-control"
                 value="{{product.name}}" required>
         </div>
         <div class="mb-3">
             <label for="import" class="form-label mx-2">Số lượng: <b class="outline-label">{{product.stock}}</b>,
                 nhập thêm</label>
-            <input type="number" name="import" id="stock" autocomplete="cc-name" class="form-control"
+            <input type="number" min="0" max="10000" name="import" id="stock" autocomplete="cc-name" class="form-control"
                 placeholder="số lượng nhập thêm.." value="0" required>
         </div>
         <div class="form-check form-switch">
@@ -29,7 +29,7 @@
         <div class="mb-3">
             <label for="oldPrice" class="form-label mx-2">Giá cũ</label>
             <div class="input-group">
-                <input type="number" name="oldPrice" id="oldPrice" autocomplete="cc-name" class="form-control"
+                <input type="number" min="0" max="10000000000" name="oldPrice" id="oldPrice" autocomplete="cc-name" class="form-control"
                     value="{{product.oldPrice}}" required>
                 <span class="input-group-text">đ</span>
             </div>
@@ -37,19 +37,19 @@
         <div class="mb-3">
             <label for="price" class="form-label mx-2">Giá hiện tại</label>
             <div class="input-group">
-                <input type="number" name="price" id="price" autocomplete="cc-name" class="form-control"
+                <input type="number" min="0" max="10000000000" name="price" id="price" autocomplete="cc-name" class="form-control"
                     value="{{product.price}}" required><span class="input-group-text">đ</span>
             </div>
         </div>
         <div class="mb-3">
             <label for="description" class="form-label mx-2">Mô tả</label>
-            <textarea type="text" name="description" id="description" class="form-control" cols="30"
+            <textarea type="text" maxlength="200" name="description" id="description" class="form-control" cols="30"
                 rows="8">{{product.description}}</textarea>
         </div>
 
         <div class="mb-3">
             <label for="formMultipleFile" class="form-label mx-2">Chọn các file ảnh</label>
-            <input class="form-control" name="images" type="file" id="formMultipleFile" multiple>
+            <input class="form-control" name="images" type="file" accept="image/*" id="formMultipleFile" multiple>
         </div>
 
         <div id="mainImageIndex" class="d-none">{{product.mainImageIndex}}</div>

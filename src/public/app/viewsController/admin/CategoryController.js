@@ -97,7 +97,7 @@ class CategoryController {
         console.log('modify category - admin');
         Category.findOne({ slug: req.params.slug })
             .then(category => {
-                res.render('admin/product/modify-category', { pageTitle: 'Sửa chủ đề', layout: 'admin', category: mongooseToObj(category), isAdmin: req.session.isAdmin, });
+                res.render('admin/product/modify-category', { pageTitle: 'Sửa chủ đề', layout: 'admin', category: mongooseToObj(category),});
             }).catch(next);
     }
     //[PATCH] /admin/kho/chude/:slug/sua
@@ -133,7 +133,6 @@ class CategoryController {
                                         layout: 'admin',
                                         category,
                                         types,
-                                        isAdmin: req.session.isAdmin,
                                     });
                                 });
                             });

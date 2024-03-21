@@ -12,8 +12,10 @@ const customerSurfRouter = require('./customer/surf');
 const customerCartRouter = require('./customer/cart');
 const customerAccountRouter = require('./customer/account');
 const customerBaivietRouter = require('./customer/baiviet');
+const getSessionInfo = require('../public/middlewares/getSessionInfo');
 
 function router(app) {
+    app.use(getSessionInfo);
     app.use('/admin/taikhoan-nhanvien', employeeAccountsRouter);
     app.use('/admin/taikhoancuatoi', adminAccountRouter);
     app.use('/admin/khachhang', adminCustomersRouter);

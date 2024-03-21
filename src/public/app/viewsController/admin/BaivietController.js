@@ -7,11 +7,11 @@ class BaivietController {
     index(req, res, next) {
         Baiviet.find({})
             .then(docs => {
-                res.render('admin/baiviet/list', { pageTitle: 'Quản lý bài viết', layout: 'admin', baiviets: multiMongooseToObjs(docs), isAdmin: req.session.isAdmin, })
+                res.render('admin/baiviet/list', { pageTitle: 'Quản lý bài viết', layout: 'admin', baiviets: multiMongooseToObjs(docs),})
             })
     }
     add(req, res, next) {
-        res.render('admin/baiviet/add', { pageTitle: 'Thêm bài viết', layout: 'admin', isAdmin: req.session.isAdmin, })
+        res.render('admin/baiviet/add', { pageTitle: 'Thêm bài viết', layout: 'admin', })
     }
 
     async save(req, res, next) {
@@ -39,7 +39,7 @@ class BaivietController {
         Baiviet.findOne({ slug: req.params.slug })
             .then(doc => {
                 if (doc)
-                    res.render('admin/baiviet/modify', { pageTitle: 'Sửa bài viết', layout: 'admin', baiviet: mongooseToObj(doc), isAdmin: req.session.isAdmin, })
+                    res.render('admin/baiviet/modify', { pageTitle: 'Sửa bài viết', layout: 'admin', baiviet: mongooseToObj(doc),})
                 else
                     res.redirect('not-found-404');
             }).catch(() => {

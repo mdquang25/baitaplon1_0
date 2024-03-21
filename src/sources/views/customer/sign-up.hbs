@@ -1,29 +1,29 @@
 <div class="text-center mb-5">
     <h1 id="brand-name-label">Việt Tuấn Trung</h1>
-    <form action="/dangky" method="post" class="floating-label vstack gap-2 col-md-5 mx-auto">
+    <form id="form-sign-up" action="/dangky" method="post" class="floating-label vstack gap-2 col-md-5 mx-auto">
         <h1 id="sign-label">Đăng ký thành viên</h1>
         <div class="row align-items-center form-floating mb-3">
-            <input type="tel" name="phoneNumber" id="phoneNumber" autocomplete="tel" class="form-control"
+            <input type="tel" name="phoneNumber" maxlength="10" id="phoneNumber" autocomplete="tel" class="form-control"
                 value="{{account.phoneNumber}}" placeholder="Nhập số điện thoại.." pattern="[0-9]{10}" required>
             <label for="phoneNumber">Số điện thoại</label>
         </div>
         <div class="row align-items-center form-floating mb-3">
-            <input type="password" name="password" class="form-control position-relative" id="floatingPassword"
+            <input type="password" maxlength="32" name="password" class="form-control position-relative" id="new-password"
                 placeholder="Tạo mật khẩu" autocomplete="new-password" required>
             <button class=" position-absolute top-50 end-0 translate-middle-y eye-icon-btn" type="button"
                 id="togglePasswordButton1">
                 <i class="fa-regular fa-eye-slash"></i>
             </button>
-            <label for="floatingPassword">Tạo mật khẩu</label>
+            <label for="new-password">Tạo mật khẩu</label>
         </div>
         <div class="row align-items-center form-floating mb-3">
-            <input type="password" name="password2" class="form-control position-relative" id="floatingNewPassword"
+            <input type="password" maxlength="32" name="password2" class="form-control position-relative" id="new-password2"
                 placeholder="Xác nhận mật khẩu" autocomplete="new-password" required>
             <button class=" position-absolute top-50 end-0 translate-middle-y eye-icon-btn" type="button"
                 id="togglePasswordButton2">
                 <i class="fa-regular fa-eye-slash"></i>
             </button>
-            <label for="floatingPassword">Xác nhận mật khẩu</label>
+            <label for="new-password2">Xác nhận mật khẩu</label>
             <div id="error-message" class="form-text text-danger" style="height: 1rem"></div>
         </div>
         <div class="form-check d-flex align-items-center">
@@ -42,10 +42,10 @@
     </form>
 </div>
 <script>
-    const form = document.querySelector('form');
-    const phoneNumberInput = document.querySelector('input[name="phoneNumber"]');
-    const password1 = document.querySelector('input[name="password"]');
-    const password2 = document.querySelector('input[name="password2"]');
+    const form = document.getElementById('form-sign-up');
+    const phoneNumberInput = document.getElementById('phoneNumber');
+    const password1 = document.getElementById('new-password');
+    const password2 = document.getElementById('new-password2');
     const errorLabel = document.getElementById('error-message');
     const togglePasswordButton1 = document.getElementById('togglePasswordButton1');
     const togglePasswordButton2 = document.getElementById('togglePasswordButton2');
@@ -126,28 +126,37 @@
             });
     }
 
+    password1.addEventListener('input', (e) => {
+        if (password1.value.length >= 32) {
+            errorLabel.innerHTML = 'Mật khẩu tối đa 32 kí tự!';
+        }
+    });
+
+    password2.addEventListener('input', (e) => {
+        if (password2.value.length >= 32) {
+            errorLabel.innerHTML = 'Mật khẩu tối đa 32 kí tự!';
+        }
+    });
     function validateForm() {
         let isValid = true;
 
+        phoneNumberInput.value = phoneNumberInput.value.trim();
+        password1.value = password1.value.trim();
+        password2.value = password2.value.trim();
         if (!phoneNumberInput.value) {
             errorLabel.innerHTML = 'nhập tên đăng nhập!';
             isValid = false;
-        }
-
-        if (password1.value.length < 6 || password2.value.length < 6) {
+        } else if (password1.value.length < 6 || password2.value.length < 6) {
             errorLabel.innerHTML = 'mật khẩu phải từ 6 ký tự trở lên!';
             isValid = false;
         }
-        else if (password1.value.length > 32) {
-            errorLabel.innerHTML = 'mật khẩu tối đa 32 kí tự!';
+        else if (password1.value.length > 32 || password2.value.length > 32) {
             isValid = false;
         }
         else if (password1.value !== password2.value) {
             errorLabel.innerHTML = 'mật khẩu không khớp!';
             isValid = false;
         }
-
-
         return isValid;
     }
 

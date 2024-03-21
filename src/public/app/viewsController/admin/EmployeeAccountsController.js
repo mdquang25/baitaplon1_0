@@ -11,14 +11,14 @@ class EmployeeAccountsManagementController {
         Admin.find({ isAdmin: { $ne: 'true' } })
             .then(docs => {
                 const accounts = multiMongooseToObjs(docs);
-                res.render('admin/employees-account/accounts', { pageTitle: 'Tài khoản nhân viên', layout: 'admin', accounts, isAdmin: req.session.isAdmin, })
+                res.render('admin/employees-account/accounts', { pageTitle: 'Tài khoản nhân viên', layout: 'admin', accounts,})
             })
     }
 
     //[GET] /admin/taikhoan-nhanvien/them
     add(req, res) {
         console.log('add employee account - admin');
-        res.render('admin/employees-account/add', { pageTitle: 'Thêm tài khoản nhân viên', layout: 'admin', isAdmin: req.session.isAdmin, })
+        res.render('admin/employees-account/add', { pageTitle: 'Thêm tài khoản nhân viên', layout: 'admin', })
     }
 
     //[POST] /admin/taikhoan-nhanvien/them

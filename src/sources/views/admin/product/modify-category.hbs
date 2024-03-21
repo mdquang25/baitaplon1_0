@@ -10,11 +10,11 @@
         <h1 class="text-center">Sửa chủ đề phân loại</h1>
         <div class="mb-3">
             <label for="inputTypeName" class="form-label mx-2">Tên chủ đề</label>
-            <input type="text" name="name" id="inputTypeName" class="form-control" value="{{category.name}}" required>
+            <input type="text" maxlength="40" name="name" id="inputTypeName" class="form-control" value="{{category.name}}" required>
         </div>
         <div class="mb-3">
             <label for="inputTypeDescription" class="form-label mx-2">Mô tả</label>
-            <input type="text" name="description" id="inputTypeDescription" class="form-control" value="{{category.description}}">
+            <input type="text" maxlength="200" name="description" id="inputTypeDescription" class="form-control" value="{{category.description}}">
         </div>
         <button type="submit" class="btn btn-success mb-3"><i class="fa-regular fa-floppy-disk me-1"></i>Lưu thay đổi</button>
     </form>

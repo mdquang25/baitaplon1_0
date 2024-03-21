@@ -1,19 +1,10 @@
 <div class="d-flex justify-content-end mt-4">
     <form action="/admin/khachhang/timkiem" method="post" class="d-flex me-md-2 me-lg-4 ms-auto">
         <input type="text" name="_method" value="GET" hidden>
-        <input class="form-control me-1" name="phoneNumber" type="search" placeholder="Nhập sđt khách hàng.." aria-label="Search">
+        <input class="form-control me-1" name="phoneNumber" type="search"  pattern="[0-9]{10}" placeholder="Nhập sđt khách hàng.." aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Tìm kiếm</button>
     </form>
 </div>
 <div class="d-flex mgx-2 mt-2 align-items-center">
     <h2 class="col-8 text-center">Không tìm thấy khách hàng: "{{keyword}}"</h2>
 </div>
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        function navigateTo(url) {
-            window.location.href = url;
-        }
-    });
-</script>
