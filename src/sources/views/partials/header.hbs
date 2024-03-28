@@ -199,12 +199,6 @@
     @media (pointer: fine) {
 
         /* CSS rules for devices with a mouse */
-        #toggle-search {
-            pointer-events: none;
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
         #form-search:hover input {
             width: 20rem;
             height: 2.7rem;
@@ -218,12 +212,6 @@
             padding-right: 20px;
             border-radius: .5rem;
             border: .2rem solid white;
-        }
-
-        #form-search:hover #toggle-search {
-            pointer-events: all;
-            opacity: 1;
-            cursor: auto;
         }
     }
 </style>
@@ -328,7 +316,6 @@
             redDot.classList.remove('d-none');
         }
 
-        console.log('isLoggedin: ', isLoggedin.value);
         if (isLoggedin.value==='true') {
             signBtn.classList.add('d-none');
         }

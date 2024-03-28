@@ -52,43 +52,45 @@ class SiteController {
                 // Handle validation errors, such as sending an error response
                 return res.status(400).json({ errors: errors.array() });
             }
-            Customer.findOne({ phoneNumber: req.body.phoneNumber })
-                .then((customer) => {
-                    if (!customer) {
-                        console.log('User not found');
-                        res.render('customer/login', { pageTitle: 'Đăng nhập', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body });
-                        return;
-                    }
-                    bcrypt.compare(req.body.password, customer.password, function (err, isMatch) {
-                        if (err) {
-                            console.error(err);
-                            return res.status(400).json({ errors: errors.array() });
+            else {
+                Customer.findOne({ phoneNumber: req.body.phoneNumber })
+                    .then((customer) => {
+                        if (!customer) {
+                            console.log('User not found');
+                            res.render('customer/login', { pageTitle: 'Đăng nhập', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body });
+                            return;
                         }
-                        if (isMatch) {
-                            req.session.user = {
-                                id: customer._id,
-                                phoneNumber: customer.phoneNumber,
-                                fullName: customer.fullName,
-                                cartId: customer.cartId,
-                            };
-                            req.session.isLoggedin = true;
-                            req.session.save(function (err) {
-                                if (err) {
-                                    console.log('Session saving error!');
-                                    res.redirect('back');
-                                } else {
-                                    console.log('logged in - customer');
-                                    res.redirect('/');
-                                }
-                            });
+                        bcrypt.compare(req.body.password, customer.password, function (err, isMatch) {
+                            if (err) {
+                                console.error(err);
+                                return res.status(400).json({ errors: errors.array() });
+                            }
+                            if (isMatch) {
+                                req.session.user = {
+                                    id: customer._id,
+                                    phoneNumber: customer.phoneNumber,
+                                    fullName: customer.fullName,
+                                    cartId: customer.cartId,
+                                };
+                                req.session.isLoggedin = true;
+                                req.session.save(function (err) {
+                                    if (err) {
+                                        console.log('Session saving error!');
+                                        res.redirect('back');
+                                    } else {
+                                        console.log('logged in - customer');
+                                        res.redirect('/');
+                                    }
+                                });
 
-                        } else {
-                            console.log('Invalid password');
-                            res.render('customer/login', { pageTitle: 'Đăng nhập', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body, })
-                        }
-                    });
-                })
-                .catch(next);
+                            } else {
+                                console.log('Invalid password');
+                                res.render('customer/login', { pageTitle: 'Đăng nhập', error: 'tài khoản hoặc mật khẩu không đúng!', preInput: req.body, })
+                            }
+                        });
+                    })
+                    .catch(next);
+            }
         }
     }
 

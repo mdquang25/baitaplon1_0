@@ -70,10 +70,10 @@
         const addNewProduct = document.getElementById('add-new-product');
 
 
-        addNewProduct.addEventListener('click', event =>{
+        addNewProduct.addEventListener('click', event => {
             window.open('/admin/kho/sanpham/them', '_blank');
         });
-        
+
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         const vietnameseDate = new Date().toLocaleDateString('vi-VN', options);
         document.getElementById('date-time').innerHTML = vietnameseDate;
@@ -149,7 +149,7 @@
                                 <td><img class="thumbnail-sm img-thumbnail" src="${product.imagesUrls[product.mainImageIndex]}" alt="Ảnh"></td>
                                 <td>${product.name}</td>
                                 <td class="mobile-hidden">${parseInt(product.price.$numberDecimal).toLocaleString('vi-VN')}đ</td>
-                                <td><input type="number" name="${product._id}quantity" min="1" value="1" class="form-control text-center"></td>
+                                <td><input type="number" name="${product._id}quantity" pattern="[0-9]+" min="1" max="10000" value="1" class="form-control text-center" required></td>
                                 <input type="text" name="productIds[]" value="${product._id}" hidden>
                             </tr>`;
             chosenResults.insertAdjacentHTML('afterbegin', content);

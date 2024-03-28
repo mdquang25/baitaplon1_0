@@ -4,7 +4,7 @@ const { body } = require('express-validator');
 const siteController = require('../../public/app/viewsController/customer/SiteController');
 const userInterfaceObjects = require('../../public/middlewares/userInterfaceObjects.js');
 const initSortable = require('../../public/middlewares/initSortable');
-
+const getCategories = require('../../public/middlewares/getCategories.js');
 
 router.post('/dangnhap', userInterfaceObjects, [
     body('phoneNumber').notEmpty().withMessage('phoneNumber is required'),
@@ -18,7 +18,7 @@ router.post('/dangky', [
 router.get('/dangnhap', userInterfaceObjects, siteController.login);
 router.get('/dangxuat', siteController.logout);
 router.get('/dangky', userInterfaceObjects, siteController.signUp);
-router.get('/lien-he', userInterfaceObjects, siteController.contactUs);
+router.get('/lien-he', userInterfaceObjects, getCategories, siteController.contactUs);
 router.get('/not-found-404', siteController.notFound);
 router.get('/', userInterfaceObjects, initSortable, siteController.index);
 

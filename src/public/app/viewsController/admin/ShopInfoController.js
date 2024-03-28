@@ -58,6 +58,7 @@ class ShopInfoController {
         Carousel.findById(req.params.id)
             .then(carousel => {
                 if (carousel) {
+                    carousel.link = req.body.link;
                     const file = req.file;
                     if (!file) {
                         console.log("no icon!");
@@ -71,8 +72,8 @@ class ShopInfoController {
                             console.log(imageUrl + ': deleted successfully');
                         });
                         carousel.imageUrl = '/uploads/' + file.filename;
-                        carousel.save();
                     }
+                    carousel.save();
                 }
                 res.redirect('/admin/cuahang/quangcao');
             }).catch(() => redirect('/admin/cuahang/quangcao'));
