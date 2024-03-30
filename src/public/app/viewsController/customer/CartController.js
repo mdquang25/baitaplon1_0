@@ -41,7 +41,9 @@ class CartController {
                     }).catch(() => {
                         res.send({ message: 'error' });
                     });
-            })
+            }).catch(() => {
+                res.send({ message: 'error' });
+            });
     }
     //[GET] /giohang
     products(req, res, next) {

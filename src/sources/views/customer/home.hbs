@@ -176,7 +176,6 @@
         var startValueInput = document.getElementById('startValue');
         var endValueInput = document.getElementById('endValue');
         var sliderValue = document.getElementById('slider-value');
-        const redDot = document.getElementById('red-dot');
 
 
         if (!parseInt(document.getElementById('products-length').value) > 0)
@@ -330,6 +329,7 @@
     //DOM DONE//////////////////////////////////////
 
 
+    const redDot = document.getElementById('red-dot');
 
     updateProductCards();
     function updateProductCards() {
@@ -367,9 +367,11 @@
             fetch(`/giohang/them?productId=${encodeURIComponent(productId)}`)
                 .then(response => response.json())
                 .then(data => {
+                    console.log('data recieved: ', data.message);
                     if (data.requireLogin)
                         navigateTo('/dangnhap');
                     if (data.message === 'added') {
+                        console.log('print added');
                         toastSuccessElement.firstElementChild.innerHTML = 'Đã Thêm vào giỏ hàng';
                         toastSuccess.show();
                         redDot.classList.remove('d-none');
@@ -378,8 +380,11 @@
                         toastDangerElement.firstElementChild.innerHTML = 'Đã có trong giỏ hàng!';
                         toastDanger.show();
                     }
+                    else
+                        throw new Error();
                 })
-                .catch(error => {
+                .catch((e) => {
+                    console.log('print error!');
                     toastDangerElement.firstElementChild.innerHTML = 'Đã xảy ra lỗi! Xin vui lòng thử lại';
                     toastDanger.show();
                 });
