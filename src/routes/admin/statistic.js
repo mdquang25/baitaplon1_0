@@ -4,7 +4,7 @@ const requireManagerLogin = require('../../public/middlewares/requireManagerLogi
 const statisticController = require('../../public/app/viewsController/admin/StatisticController');
 
 
-router.get('/dem-don-hang-tuan', requireManagerLogin, statisticController.countOrdersOfWeek);
+router.get('/dem-don-hang', requireManagerLogin, statisticController.countOrders);
 router.get('/', requireManagerLogin, statisticController.index);
 
 module.exports = router;

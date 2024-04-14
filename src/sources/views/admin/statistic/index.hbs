@@ -15,16 +15,114 @@
             </div>
         </div>
     </div>
-    <div class="d-flex justify-content-center flex-wrap">
+    <div class="d-flex justify-content-center flex-wrap mt-5">
+        <div class="col-12 d-flex flex-end mb-1">
+            <div id="range-selection" class=" dropdown ms-auto me-2">
+                <a class="dropdown-toggle no-decor-link rounded-4 p-2"
+                    style="color: white; background-color: rgb(100, 160, 250);" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <b>Chọn khoảng ngày</b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(3)">3 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(4)">4 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(5)">5 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(6)">6 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(7)">1 tuần</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(8)">8 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(9)">9 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(10)">10 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(11)">11 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(12)">12 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(13)">13 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(14)">2 tuần</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(15)">15 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(16)">16 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(17)">17 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(18)">18 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(19)">19 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(20)">20 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(21)">3 tuần</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(22)">22 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(23)">23 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(24)">24 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(25)">25 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(26)">26 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(27)">27 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(28)">4 tuần</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(29)">29 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(30)">30 ngày</div>
+                    </li>
+                    <li>
+                        <div class="dropdown-item" onclick="setRange(31)">31 ngày</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <div class="col-lg-6 col-md-9 col-12">
-            <div class="mt-5 pb-5 rounded-2 mx-lg-2" style="background-color: rgb(121, 255, 210);">
-                <h5 class="p-2"><b>Đơn hàng trong 7 ngày qua</b></h5>
+            <div class="mt-1 pb-5 rounded-2 mx-lg-2" style="background-color: rgb(121, 255, 210);">
+                <h5 class="p-2"><b id="orderCount-label">Đơn hàng trong 7 ngày qua</b></h5>
                 <canvas id="order-count-chart"></canvas>
             </div>
         </div>
         <div class="col-lg-6 col-md-9 col-12">
-            <div class="mt-5 pb-5 rounded-2 mx-lg-2" style="background-color: rgb(183, 224, 255);">
-                <h5 class="p-2"><b>Giá trị bán ra trong 7 ngày qua</b></h5>
+            <div class="mt-1 pb-5 rounded-2 mx-lg-2" style="background-color: rgb(183, 224, 255);">
+                <h5 class="p-2"><b id="amountCount-label">Giá trị bán ra trong 7 ngày qua</b></h5>
                 <canvas id="total-value-chart"></canvas>
             </div>
         </div>
@@ -32,14 +130,32 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const orderCountChart = document.getElementById('order-count-chart');
-        const totalAmountChart = document.getElementById('total-value-chart');
-        const ordersToday = document.getElementById('orders-today');
-        const completedToday = document.getElementById('completed-today');
+    //    document.addEventListener('DOMContentLoaded', function () {
+    const orderCountChart = document.getElementById('order-count-chart');
+    const totalAmountChart = document.getElementById('total-value-chart');
+    const ordersToday = document.getElementById('orders-today');
+    const completedToday = document.getElementById('completed-today');
+    const orderCountLabel = document.getElementById('orderCount-label');
+    const amountCountLabel = document.getElementById('amountCount-label');
+    var totalAmountC;
+    var orderCountC;
 
-        const timeOptions = { month: 'long', day: 'numeric', };
-        fetch('/admin/thongke/dem-don-hang-tuan')
+    const timeOptions = { month: 'long', day: 'numeric', }; 
+
+    function setRange(n) {
+        if (n > 2 && n <= 31) {
+            totalAmountC.destroy();
+            orderCountC.destroy();
+            amountCountLabel.innerHTML = 'Giá trị bán ra trong ' + n + ' ngày qua';
+            orderCountLabel.innerHTML = 'Đơn hàng bán ra trong ' + n + ' ngày qua';
+            retrieveData(n);
+        }
+    }
+
+
+    retrieveData(7);
+    function retrieveData(n){
+        fetch('/admin/thongke/dem-don-hang?dayNum=' + encodeURIComponent(n))
             .then(response => response.json())
             .then(json => {
                 ordersToday.innerHTML = json.created[json.created.length - 1].count;
@@ -47,71 +163,71 @@
                 generateTotalValueChart(json.done);
                 generateOrderCountChart(json.done, json.created);
             });
-
-        function generateOrderCountChart(done, created) {
-            const labels = done.map(e => new Date(e.date).toLocaleString('vi-VN', timeOptions));
-            const data = {
-                labels: labels,
-                datasets: [{
-                    label: 'Đơn hoàn thành',
-                    data: done.map(e => e.count),
-                    fill: false,
-                    borderColor: 'green',
-                    tension: 0.1
-                },
-                {
-                    label: 'Đơn đã tạo',
-                    data: created.map(e => e.count),
-                    fill: false,
-                    borderColor: 'red',
-                    tension: 0.1
-                }]
-            };
-            new Chart(orderCountChart, {
-                type: 'line',
-                data: data,
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            precision: 0,
-                            ticks: {
-                                stepSize: 1
-                            }
-                        },
-                    }
+    }
+    function generateOrderCountChart(done, created) {
+        const labels = done.map(e => new Date(e.date).toLocaleString('vi-VN', timeOptions));
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Đơn hoàn thành',
+                data: done.map(e => e.count),
+                fill: false,
+                borderColor: 'green',
+                tension: 0.1
+            },
+            {
+                label: 'Đơn đã tạo',
+                data: created.map(e => e.count),
+                fill: false,
+                borderColor: 'red',
+                tension: 0.1
+            }]
+        };
+        orderCountC= new Chart(orderCountChart, {
+            type: 'line',
+            data: data,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        precision: 0,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    },
                 }
-            });
-        }
-        function generateTotalValueChart(done) {
-            const labels = done.map(e => new Date(e.date).toLocaleString('vi-VN', timeOptions));
-            const data = {
-                labels: labels,
-                datasets: [{
-                    label: 'Giá trị bán ra',
-                    data: done.map(e => e.total),
-                    fill: false,
-                    borderColor: 'green',
-                    tension: 0.1
-                }]
-            };
-            new Chart(totalAmountChart, {
-                type: 'line',
-                data: data,
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            precision: 0,
-                            ticks: {
-                                stepSize: 1
-                            }
-                        },
-                    }
+            }
+        });
+    }
+    function generateTotalValueChart(done) {
+        const labels = done.map(e => new Date(e.date).toLocaleString('vi-VN', timeOptions));
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Giá trị bán ra',
+                data: done.map(e => e.total),
+                fill: false,
+                borderColor: 'green',
+                tension: 0.1
+            }]
+        };
+        totalAmountC = new Chart(totalAmountChart, {
+            type: 'line',
+            data: data,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        precision: 0,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    },
                 }
-            });
-        }
+            }
+        });
+    }
 
 
-    });
+    //    });
 </script>

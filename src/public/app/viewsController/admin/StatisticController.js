@@ -7,12 +7,16 @@ class StatisticController {
         res.render('admin/statistic/index', { pageTitle: 'Thống kê', layout: 'admin', });
     }
 
-    countOrdersOfWeek(req, res, next) {
+    countOrders(req, res, next) {
+        var dayNum = parseInt(req.query.dayNum);
+        console.log('dayNum: ', dayNum);
+        if (dayNum < 3 || dayNum > 31)
+            dayNum = 7;
         const today = moment();
         today.set({ hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
         const done = [];
         const created = [];
-        for (let i = 6; i >= 0; i--) {
+        for (let i = dayNum-1; i >= 0; i--) {
             let curDay = moment(today).subtract(i, 'days');
             let dayAfter = moment(curDay).add(1, 'days');
 
