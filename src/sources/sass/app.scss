@@ -246,21 +246,6 @@
     transition: transform 0.3s ease;
 }
 
-@media (pointer: coarse) {
-
-    /* CSS rules for devices without a mouse (touchscreen devices) */
-    .product-card.touched img {
-        transform: scale(1.1);
-    }
-}
-
-@media (pointer: fine) {
-
-    /* CSS rules for devices with a mouse */
-    .product-card:hover img {
-        transform: scale(1.1);
-    }
-}
 
 .font1 {
     color: white;
