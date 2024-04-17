@@ -36,8 +36,6 @@
     "vietnam-qr-pay": "^1.3.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.9",
-    "@babel/node": "^7.23.9",
     "morgan": "^1.10.0",
     "nodemon": "^3.0.3",
     "prettier": "^3.1.1",
