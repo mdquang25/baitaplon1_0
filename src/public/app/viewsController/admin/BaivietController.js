@@ -5,6 +5,7 @@ const path = require('path');
 
 class BaivietController {
     index(req, res, next) {
+        console.log('baiviet management - admin');
         Baiviet.find({})
             .then(docs => {
                 res.render('admin/baiviet/list', { pageTitle: 'Quản lý bài viết', layout: 'admin', baiviets: multiMongooseToObjs(docs),})
@@ -36,6 +37,7 @@ class BaivietController {
     }
 
     modify(req, res, next) {
+        console.log('modify baiviet - admin');
         Baiviet.findOne({ slug: req.params.slug })
             .then(doc => {
                 if (doc)

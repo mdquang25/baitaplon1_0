@@ -4,12 +4,13 @@ moment.tz.setDefault('Asia/Ho_Chi_Minh');
 
 class StatisticController {
     index(req, res, next) {
+        console.log('statistic - admin');
         res.render('admin/statistic/index', { pageTitle: 'Thống kê', layout: 'admin', });
     }
 
     countOrders(req, res, next) {
+        console.log('count Orders - admin');
         var dayNum = parseInt(req.query.dayNum);
-        console.log('dayNum: ', dayNum);
         if (dayNum < 3 || dayNum > 31)
             dayNum = 7;
         const today = moment();

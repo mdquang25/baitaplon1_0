@@ -46,7 +46,6 @@ app.set('view engine', 'hbs');
 db.connect();
 router(app);
 
-//app.listen(3000, ()=> { console.log('app is listening on port 3000') });
 app.listen({ port, host },
     function (err, address) {
         if (err) {

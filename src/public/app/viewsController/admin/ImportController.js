@@ -8,11 +8,13 @@ const ProductQ = require("../../models/ProductQ");
 
 class ImportController {
     import(req, res) {
+        console.log('import - admin');
         res.render('admin/product/import', { pageTitle: 'Nhập hàng', layout: 'admin', manager: req.session.manager, isAdmin: req.session.isAdmin, })
     }
 
     //[GET] /admin/kho/nhaphang/lichsu?print=
     history(req, res, next) {
+        console.log('import history - admin');
         const printId = req.query.print;
         ImportBill.find({}).sortList(req)
             .then(importBills => {
@@ -23,6 +25,7 @@ class ImportController {
 
     //[GET] /admin/kho/nhaphang/tim-san-pham
     findProduct(req, res, next) {
+        console.log('import_find product - admin');
         const query = req.query.query;
         Product.findById(query)
             .then(doc => {
@@ -84,6 +87,7 @@ class ImportController {
 
     //[GET] /admin/kho/nhaphang/lichsu/:id
     importDetails(req, res, next) {
+        console.log('import details - admin');
         ImportBill.findById(req.params.id)
             .then(doc => {
                 ProductQ.find({ _id: { $in: doc.productQ_ids } })
@@ -94,6 +98,7 @@ class ImportController {
     }
     //[GET] /admin/kho/nhaphang/lichsu/:id/in-phieu
     printImportBill(req, res, next) {
+        console.log('print import bill - admin');
         ImportBill.findById(req.params.id)
             .then(doc => {
                 ProductQ.find({ _id: { $in: doc.productQ_ids } })
