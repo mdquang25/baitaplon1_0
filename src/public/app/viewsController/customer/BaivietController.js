@@ -25,6 +25,18 @@ class BaivietController {
                     }).catch(() => res.redirect('/not-found-404'));
             }).catch(next);
     }
+
+    viewed(req, res, next) {
+        console.log('viewed baiviet - admin');
+        Baiviet.findById(req.params.id)
+            .then(doc => {
+                if (doc) {
+                    doc.views++;
+                    doc.save();
+                    res.status(200);
+            }
+        })
+    }
 }
 
 module.exports = new BaivietController; 

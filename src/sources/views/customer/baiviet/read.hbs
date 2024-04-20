@@ -27,12 +27,13 @@
 
 <div class="baiviet-card table-max-width d-flex flex-wrap mx-auto">
     <div class="baiviet-header">{{baiviet.name}}</div>
+    <div class="col-12">Lượt xem: {{baiviet.views}}</div>
     {{#each baiviet.imagesUrls}}
     <img class="m-2 photo" src="{{this}}" alt="Ảnh bài viết">
     {{/each}}
     <p class="fs-5" style="white-space: pre-line;">{{baiviet.content}}</p>
     <div class="col-12 d-flex justify-content-end">
-        <div class="text-center">
+        <div id="author" data-id="{{baiviet._id}}" class="text-center">
             <h6>--Tác giả--</h6>
             <h6><b>{{baiviet.author}}</b></h6>
         </div>
@@ -40,5 +41,21 @@
 </div>
 <script>
     document.querySelector('div[class="carousel-item"]').classList.add('active');
-
+    const authorElement = document.getElementById('author');
+    const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const element = entry.target;
+                    fetch('/baiviet/' + element.getAttribute('data-id') + '/viewed')
+                    .catch(e => console.log('baiviet viewed error: ', e));
+                    observer.unobserve(element);
+                }
+            });
+        });
+        window.onload = function () {
+                if (performance.navigation.type !== performance.navigation.TYPE_RELOAD) {
+                   observer.observe(authorElement); 
+                }
+            };
+        
 </script>

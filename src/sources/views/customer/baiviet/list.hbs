@@ -29,7 +29,8 @@
     <img class="thumnail img-thumbnail" src="{{valueAt this.imagesUrls this.mainImageIndex}}" alt="Ảnh bài viết">
     <div class="mx-2">
         <div class="baiviet-header">{{this.name}}</div>
-        <p class="description-3">{{this.content}}</p>
+        <p class="description-3 mb-0">{{this.content}}</p>
+        <div>Lượt xem: {{baiviet.views}}</div>
     </div>
 </div>
 {{/each}}
