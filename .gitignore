@@ -99,4 +99,4 @@ out
 =======
 node_modules
 node_modules/*
-src/public/uploads/*
+# src/public/uploads/*
